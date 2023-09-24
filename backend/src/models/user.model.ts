@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const bcrypt = require('bcrypt');
-const db = require('../config/db');
+import {connection as db} from '../config/db';
 
 const Schema = mongoose.Schema;
 
@@ -10,7 +10,7 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
-    nickname: {
+    username: {
         type: String,
         required: true,
         unique: true,
@@ -21,6 +21,6 @@ const userSchema = new Schema({
     },
 })
 
-const userModel = db.model('user', userSchema);
+const UserModel = db.model('user', userSchema);
 
-module.exports = userModel;
+export default UserModel;
