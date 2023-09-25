@@ -1,8 +1,15 @@
 import mongoose from 'mongoose';
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 import {connection as db} from '../config/db';
 
 const Schema = mongoose.Schema;
+
+export interface User extends Document{
+    email: string;
+    username: string; 
+    password: string;
+    comparePasswords(userPassword: string): Promise<boolean>;
+}
 
 const userSchema = new Schema({
     email: {
@@ -21,6 +28,21 @@ const userSchema = new Schema({
     },
 })
 
-const UserModel = db.model('user', userSchema);
+
+userSchema.methods.comparePasswords = async function(userPassword: string) : Promise<Boolean> {
+
+    const user = this as User;
+
+    try{
+        return await bcrypt.compare(userPassword, user.password)
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+}
+
+
+
+const UserModel = db.model<User>('user', userSchema);
 
 export default UserModel;

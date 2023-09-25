@@ -1,4 +1,5 @@
 import UserModel from "../models/user.model";
+import { User } from "../models/user.model";
 
 export class UserService{
 
@@ -12,4 +13,13 @@ export class UserService{
         }
     }
 
+
+    static async findUser(email:String) : Promise<User | null>{
+        try{
+            return await UserModel.findOne({email})
+        }catch(err){
+            console.log(err);
+            return null;
+        }
+    }
 }
