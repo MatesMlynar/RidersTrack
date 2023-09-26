@@ -1,5 +1,6 @@
 import UserModel from "../models/user.model";
 import { User } from "../models/user.model";
+import jwt from 'jsonwebtoken';
 
 export class UserService{
 
@@ -22,4 +23,14 @@ export class UserService{
             return null;
         }
     }
+
+
+    static async generateToken(tokenData : Object, secretKey : jwt.Secret, expiresIn : string | number) : Promise<string | null>{{
+        try{
+            return await jwt.sign(tokenData, secretKey, {expiresIn})
+        }catch(err){
+            console.log(err);
+            return null;
+        }
+    }}
 }

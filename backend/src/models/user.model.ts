@@ -5,6 +5,7 @@ import {connection as db} from '../config/db';
 const Schema = mongoose.Schema;
 
 export interface User extends Document{
+    _id: string;
     email: string;
     username: string; 
     password: string;
@@ -27,6 +28,17 @@ const userSchema = new Schema({
         required: true
     },
 })
+
+userSchema.pre('save', async function(){
+    try{
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword =  await bcrypt.hash(this.password, salt);
+        this.password = hashedPassword;
+    }catch(err){
+        console.log(err);
+    }
+})
+
 
 
 userSchema.methods.comparePasswords = async function(userPassword: string) : Promise<Boolean> {
