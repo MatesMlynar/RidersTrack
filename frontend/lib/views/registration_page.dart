@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/login_page.dart';
+import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:http/http.dart' as http;
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -16,9 +19,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  void registerUser() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
+  //registrate user
+  void registerUser() async {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      var reqBody = {
+        "email": emailController.text,
+        "password": passwordController.text
+      };
+
+      var response = await http.post(Uri.parse("http://172.23.208.1:3000/api/user/register"), headers: {"Contect-Type": "application/json"}, body: jsonEncode(reqBody));
+      print(json.decode(response.body));
+    }
+
+    /*Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));*/
     print("success");
   }
 
@@ -86,7 +100,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 maxLines: 1,
                                 style: GoogleFonts.readexPro(
                                   fontSize: 14,
-                                  color: const Color.fromARGB(255, 149, 161, 172),
+                                  color:
+                                      const Color.fromARGB(255, 149, 161, 172),
                                 ),
                               ),
                             ),
@@ -164,9 +179,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       minimumSize:
                                           MaterialStateProperty.all<Size>(
                                               const Size(double.infinity, 50)),
-                                      backgroundColor: MaterialStateProperty.all<
-                                              Color>(
-                                          const Color.fromARGB(255, 221, 28, 7))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              const Color.fromARGB(
+                                                  255, 221, 28, 7))),
                                   child: Text(
                                     "Create Account",
                                     style: GoogleFonts.readexPro(

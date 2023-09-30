@@ -11,6 +11,13 @@ export const register = async (req: Request, res: Response) => {
         const {username, email, password} = req.body;
         const response = await UserService.registerUser(username, email, password)
 
+        if(!response){
+            res.status(500).send({
+                status: 500,
+                message: "Error registering user"
+            })
+        }
+
         res.status(200).send({
             status: 200,
             message: "User registered successfully",
@@ -63,6 +70,8 @@ export const login = async (req: Request, res: Response) => {
             message: "User logged in successfully",
             token: token, 
         })
+
+
     }catch(err){
         console.log(err);
     }

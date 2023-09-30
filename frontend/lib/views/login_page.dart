@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/registration_page.dart';
+import 'package:frontend/commands/user/login_command.dart';
+import 'package:frontend/views/registration_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
@@ -14,6 +15,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void loginUser() async{
+    var result = await LoginCommand().run(emailController.text, passwordController.text);
+  }
 
   @override
   void dispose() {
@@ -124,7 +129,9 @@ class _LoginPage extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                             child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  loginUser();
+                                },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
                                             RoundedRectangleBorder>(
