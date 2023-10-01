@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/base_command.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/utils/secure_storage.dart';
+import 'package:frontend/views/home_page.dart';
+import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/registration_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
+  //TODO check if token is expired
+
+
   runApp(const MyApp());
 }
 
@@ -21,6 +27,9 @@ class MyApp extends StatelessWidget {
       Provider(create: (c) => UserService())
     ],
     child: Sizer(builder: (context, orientation, deviceType) {
+
+      //Map<String, dynamic>? currentUser = context.select<UserModel, Map<String, dynamic>?>((value) => value.currentUser);
+
       init(context);
       return MaterialApp(
           title: 'Rider\'s Track',
@@ -28,7 +37,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const RegistrationPage());
+          home: const LoginPage());
     }));
   }
 }

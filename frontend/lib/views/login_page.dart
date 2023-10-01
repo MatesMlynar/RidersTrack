@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/login_command.dart';
+import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/registration_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+
+import '../utils/secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,11 +18,41 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final SecureStorage _secureStorage = SecureStorage();
+  final loading = false;
 
   void loginUser() async{
     var result = await LoginCommand().run(emailController.text, passwordController.text);
+
+    if(result['status'] == 200){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+    }
+
+    print(result);
   }
 
+  void logout() async{
+    await _secureStorage.deleteToken();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSecureStorageData();
+  }
+
+  Future<void> fetchSecureStorageData() async {
+    emailController.text = await _secureStorage.getEmail() ?? "";
+    passwordController.text = await _secureStorage.getPassword() ?? "";
+  }
+
+  
+  
   @override
   void dispose() {
     emailController.dispose();
@@ -29,6 +62,7 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       body: SingleChildScrollView(

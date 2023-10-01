@@ -8,24 +8,28 @@ import 'package:jwt_decode/jwt_decode.dart';
 
 
 class LoginCommand extends BaseCommand{
-  Future<bool> run(String email, String password) async {
+  Future<Map<String, dynamic>> run(String email, String password) async {
 
     Map<String, dynamic> result = await userService.login(email, password);
-    print(result);
 
     //TODO imlement case if status is not 200
 
 
     if(result['status'] == 200){
-      //store token in some local/secured preferencies
+      //store token in some local/secured preferences
       if (result['token'] != null && result['token'].isNotEmpty){
           await secureStorage.setToken(result['token']);
       }
 
+      //store email and password in some secured preferences
+      await secureStorage.setEmail(email);
+      await secureStorage.setPassword(password);
+
+
       //Decode JWT payload
       Map<String, dynamic> payload = Jwt.parseJwt(result['token']);
 
-      //store the jwt payload in usermodel/appmodel
+      //store the jwt payload in usermodel/app model
       Map<String, dynamic> userData = {
         "username": payload['userData']['username'],
         'email': payload['userData']['email'],
@@ -33,9 +37,9 @@ class LoginCommand extends BaseCommand{
       };
 
       userModel.currentUser = userData;
-      return true;
+      return result;
     }
 
-    return false;
+    return result;
   }
 }
