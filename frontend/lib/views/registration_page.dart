@@ -6,7 +6,7 @@ import 'package:frontend/commands/user/register_command.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
-import 'package:http/http.dart' as http;
+
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

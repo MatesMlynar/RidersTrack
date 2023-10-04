@@ -28,6 +28,23 @@ class _HomePageState extends State<HomePage> {
     print(user);
 
     return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        appBar: AppBar(
+          title: const Text('RIDERS TRACK', style: TextStyle(color: Colors.black, fontSize: 26, fontWeight: FontWeight.bold),),
+          centerTitle: true,
+          leading: null,
+          actions: [
+            Padding(padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Icon(
+                  Icons.account_circle_rounded,
+                  size: 26.0,
+                ),
+              ),
+            )],
+          backgroundColor: Colors.white,
+        ),
         body: Center(child: FloatingActionButton(onPressed: () {logout();},child: const Icon(Icons.logout), backgroundColor: Colors.red,)));
   }
 }

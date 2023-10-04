@@ -7,10 +7,25 @@ export class UserService{
     //Service functions
     static async registerUser(username:String, email: String, password: String){
         try{
+            
+            var doesUserEmailExist = await UserModel.exists({email})
+            var doesUserNameExist = await UserModel.exists({username})
+
+
+            if(doesUserEmailExist)
+            {
+                return {success: false, message: "Email already exists"}
+            }
+            else if(doesUserNameExist)
+            {
+                return {success: false, message: "Username already exists"}
+            }
+
             const user = new UserModel({email, username, password})
-            return await user.save()
-        }catch(err){
-            console.log(err);
+            await user.save()
+            return {success: true, data: user}
+        }catch(err : any){
+            return {success: false, message: err.message}
         }
     }
 
