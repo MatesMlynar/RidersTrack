@@ -11,11 +11,10 @@ class LoginCommand extends BaseCommand{
   Future<Map<String, dynamic>> run(String email, String password) async {
 
     Map<String, dynamic> result = await userService.login(email, password);
-
-    //TODO imlement case if status is not 200
-
+    //TODO check if token is still valid
 
     if(result['status'] == 200){
+
       //store token in some local/secured preferences
       if (result['token'] != null && result['token'].isNotEmpty){
           await secureStorage.setToken(result['token']);

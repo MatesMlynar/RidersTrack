@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/commands/user/register_command.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -16,24 +17,39 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  bool isLoading = false;
 
   //registrate user
   void registerUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      var reqBody = {
-        "email": emailController.text,
-        "password": passwordController.text
-      };
+      setState(() {
+        isLoading = true;
+      });
 
-      var response = await http.post(Uri.parse("http://172.23.208.1:3000/api/user/register"), headers: {"Contect-Type": "application/json"}, body: jsonEncode(reqBody));
-      print(json.decode(response.body));
+      var response = await RegisterCommand().run(emailController.text, usernameController.text, passwordController.text, confirmPasswordController.text);
+
+      if(response['status'] == 200){
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green,));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+      }
+      else{
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+      }
+
     }
-
-    /*Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));*/
-    print("success");
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please fill out all fields"), backgroundColor: Colors.red,));
+    }
   }
 
   @override
@@ -47,7 +63,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         body: SingleChildScrollView(
           child: ConstrainedBox(
@@ -121,6 +137,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       borderSide: BorderSide(
                                           color:
                                               Color.fromARGB(255, 29, 36, 40))),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+                              child: TextField(
+                                autocorrect: false,
+                                controller: usernameController,
+                                style: GoogleFonts.readexPro(
+                                    color: Colors.white, fontSize: 16),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(12),
+                                  labelText: "Username",
+                                  labelStyle: GoogleFonts.readexPro(
+                                      color: Colors.white, fontSize: 16),
+                                  border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                          Color.fromARGB(255, 29, 36, 40))),
                                 ),
                               ),
                             ),

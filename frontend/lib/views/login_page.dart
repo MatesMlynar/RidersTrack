@@ -19,26 +19,36 @@ class _LoginPage extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final SecureStorage _secureStorage = SecureStorage();
-  final loading = false;
+  bool isLoading = false;
 
   void loginUser() async{
-    var result = await LoginCommand().run(emailController.text, passwordController.text);
 
-    if(result['status'] == 200){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      var result = await LoginCommand().run(emailController.text, passwordController.text);
+      print(result);
+
+      if(result['status'] == 200){
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      }
+      else{
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+      }
+
     }
     else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Please fill in all fields"), backgroundColor: Colors.red,));
     }
 
-    print(result);
   }
-
-  void logout() async{
-    await _secureStorage.deleteToken();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-  }
-
 
   @override
   void initState() {
@@ -63,7 +73,7 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
+    return isLoading ? const Center(child: CircularProgressIndicator()) :  Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       body: SingleChildScrollView(
         child: ConstrainedBox(

@@ -4,20 +4,31 @@ import 'package:frontend/models/user_model.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/views/home_page.dart';
+import 'package:frontend/views/layout/layout_page.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/registration_page.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-void main() {
-  //TODO check if token is expired
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  SecureStorage secureStorage = SecureStorage();
+  String? token = await secureStorage.getToken();
 
-  runApp(const MyApp());
+  bool isTokenValid = false;
+
+  if(token != null){
+    isTokenValid = Jwt.isExpired(token) == false;
+  }
+
+  runApp(MyApp(isTokenValid: isTokenValid));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isTokenValid;
+  const MyApp({super.key, required this.isTokenValid});
 
   // This widget is the root of your application.
   @override
@@ -37,7 +48,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const LoginPage());
+          home: isTokenValid ? const LayoutPage() : const LoginPage());
     }));
   }
 }
