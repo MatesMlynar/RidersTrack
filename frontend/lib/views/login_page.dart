@@ -28,7 +28,6 @@ class _LoginPage extends State<LoginPage> {
         isLoading = true;
       });
       var result = await LoginCommand().run(emailController.text, passwordController.text);
-      print(result);
 
       if(result['status'] == 200){
         setState(() {
@@ -90,7 +89,7 @@ class _LoginPage extends State<LoginPage> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   alignment: Alignment.center,
                   child: Image(
-                    image: AssetImage('assets/images/logo/logo.png'),
+                    image: const AssetImage('assets/images/logo/logo.png'),
                     fit: BoxFit.fitHeight,
                     height: 18.h,
                   ),
