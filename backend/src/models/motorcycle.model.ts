@@ -3,15 +3,6 @@ import {connection as db} from '../config/db';
 
 const Schema = mongoose.Schema;
 
-export interface Motorcycle extends Document{
-    _id: string;
-    user: string;
-    name: string;
-    image: string;
-    km: number;
-}
-
-
 const motorcycleSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,

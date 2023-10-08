@@ -3,17 +3,6 @@ import { connection as db } from "../config/db";
 
 const Schema = mongoose.Schema;
 
-export interface FuelRecord extends Document {
-    _id: string;
-    user: string;
-    motorcycle: string;
-    date: Date;
-    distance: number;
-    liters: number;
-    consumption: number;
-    totalPrice: number;
-}
-
 
 const fuelRecordSchema = new Schema({
     user: {
@@ -21,7 +10,7 @@ const fuelRecordSchema = new Schema({
         ref: "user",
         required: true,
     },
-    motorcycle: {
+    motorcycleId: {
         type: Schema.Types.ObjectId,
         ref: "motorcycle",
         required: true,

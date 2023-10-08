@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model";
-import { User } from "../models/user.model";
 import jwt from 'jsonwebtoken';
+import User from "../types/models/user.type";
 
 export class UserService{
 

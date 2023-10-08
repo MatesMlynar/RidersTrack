@@ -4,6 +4,7 @@ import {Server} from 'http';
 import createHttpError from 'http-errors';
 import userRoute from './routes/user.route';
 import motorcycleRoute from './routes/motorcycle.route';
+import fuel_recordRoute from "./routes/fuel_record.route";
 
 require('dotenv').config();
 
@@ -16,7 +17,7 @@ app.use(bodyParser.json());
 //MIDDLEWARE
 app.use('/api/user', userRoute)
 app.use('/api/motorcycle', motorcycleRoute)
-
+app.use('/api/fuelRecord', fuel_recordRoute)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(new createHttpError.NotFound())

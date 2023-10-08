@@ -5,10 +5,8 @@ import { addMotorcycle, getAllMotorcycles, getMotorcycleById } from "../controll
 
 
 // protected routes
-
-//get all motorcycles
 router.get('/getAllMoto', checkToken, getAllMotorcycles);
-router.post('/getMotoById', checkToken, getMotorcycleById);
+router.get('/getMotoById/:id', checkToken, getMotorcycleById);
 router.post('/addMoto', checkToken, addMotorcycle);
 
 export default router;

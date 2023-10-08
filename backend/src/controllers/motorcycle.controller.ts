@@ -1,17 +1,18 @@
 import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 import { MotorcycleService } from '../services/motorcycle.service';
-import { Motorcycle } from '../models/motorcycle.model';
+import TokenType from "../types/auth/tokenType";
+import authRequest from "../types/auth/authRequest";
+import Motorcycle from "../types/models/motorcycle.type";
 
-interface RequestWithToken extends Request{
-    token: string
-}
 
-export const getAllMotorcycles = async (req: RequestWithToken, res: Response) => {
+export const getAllMotorcycles = async (req: authRequest, res: Response) => {
 
     try{
         //check if token is valid
         const token : string = req.token;
+        const decodedToken : TokenType = jwt.decode(token) as TokenType;
+        console.log(decodedToken.userData.id)
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any) => {
             if(err){
                 res.status(403).send({
@@ -21,7 +22,7 @@ export const getAllMotorcycles = async (req: RequestWithToken, res: Response) =>
             }
             else{
                 //token is valid, return all motorcycles
-                const response : Motorcycle[] | null = await MotorcycleService.getAllMotorcycles();
+                const response : Motorcycle[] | null = await MotorcycleService.getAllMotorcycles("60b0a4b0b3b0c71f0c0e1b1e");
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -44,7 +45,7 @@ export const getAllMotorcycles = async (req: RequestWithToken, res: Response) =>
 }
 
 
-export const getMotorcycleById = async (req: RequestWithToken, res: Response) => {
+export const getMotorcycleById = async (req: authRequest, res: Response) => {
     try{
         //check if token is valid
         const token : string = req.token;
@@ -57,7 +58,10 @@ export const getMotorcycleById = async (req: RequestWithToken, res: Response) =>
             }
             else{
                 //token is valid, return motorcycle by id
-                const response : Motorcycle | null = await MotorcycleService.getMotorcycleById(req.body.id);
+                const response : Motorcycle | null = await MotorcycleService.getMotorcycleById(req.body.id, "60b0a4b0b3b0c71f0c0e1b1e");
+
+                // add list of fueling records with id of this motorcycle to response
+
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -80,7 +84,7 @@ export const getMotorcycleById = async (req: RequestWithToken, res: Response) =>
 }
 
 
-export const addMotorcycle = async (req: RequestWithToken, res: Response) => {
+export const addMotorcycle = async (req: authRequest, res: Response) => {
 
     try{
         //check if token is valid

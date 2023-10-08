@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
-import { User } from './../models/user.model';
+import User from "../types/models/user.type";
 
 require('dotenv').config();
 
