@@ -9,10 +9,19 @@ const router = require('express').Router();
 import { checkToken } from "../middlewares/checkToken";
 
 //protected routes
-router.post('/getAllFuelRecords', checkToken, getAllFuelRecords);
+
+//get
+router.get('/getAllFuelRecords', checkToken, getAllFuelRecords);
+router.get('/getFuelRecordById/:id', checkToken, getFuelRecordById);
+router.get('/getFuelRecordsByMotorcycleId/:motoId', checkToken, getFuelRecordsByMotorcycleId);
+
+//post
 router.post('/createFuelRecord', checkToken, createFuelRecord);
-router.post('/getFuelRecordById', checkToken, getFuelRecordById);
-router.post('/getFuelRecordsByMotorcycleId', checkToken, getFuelRecordsByMotorcycleId);
-router.post('/deleteFuelRecordById', checkToken, deleteFuelRecordById)
+
+//delete
+router.delete('/deleteFuelRecordById/:id', checkToken, deleteFuelRecordById)
+
+//put
+//todo create put route to update fuel record
 
 export default router;

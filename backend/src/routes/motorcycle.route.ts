@@ -9,4 +9,6 @@ router.get('/getAllMoto', checkToken, getAllMotorcycles);
 router.get('/getMotoById/:id', checkToken, getMotorcycleById);
 router.post('/addMoto', checkToken, addMotorcycle);
 
+//todo create a route to update and delete motorcycle
+
 export default router;

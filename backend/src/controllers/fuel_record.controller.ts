@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import {FuelRecordService} from "../services/fuel_record.service";
 import authRequest from "../types/auth/authRequest";
 import FuelRecord from "../types/models/fuel_record.type";
+import TokenType from "../types/auth/tokenType";
 
 export const getAllFuelRecords = async (req : authRequest, res: Response) => {
     try{
@@ -17,7 +18,11 @@ export const getAllFuelRecords = async (req : authRequest, res: Response) => {
             }
             else{
                 //token is valid, return all fuel records
-                const response : FuelRecord[] | null = await FuelRecordService.getAllFuelRecords();
+
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+                const response : FuelRecord[] | null = await FuelRecordService.getAllFuelRecords(decodedToken.userData.id);
+
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -52,7 +57,20 @@ export const getFuelRecordById = async (req: authRequest, res: Response) => {
             }
             else{
                 //token is valid, return fuel record by id
-                const response : FuelRecord | null = await FuelRecordService.getFuelRecordById(req.body.id);
+
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+                //get fuel record id from url
+                const recordId : string = req.params.id;
+
+                if (!recordId){
+                    res.status(400).send({
+                        status: 400,
+                        message: "Fuel record id not provided or is invalid"
+                    })
+                }
+
+                const response : FuelRecord | null = await FuelRecordService.getFuelRecordById(recordId, decodedToken.userData.id);
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -87,7 +105,10 @@ export const createFuelRecord = async (req: authRequest, res: Response) => {
             }
             else{
                 //token is valid, create fuel record
-                const response : FuelRecord | null = await FuelRecordService.createFuelRecord(req.body);
+
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+                const response : FuelRecord | null = await FuelRecordService.createFuelRecord(req.body, decodedToken.userData.id);
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -121,7 +142,20 @@ export const getFuelRecordsByMotorcycleId = async (req: authRequest, res: Respon
             }
             else{
                 //token is valid, return fuel records by motorcycle id
-                const response : FuelRecord[] | null = await FuelRecordService.getFuelRecordsByMotorcycleId(req.body.id);
+
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+                //get motorcycle id from url
+                const motoId : string = req.params.motoId;
+
+                if (!motoId){
+                    res.status(400).send({
+                        status: 400,
+                        message: "Motorcycle id not provided or is invalid"
+                    })
+                }
+
+                const response : FuelRecord[] | null = await FuelRecordService.getFuelRecordsByMotorcycleId(motoId, decodedToken.userData.id);
                 if(!response){
                     res.status(500).send({
                         status: 500,
@@ -155,7 +189,19 @@ export const deleteFuelRecordById = async (req: authRequest, res: Response) => {
             }
             else{
                 //token is valid, delete fuel record by id
-                const response : Boolean = await FuelRecordService.deleteFuelRecordById(req.body.id);
+
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+                const recordId : string = req.params.id;
+
+                if(!recordId){
+                    res.status(400).send({
+                        status: 400,
+                        message: "Fuel record id not provided or is invalid"
+                    })
+                }
+
+                const response : Boolean = await FuelRecordService.deleteFuelRecordById(recordId, decodedToken.userData.id);
                 if(!response){
                     res.status(500).send({
                         status: 500,
