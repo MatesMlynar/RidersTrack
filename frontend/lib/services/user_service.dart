@@ -10,7 +10,7 @@ class UserService{
       "password": password
     };
 
-    http.Response response = await http.post(Uri.parse("http://172.26.224.1:3000/api/user/login"), headers: {"Content-type": "application/json"}, body: jsonEncode(reqBody));
+    http.Response response = await http.post(Uri.parse("http://172.22.208.1:3000/api/user/login"), headers: {"Content-type": "application/json"}, body: jsonEncode(reqBody));
     return json.decode(response.body);
   }
 
@@ -22,7 +22,7 @@ class UserService{
       "password": password
     };
 
-    http.Response response = await http.post(Uri.parse("http://172.26.224.1:3000/api/user/register"), headers: {"Content-type": "application/json"}, body: jsonEncode(reqBody));
+    http.Response response = await http.post(Uri.parse("http://172.22.208.1:3000/api/user/register"), headers: {"Content-type": "application/json"}, body: jsonEncode(reqBody));
     return json.decode(response.body);
   }
   //create method for register user

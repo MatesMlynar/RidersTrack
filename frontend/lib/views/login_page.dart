@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/secure_storage.dart';
+import 'layout/layout_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,12 +29,11 @@ class _LoginPage extends State<LoginPage> {
         isLoading = true;
       });
       var result = await LoginCommand().run(emailController.text, passwordController.text);
-
       if(result['status'] == 200){
         setState(() {
           isLoading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LayoutPage()));
       }
       else{
         setState(() {

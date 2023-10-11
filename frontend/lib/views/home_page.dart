@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/views/fuel_records.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../utils/secure_storage.dart';
@@ -15,9 +16,13 @@ class _HomePageState extends State<HomePage> {
   final SecureStorage _secureStorage = SecureStorage();
 
 
-  void logout() async{
+  void logout(BuildContext context) async{
     await _secureStorage.deleteToken();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+
+    if(context.mounted)
+      {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+      }
   }
 
 
@@ -32,19 +37,21 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('RIDERS TRACK', style: TextStyle(color: Colors.black, fontSize: 26, fontWeight: FontWeight.bold),),
           centerTitle: true,
-          leading: null,
+          automaticallyImplyLeading: false,
           actions: [
             Padding(padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FuelRecords()));
+                },
                 child: const Icon(
-                  Icons.account_circle_rounded,
+                  Icons.local_gas_station_sharp,
                   size: 26.0,
                 ),
               ),
             )],
           backgroundColor: Colors.white,
         ),
-        body: Center(child: FloatingActionButton(onPressed: () {logout();},child: const Icon(Icons.logout), backgroundColor: Colors.red,)));
+        body: Center(child: FloatingActionButton(onPressed: () {logout(context);},child: const Icon(Icons.logout), backgroundColor: Colors.red,)));
   }
 }

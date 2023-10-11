@@ -6,7 +6,6 @@ class LoginCommand extends BaseCommand{
   Future<Map<String, dynamic>> run(String email, String password) async {
 
     Map<String, dynamic> result = await userService.login(email, password);
-    //TODO check if token is still valid
 
     if(result['status'] == 200){
 

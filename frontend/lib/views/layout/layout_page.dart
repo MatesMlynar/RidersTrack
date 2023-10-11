@@ -24,7 +24,7 @@ class _LayoutPageState extends State<LayoutPage> {
       bottomNavigationBar: NavigationBar(
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.home), label: "Testing screen"),
+          NavigationDestination(icon: Icon(Icons.account_circle_rounded), label: "Profile"),
           //todo create garage page
         ],
         selectedIndex: currentPage,
