@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/models/fuel_record_model.dart';
+import 'package:frontend/services/fuel_record_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,9 @@ class BaseCommand{
 
   //Models
   UserModel userModel = _mainContext.read();
+  FuelRecordModel fuelRecordModel = _mainContext.read();
 
   //Services
   UserService userService = _mainContext.read();
+  FuelRecordService fuelRecordService = _mainContext.read();
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../types/statistic_card_type.dart';
+import '../../types/statistic_card_type.dart';
 
 class StatisticCard extends StatelessWidget {
   const StatisticCard({super.key, required this.props});
