@@ -19,7 +19,6 @@ class _FuelRecordsState extends State<FuelRecords> {
 
   List<Map<String, dynamic>> fuelRecords = [];
   Map<String, dynamic> message = {};
-  final List<String> names = <String>['Aby', 'Abby', 'Abbie', 'Abbygail', 'Abigael'];
 
   void fetchData () async {
     Map<String, dynamic> result = await GetAllFuelRecordsCommand().run();
@@ -40,8 +39,6 @@ class _FuelRecordsState extends State<FuelRecords> {
   Widget build(BuildContext context) {
 
     fuelRecords = context.watch<FuelRecordModel>().fuelRecords;
-    print(fuelRecords);
-
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
@@ -88,12 +85,12 @@ class _FuelRecordsState extends State<FuelRecords> {
                 ],
               ),
               const SizedBox(height: 20.0),
-              Text('recently saved records',
-                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              const Text('recently saved records',
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
               const SizedBox(height: 10.0),
               Expanded(
                 child: ListView.builder(
-                  itemCount: names.length,
+                  itemCount: fuelRecords.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(0,0,0, 10),
@@ -106,7 +103,7 @@ class _FuelRecordsState extends State<FuelRecords> {
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                           leading: const Icon(Icons.local_gas_station_outlined, color: Colors.black),
-                          title: Text(names[index], style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          title: Text((fuelRecords[index]['liters']).toString() ?? "unknown", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                           trailing: const Text('show detail', style: TextStyle(color: Colors.black)),
                         ),
                     );}
