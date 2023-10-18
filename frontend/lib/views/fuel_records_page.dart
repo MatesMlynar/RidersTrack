@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
+import 'package:frontend/views/add_new_fuel_record_page.dart';
 import 'package:frontend/views/components/statistic_card_component.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +70,7 @@ class _FuelRecordsState extends State<FuelRecords> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //todo implement function
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNewFuelRecordPage()));
           },
           child: const Icon(Icons.add),
           backgroundColor: Colors.white),

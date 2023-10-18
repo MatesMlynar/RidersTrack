@@ -6,7 +6,6 @@ class FuelRecordService{
 
   Future<Map<String, dynamic>> getAllFuelRecords(String token) async {
 
-    print(token);
     //get token from local/secured preferences
     http.Response response = await http.get(Uri.parse(dotenv.env['getAllFuelRecordsURL']!), headers: {
       'Accept': 'Application/json',
