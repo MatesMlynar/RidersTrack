@@ -6,6 +6,7 @@ class LoginCommand extends BaseCommand{
   Future<Map<String, dynamic>> run(String email, String password) async {
 
     Map<String, dynamic> result = await userService.login(email, password);
+    print(result);
 
     if(result['status'] == 200){
 

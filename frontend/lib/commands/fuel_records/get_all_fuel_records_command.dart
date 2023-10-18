@@ -14,21 +14,35 @@ class GetAllFuelRecordsCommand extends BaseCommand {
       };
     }
     else{
+
       Map<String, dynamic> result = await fuelRecordService.getAllFuelRecords(token);
-      List<Map<String, dynamic>> data = (result['data'] as List).cast<Map<String, dynamic>>();
+
       if(result['status'] != 200){
         return {
           "status": result['status'],
           "message": result['message']
         };
       }
-      else{
-        fuelRecordModel.fuelRecords = data;
+
+
+      if(result['data'] == null){
+
+        fuelRecordModel.fuelRecords = [];
 
         return {
           "status": 200,
-          "message": "Success"
+          "message": "No fuel records found"
         };
+      }
+      else{
+          List<Map<String, dynamic>> data = (result['data'] as List).cast<Map<String, dynamic>>();
+
+          fuelRecordModel.fuelRecords = data;
+
+          return {
+            "status": 200,
+            "message": "Success"
+          };
       }
     }
   }

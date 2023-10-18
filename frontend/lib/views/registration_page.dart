@@ -34,19 +34,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
         setState(() {
           isLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green,));
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green,));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        }
+
       }
       else{
         setState(() {
           isLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+        if(context.mounted)
+          {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+          }
       }
 
     }
     else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please fill out all fields"), backgroundColor: Colors.red,));
+      if(context.mounted)
+        {
+          ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Please fill out all fields"), backgroundColor: Colors.red,));
+        }
     }
   }
 
@@ -60,8 +69,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
+    return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         body: SingleChildScrollView(
           child: ConstrainedBox(
@@ -259,7 +267,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
           ),
         ),
-      ),
     );
   }
 }

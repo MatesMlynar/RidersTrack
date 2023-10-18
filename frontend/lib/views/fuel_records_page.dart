@@ -16,15 +16,25 @@ class FuelRecords extends StatefulWidget {
 }
 
 class _FuelRecordsState extends State<FuelRecords> {
+  List<Map<String, dynamic>>? fuelRecords = [];
+  String message = "";
+  bool isLoadingRecords = false;
 
-  List<Map<String, dynamic>> fuelRecords = [];
-  Map<String, dynamic> message = {};
-
-  void fetchData () async {
+  void fetchData() async {
+    setState(() {
+      isLoadingRecords = true;
+    });
     Map<String, dynamic> result = await GetAllFuelRecordsCommand().run();
-    if(result['status'] == 200){
+    if (result['status'] == 200) {
       setState(() {
         fuelRecords = context.read<FuelRecordModel>().fuelRecords;
+        message = result['message'];
+        isLoadingRecords = false;
+      });
+    } else {
+      setState(() {
+        message = result['message'];
+        isLoadingRecords = false;
       });
     }
   }
@@ -37,7 +47,6 @@ class _FuelRecordsState extends State<FuelRecords> {
 
   @override
   Widget build(BuildContext context) {
-
     fuelRecords = context.watch<FuelRecordModel>().fuelRecords;
 
     return Scaffold(
@@ -89,25 +98,48 @@ class _FuelRecordsState extends State<FuelRecords> {
                   style: TextStyle(fontSize: 18, color: Colors.white)),
               const SizedBox(height: 10.0),
               Expanded(
-                child: ListView.builder(
-                  itemCount: fuelRecords.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,0, 10),
-                      child: ListTile(
-                          onTap: () {
-                            //todo implement function
-                          },
-                          tileColor: Colors.white,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          leading: const Icon(Icons.local_gas_station_outlined, color: Colors.black),
-                          title: Text((fuelRecords[index]['liters']).toString() ?? "unknown", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          trailing: const Text('show detail', style: TextStyle(color: Colors.black)),
-                        ),
-                    );}
-                ),
+                child: isLoadingRecords
+                    ? const Center(child: CircularProgressIndicator())
+                    : message.isNotEmpty && message != "Success"
+                        ? Text(
+                            message,
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        : fuelRecords?.isEmpty ?? true
+                            ? const Text(
+                                "no record found",
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : ListView.builder(
+                                itemCount: fuelRecords?.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: ListTile(
+                                      onTap: () {
+                                        //todo implement function
+                                      },
+                                      tileColor: Colors.white,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                      leading: const Icon(
+                                          Icons.local_gas_station_outlined,
+                                          color: Colors.black),
+                                      title: Text(
+                                          ("${fuelRecords?[index]['totalPrice']} Kč") ??
+                                              "unknown",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold)),
+                                      trailing: const Text('show detail',
+                                          style:
+                                              TextStyle(color: Colors.black)),
+                                    ),
+                                  );
+                                }),
               )
             ],
           ),

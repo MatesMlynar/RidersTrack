@@ -22,31 +22,37 @@ class _LoginPage extends State<LoginPage> {
   final SecureStorage _secureStorage = SecureStorage();
   bool isLoading = false;
 
-  void loginUser() async{
-
+  void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       setState(() {
         isLoading = true;
       });
-      var result = await LoginCommand().run(emailController.text, passwordController.text);
-      if(result['status'] == 200){
+      var result = await LoginCommand().run(
+          emailController.text, passwordController.text);
+
+      if (result['status'] == 200) {
         setState(() {
           isLoading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LayoutPage()));
+        if (context.mounted) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const LayoutPage()));
+        }
       }
-      else{
+      else {
         setState(() {
           isLoading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+        }
       }
-
     }
-    else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Please fill in all fields"), backgroundColor: Colors.red,));
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Please fill in all fields"),
+        backgroundColor: Colors.red,));
     }
-
   }
 
   @override
@@ -60,8 +66,7 @@ class _LoginPage extends State<LoginPage> {
     passwordController.text = await _secureStorage.getPassword() ?? "";
   }
 
-  
-  
+
   @override
   void dispose() {
     emailController.dispose();
@@ -71,14 +76,21 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    return isLoading ? const Center(child: CircularProgressIndicator()) :  Scaffold(
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-              minWidth: MediaQuery.of(context).size.width),
+              minHeight: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              minWidth: MediaQuery
+                  .of(context)
+                  .size
+                  .width),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -144,7 +156,7 @@ class _LoginPage extends State<LoginPage> {
                                 border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            Color.fromARGB(255, 29, 36, 40))),
+                                        Color.fromARGB(255, 29, 36, 40))),
                               ),
                             ),
                           ),
@@ -165,7 +177,7 @@ class _LoginPage extends State<LoginPage> {
                                 border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            Color.fromARGB(255, 29, 36, 40))),
+                                        Color.fromARGB(255, 29, 36, 40))),
                               ),
                             ),
                           ),
@@ -177,15 +189,15 @@ class _LoginPage extends State<LoginPage> {
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(12))),
+                                            BorderRadius.circular(12))),
                                     minimumSize:
-                                        MaterialStateProperty.all<Size>(
-                                            const Size(double.infinity, 50)),
+                                    MaterialStateProperty.all<Size>(
+                                        const Size(double.infinity, 50)),
                                     backgroundColor: MaterialStateProperty.all<
-                                            Color>(
+                                        Color>(
                                         const Color.fromARGB(255, 221, 28, 7))),
                                 child: Text(
                                   "Sign In",
@@ -211,7 +223,7 @@ class _LoginPage extends State<LoginPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const RegistrationPage()));
+                                            const RegistrationPage()));
                                   },
                                   child: Text(
                                     "Sign Up Here",
