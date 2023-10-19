@@ -25,7 +25,6 @@ class UserService{
       "password": password
     };
 
-    print(dotenv.env['registerURL']!);
     http.Response response = await http.post(Uri.parse(dotenv.env['registerURL']!), headers: {"Content-type": "application/json"}, body: jsonEncode(reqBody));
     return json.decode(response.body);
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
+import 'package:frontend/views/components/no_moto_found_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../commands/fuel_records/add_new_fuel_record_command.dart';
+import '../utils/snack_bar_service.dart';
 
 class AddNewFuelRecordPage extends StatefulWidget {
   const AddNewFuelRecordPage({super.key});
@@ -14,33 +18,84 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
 
   final litersController = TextEditingController();
   final priceController = TextEditingController();
-  final dateController = TextEditingController();
+  late DateTime selectedDate = DateTime(2023, 1, 1);
 
   bool isMotoFetching = false;
 
   late String? selectedMotorcycleId;
-  late List<Map<String, dynamic>>? motorcycleIdsList = [];
+  late List<Map<String, dynamic>> motorcycleIdsList = [];
+  late String message = "";
+
 
   void fetchMotorcycles () async {
     isMotoFetching = true;
 
-    List<Map<String, dynamic>> result = await GetAllMotorcycles().run();
+    Map<String, dynamic> result = await GetAllMotorcycles().run();
+
+    if(result['status'] != 200){
+      isMotoFetching = false;
+      message = result['message'];
+      return;
+    }
+
 
     setState(() {
-      motorcycleIdsList = result;
       isMotoFetching = false;
-      selectedMotorcycleId = motorcycleIdsList?[0]['_id'];
-      print(selectedMotorcycleId);
+      if(result['data'] != null && result['data'].isNotEmpty)
+        {
+          motorcycleIdsList = result['data'];
+          selectedMotorcycleId = motorcycleIdsList[0]['_id'];
+        }
     });
-    print(motorcycleIdsList);
   }
-  
+
+  void addFuelRecord () async {
+    String liters = litersController.text;
+    String price = priceController.text;
+
+    if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1)){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
+      return;
+    }
+
+    Map<String, dynamic> result = await AddNewFuelRecordCommand().run(liters, price, selectedDate, selectedMotorcycleId!);
+
+    if(result['status'] != 200){
+      if(context.mounted){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+      }
+      return;
+    }
+
+    if(context.mounted){
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fuel record added"), backgroundColor: Colors.green,));
+    }
+  }
   
   @override
   void initState() {
     super.initState();
     fetchMotorcycles();
   }
+
+
+  void _showDatePicker() {
+    showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+    ).then((value) => {
+      setState(() {
+        if(value != null)
+          {
+            selectedDate = DateTime(value.year, value.month, value.day);
+          }
+      })
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,16 +112,17 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                 child: TextField(
                   autocorrect: false,
                   controller: litersController,
+                  keyboardType: TextInputType.number,
                   style:
                       GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
                   decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.local_gas_station,
+                        color: Colors.white),
                     contentPadding: const EdgeInsets.all(12),
                     labelText: "Fuel amount *",
-                    labelStyle: GoogleFonts.readexPro(
-                        color: Colors.white, fontSize: 16),
-                    border: const OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromARGB(255, 29, 36, 40))),
+                    labelStyle: GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
+                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 1.5)),
+                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
                   ),
                 ),
               ),
@@ -79,41 +135,46 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   style:
                       GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
                   decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.attach_money,
+                        color: Colors.white),
                     contentPadding: const EdgeInsets.all(12),
                     labelText: "Price *",
                     labelStyle: GoogleFonts.readexPro(
                         color: Colors.white, fontSize: 16),
-                    border: const OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Color.fromARGB(255, 29, 36, 40))),
+                            BorderSide(color: Colors.grey, width: 1.5)),
+                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                child: TextField(
-                  keyboardType: TextInputType.datetime,
-                  autocorrect: false,
-                  controller: dateController,
-                  style:
-                      GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(12),
-                    labelText: "Date *",
-                    labelStyle: GoogleFonts.readexPro(
-                        color: Colors.white, fontSize: 16),
-                    border: const OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromARGB(255, 29, 36, 40))),
-                  ),
+                child: GestureDetector(
+                    onTap: _showDatePicker,
+                  child:
+                       Container(
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey, width: 1.5),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.calendar_today, color: Colors.white),
+                            const SizedBox(width: 15),
+                            selectedDate == DateTime(2023, 1, 1) ? const Text("Select date *", style: TextStyle(color: Colors.white, fontSize: 16)) :
+                            Text(selectedDate.toLocal().toString().split(' ')[0], style: const TextStyle(color: Colors.white, fontSize: 16)),
+                          ],
+                        ),
+                    ),
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                  child: isMotoFetching ? const CircularProgressIndicator() : DropdownButtonFormField(
+                  child: isMotoFetching ? const CircularProgressIndicator() : motorcycleIdsList.isEmpty ? const NoMotoFoundComponent() : DropdownButtonFormField(
                     value: selectedMotorcycleId,
-                    items: motorcycleIdsList
-                        ?.map((itemVal) => DropdownMenuItem(
+                    items: motorcycleIdsList.map((itemVal) => DropdownMenuItem(
                               value: itemVal['_id'],
                               child: Text(itemVal['name']),
                             ))
@@ -131,8 +192,10 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                     dropdownColor: const Color.fromARGB(255, 20, 24, 27),
                     decoration: const InputDecoration(
                       labelText: "Select motorcycle *",
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 16),
                       prefixIcon: Icon(Icons.motorcycle, color: Colors.white),
-                      border: OutlineInputBorder()
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 1.5)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
                     ),
                   )),
               Padding(
@@ -140,7 +203,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                 child: OutlinedButton(
                     onPressed: () {
                       //todo submit form
-                      GetAllMotorcycles().run();
+                      addFuelRecord();
                     },
                     style: ButtonStyle(
                         shape:

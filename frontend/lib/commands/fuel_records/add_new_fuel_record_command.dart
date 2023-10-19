@@ -1,7 +1,8 @@
 import 'package:frontend/commands/base_command.dart';
 
-class GetAllMotorcycles extends BaseCommand{
-  Future<Map<String, dynamic>> run () async {
+class AddNewFuelRecordCommand extends BaseCommand{
+
+  Future<Map<String, dynamic>> run (String liters, String price, DateTime date, String motorcycleId) async {
     String? token = await secureStorage.getToken();
     if(token == null){
       return {
@@ -10,8 +11,7 @@ class GetAllMotorcycles extends BaseCommand{
       };
     }
     else{
-      Map<String, dynamic> result = await motorcycleService.getAllMotorcycles(token);
-      print(result);
+      Map<String, dynamic> result = await fuelRecordService.addNewFuelRecord(token, liters, price, date, motorcycleId);
       if(result['status'] != 200){
         return {
           "status": result['status'],
@@ -19,12 +19,15 @@ class GetAllMotorcycles extends BaseCommand{
         };
       }
       else{
+
+        fuelRecordModel.appendFuelRecord(result['data']);
+
         return {
           "status": result['status'],
           "message": result['message'],
-          "data": (result['data'] as List).cast<Map<String, dynamic>>()
         };
       }
     }
   }
+
 }

@@ -8,4 +8,10 @@ class FuelRecordModel extends ChangeNotifier{
     _fuelRecords = fuelRecords;
     notifyListeners();
   }
+
+
+  void appendFuelRecord(Map<String, dynamic> fuelRecord){
+    _fuelRecords!.add(fuelRecord);
+    notifyListeners();
+  }
 }
