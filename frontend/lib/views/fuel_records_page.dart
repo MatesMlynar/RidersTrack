@@ -94,10 +94,12 @@ class _FuelRecordsState extends State<FuelRecords> {
                   )
                 ],
               ),
-              const SizedBox(height: 20.0),
-              const Text('recently saved records',
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-              const SizedBox(height: 10.0),
+              const Column(children: [
+                 SizedBox(height: 20.0),
+                 Text('recently saved records',
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                 SizedBox(height: 10.0),
+              ],),
               Expanded(
                 child: isLoadingRecords
                     ? const Center(child: CircularProgressIndicator())
@@ -112,32 +114,35 @@ class _FuelRecordsState extends State<FuelRecords> {
                                 style: TextStyle(color: Colors.red),
                               )
                             : ListView.builder(
+                                clipBehavior: Clip.antiAlias,
                                 itemCount: fuelRecords?.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                    child: ListTile(
-                                      onTap: () {
-                                        //todo implement function
-                                      },
-                                      tileColor: Colors.white,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0)),
+                                    child: Material(
+                                      child: ListTile(
+                                        onTap: () {
+                                          //todo implement function
+                                        },
+                                        tileColor: Colors.white,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                        ),
+                                        leading: const Icon(
+                                            Icons.local_gas_station_outlined,
+                                            color: Colors.black),
+                                        title: Text(
+                                            ("${fuelRecords?[index]['totalPrice']} Kč") ??
+                                                "unknown",
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold)),
+                                        trailing: const Text('show detail',
+                                            style:
+                                                TextStyle(color: Colors.black)),
                                       ),
-                                      leading: const Icon(
-                                          Icons.local_gas_station_outlined,
-                                          color: Colors.black),
-                                      title: Text(
-                                          ("${fuelRecords?[index]['totalPrice']} Kč") ??
-                                              "unknown",
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold)),
-                                      trailing: const Text('show detail',
-                                          style:
-                                              TextStyle(color: Colors.black)),
                                     ),
                                   );
                                 }),
