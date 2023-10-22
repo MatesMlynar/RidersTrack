@@ -20,6 +20,8 @@ class _FuelRecordsState extends State<FuelRecords> {
   List<Map<String, dynamic>>? fuelRecords = [];
   String message = "";
   bool isLoadingRecords = false;
+  num totalFuelUsed = 0;
+  num totalMoneySpent = 0;
 
   void fetchData() async {
     setState(() {
@@ -29,6 +31,8 @@ class _FuelRecordsState extends State<FuelRecords> {
     if (result['status'] == 200) {
       setState(() {
         fuelRecords = context.read<FuelRecordModel>().fuelRecords;
+        totalFuelUsed = context.read<FuelRecordModel>().totalFuelUsed;
+        totalMoneySpent = context.read<FuelRecordModel>().totalMoneySpent;
         message = result['message'];
         isLoadingRecords = false;
       });
@@ -49,6 +53,8 @@ class _FuelRecordsState extends State<FuelRecords> {
   @override
   Widget build(BuildContext context) {
     fuelRecords = context.watch<FuelRecordModel>().fuelRecords;
+    totalFuelUsed = context.watch<FuelRecordModel>().totalFuelUsed;
+    totalMoneySpent = context.watch<FuelRecordModel>().totalMoneySpent;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
@@ -72,8 +78,8 @@ class _FuelRecordsState extends State<FuelRecords> {
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNewFuelRecordPage()));
           },
-          child: const Icon(Icons.add),
-          backgroundColor: Colors.white),
+          backgroundColor: Colors.white,
+          child: const Icon(Icons.add)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -83,14 +89,14 @@ class _FuelRecordsState extends State<FuelRecords> {
               Row(
                 children: [
                   Expanded(
-                    child: StatisticCard(
+                    child: isLoadingRecords ? const CircularProgressIndicator() : StatisticCard(
                         props: StatisticCardType(
-                            title: 'of total fuel used', value: "168l")),
+                            title: 'total fuel used', value: "$totalFuelUsed l")),
                   ),
                   Expanded(
-                    child: StatisticCard(
+                    child: isLoadingRecords ? const CircularProgressIndicator() : StatisticCard(
                         props: StatisticCardType(
-                            title: 'of money spent', value: "6 720 Kč")),
+                            title: 'money spent', value: "$totalMoneySpent Kč")),
                   )
                 ],
               ),
@@ -123,7 +129,7 @@ class _FuelRecordsState extends State<FuelRecords> {
                                     child: Material(
                                       child: ListTile(
                                         onTap: () {
-                                          //todo implement function
+                                          //todo show detail
                                         },
                                         tileColor: Colors.white,
                                         shape: const RoundedRectangleBorder(
