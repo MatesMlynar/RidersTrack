@@ -15,13 +15,15 @@ class FuelRecordService{
     return json.decode(response.body);
   }
 
-  Future<Map<String, dynamic>> addNewFuelRecord(String token, String liters, String price, DateTime date, String motorcycleId) async {
+  Future<Map<String, dynamic>> addNewFuelRecord(String token, String liters, String price, DateTime date, String motorcycleId, String consumption, String distance) async {
 
     var reqBody = {
       "motorcycleId": motorcycleId,
       "totalPrice": price,
       "liters": liters,
       "date": date.toIso8601String(),
+      "consumption": consumption,
+      "distance": distance
     };
 
 

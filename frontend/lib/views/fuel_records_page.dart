@@ -30,9 +30,6 @@ class _FuelRecordsState extends State<FuelRecords> {
     Map<String, dynamic> result = await GetAllFuelRecordsCommand().run();
     if (result['status'] == 200) {
       setState(() {
-        fuelRecords = context.read<FuelRecordModel>().fuelRecords;
-        totalFuelUsed = context.read<FuelRecordModel>().totalFuelUsed;
-        totalMoneySpent = context.read<FuelRecordModel>().totalMoneySpent;
         message = result['message'];
         isLoadingRecords = false;
       });
@@ -89,14 +86,14 @@ class _FuelRecordsState extends State<FuelRecords> {
               Row(
                 children: [
                   Expanded(
-                    child: isLoadingRecords ? const CircularProgressIndicator() : StatisticCard(
+                    child: StatisticCard(
                         props: StatisticCardType(
-                            title: 'total fuel used', value: "$totalFuelUsed l")),
+                            title: 'total fuel used', value: "$totalFuelUsed l", isLoading: isLoadingRecords)),
                   ),
                   Expanded(
-                    child: isLoadingRecords ? const CircularProgressIndicator() : StatisticCard(
+                    child: StatisticCard(
                         props: StatisticCardType(
-                            title: 'money spent', value: "$totalMoneySpent Kč")),
+                            title: 'money spent', value: "$totalMoneySpent Kč", isLoading: isLoadingRecords)),
                   )
                 ],
               ),

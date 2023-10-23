@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
+import 'package:frontend/types/fuel_record_textField_type.dart';
+import 'package:frontend/views/components/fuelRecords_textfield_component.dart';
 import 'package:frontend/views/components/no_moto_found_component.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,6 +20,8 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
 
   final litersController = TextEditingController();
   final priceController = TextEditingController();
+  final distanceController = TextEditingController();
+  final consumptionController = TextEditingController();
   late DateTime selectedDate = DateTime(2023, 1, 1);
 
   bool isMotoFetching = false;
@@ -52,13 +56,16 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   void addFuelRecord () async {
     String liters = litersController.text;
     String price = priceController.text;
+    String distance = distanceController.text;
+    String consumption = consumptionController.text;
 
-    if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1)){
+
+    if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1) || consumption.isEmpty || distance.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
       return;
     }
 
-    Map<String, dynamic> result = await AddNewFuelRecordCommand().run(liters, price, selectedDate, selectedMotorcycleId!);
+    Map<String, dynamic> result = await AddNewFuelRecordCommand().run(liters, price, selectedDate, selectedMotorcycleId!, consumption, distance);
 
     if(result['status'] != 200){
       if(context.mounted){
@@ -107,47 +114,43 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
             child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                child: TextField(
-                  autocorrect: false,
-                  controller: litersController,
-                  keyboardType: TextInputType.number,
-                  style:
-                      GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.local_gas_station,
-                        color: Colors.white),
-                    contentPadding: const EdgeInsets.all(12),
-                    labelText: "Fuel amount *",
-                    labelStyle: GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
-                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 1.5)),
-                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                child: TextField(
+              FuelRecordsTextField(props: FuelRecordTextFieldType(
                   keyboardType: TextInputType.number,
                   autocorrect: false,
-                  controller: priceController,
-                  style:
-                      GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.attach_money,
-                        color: Colors.white),
-                    contentPadding: const EdgeInsets.all(12),
-                    labelText: "Price *",
-                    labelStyle: GoogleFonts.readexPro(
-                        color: Colors.white, fontSize: 16),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.grey, width: 1.5)),
-                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
-                  ),
-                ),
-              ),
+                  onValueChanged: (val) {
+                    litersController.text = val;
+                  },
+                  prefixIcon: const Icon(Icons.local_gas_station,
+                      color: Colors.white),
+                  labelText: "Fuel amount *"
+              )),
+              FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  keyboardType: TextInputType.number,
+                  autocorrect: false,
+                  onValueChanged: (val) {
+                    priceController.text = val;
+                  },
+                  prefixIcon: const Icon(Icons.attach_money, color: Colors.white),
+                  labelText: "Price *"
+              )),
+              FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  keyboardType: TextInputType.number,
+                  autocorrect: false,
+                  onValueChanged: (val) {
+                    distanceController.text = val;
+                  },
+                  prefixIcon: const Icon(Icons.landscape, color: Colors.white),
+                  labelText: "Distance"
+              )),
+              FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  keyboardType: TextInputType.number,
+                  autocorrect: false,
+                  onValueChanged: (val) {
+                    consumptionController.text = val;
+                  },
+                  prefixIcon: const Icon(Icons.water_drop, color: Colors.white),
+                  labelText: "Consumption"
+              )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 child: GestureDetector(
@@ -202,7 +205,6 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 child: OutlinedButton(
                     onPressed: () {
-                      //todo submit form
                       addFuelRecord();
                     },
                     style: ButtonStyle(

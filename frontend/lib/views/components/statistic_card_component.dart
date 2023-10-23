@@ -18,7 +18,7 @@ class StatisticCard extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 5.0),
-              AutoSizeText(props.value,maxLines: 1,style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 221, 28, 7))),
+              props.isLoading ? const CircularProgressIndicator() : AutoSizeText(props.value,maxLines: 1,style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 221, 28, 7))),
               const SizedBox(height: 10.0),
               Text(props.title, style: const TextStyle(fontSize: 18)),
               const SizedBox(height: 10.0),
