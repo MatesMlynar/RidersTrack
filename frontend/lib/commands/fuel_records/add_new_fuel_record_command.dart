@@ -20,7 +20,9 @@ class AddNewFuelRecordCommand extends BaseCommand{
       }
       else{
 
-        fuelRecordModel.appendFuelRecord(result['data']);
+        fuelRecordModel.fuelRecords!.add(result['data']);
+        //TODO call calculateTotalFuelUsed and calculateTotalMoneySpent commands
+        fuelRecordModel.notifyListeners();
 
         return {
           "status": result['status'],

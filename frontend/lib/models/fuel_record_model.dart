@@ -8,17 +8,9 @@ class FuelRecordModel extends ChangeNotifier{
   List<Map<String, dynamic>>? get fuelRecords => _fuelRecords;
   set fuelRecords(List<Map<String, dynamic>>? fuelRecords){
     _fuelRecords = fuelRecords;
-    calculateTotalFuelUsed();
-    calculateTotalMoneySpent();
     notifyListeners();
   }
 
-  void appendFuelRecord(Map<String, dynamic> fuelRecord){
-    _fuelRecords!.add(fuelRecord);
-    calculateTotalFuelUsed();
-    calculateTotalMoneySpent();
-    notifyListeners();
-  }
 
   //todo add delete and update functions
 
@@ -32,24 +24,6 @@ class FuelRecordModel extends ChangeNotifier{
     notifyListeners();
   }
 
-
-  void calculateTotalFuelUsed(){
-    num totalFuelUsed = 0;
-
-    if(_fuelRecords != null)
-      {
-        for (var fuelRecord in _fuelRecords!) {
-          if(fuelRecord.containsKey('liters'))
-            {
-              totalFuelUsed += fuelRecord['liters'];
-            }
-        }
-      }
-
-    _totalFuelUsed = totalFuelUsed;
-  }
-
-
   //Total money spent based on fuel records
 
   num _totalMoneySpent = 0;
@@ -60,23 +34,5 @@ class FuelRecordModel extends ChangeNotifier{
     _totalMoneySpent = num;
     notifyListeners();
   }
-
-  void calculateTotalMoneySpent(){
-    num totalMoneySpent = 0;
-
-    if(_fuelRecords != null)
-      {
-        for (var fuelRecord in _fuelRecords!) {
-          if(fuelRecord.containsKey('totalPrice'))
-            {
-              totalMoneySpent += fuelRecord['totalPrice'];
-            }
-        }
-      }
-
-    _totalMoneySpent = totalMoneySpent;
-  }
-
-
 
 }

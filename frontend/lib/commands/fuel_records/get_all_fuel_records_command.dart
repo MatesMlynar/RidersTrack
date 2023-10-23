@@ -1,3 +1,6 @@
+import 'package:frontend/commands/fuel_records/calculate_total_fuel_used_command.dart';
+import 'package:frontend/commands/fuel_records/calculate_total_money_spent_command.dart';
+
 import '../base_command.dart';
 
 class GetAllFuelRecordsCommand extends BaseCommand {
@@ -38,6 +41,8 @@ class GetAllFuelRecordsCommand extends BaseCommand {
           List<Map<String, dynamic>> data = (result['data'] as List).cast<Map<String, dynamic>>();
 
           fuelRecordModel.fuelRecords = data;
+          CalculateTotalFuelUsedCommand().run();
+          CalculateTotalMoneySpentCommand().run();
 
           return {
             "status": 200,
