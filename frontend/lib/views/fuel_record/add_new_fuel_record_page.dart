@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/types/fuel_record_textField_type.dart';
-import 'package:frontend/views/components/fuelRecords_textfield_component.dart';
+import 'package:frontend/views/components/fuel-records_text-field_component.dart';
 import 'package:frontend/views/components/no_moto_found_component.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../commands/fuel_records/add_new_fuel_record_command.dart';
-import '../utils/snack_bar_service.dart';
+import '../../commands/fuel_records/add_new_fuel_record_command.dart';
 
 class AddNewFuelRecordPage extends StatefulWidget {
   const AddNewFuelRecordPage({super.key});
@@ -91,7 +89,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
     showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2000),
+        firstDate: DateTime(2022),
         lastDate: DateTime.now(),
     ).then((value) => {
       setState(() {
@@ -115,6 +113,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
             child: Column(children: [
               FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  unit: "liters",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
                   onValueChanged: (val) {
@@ -125,6 +124,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   labelText: "Fuel amount *"
               )),
               FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  unit: "czk",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
                   onValueChanged: (val) {
@@ -134,6 +134,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   labelText: "Price *"
               )),
               FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  unit: "Km",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
                   onValueChanged: (val) {
@@ -143,6 +144,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   labelText: "Distance"
               )),
               FuelRecordsTextField(props: FuelRecordTextFieldType(
+                  unit: "l/100",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
                   onValueChanged: (val) {

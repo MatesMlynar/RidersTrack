@@ -1,13 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
-import 'package:frontend/views/add_new_fuel_record_page.dart';
+import 'package:frontend/views/fuel_record/add_new_fuel_record_page.dart';
 import 'package:frontend/views/components/statistic_card_component.dart';
+import 'package:frontend/views/fuel_record/fuel_record_detail_page.dart';
 import 'package:provider/provider.dart';
 
-import '../models/fuel_record_model.dart';
-import '../types/statistic_card_type.dart';
+import '../../models/fuel_record_model.dart';
+import '../../types/statistic_card_type.dart';
 
 class FuelRecords extends StatefulWidget {
   const FuelRecords({super.key});
@@ -126,7 +125,8 @@ class _FuelRecordsState extends State<FuelRecords> {
                                     child: Material(
                                       child: ListTile(
                                         onTap: () {
-                                          //todo show detail
+                                          //todo provide list tile id to the fuel record page
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => FuelRecordDetailPage(fuelRecordId: fuelRecords?[index]['_id'],)));
                                         },
                                         tileColor: Colors.white,
                                         shape: const RoundedRectangleBorder(

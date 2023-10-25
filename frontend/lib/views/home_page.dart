@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/fuel_records_page.dart';
+import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../utils/secure_storage.dart';

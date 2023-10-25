@@ -12,8 +12,24 @@ class FuelRecordsTextField extends StatefulWidget {
 }
 
 class _FuelRecordsTextFieldState extends State<FuelRecordsTextField> {
-  
+
+
   TextEditingController inputController = TextEditingController();
+
+  void doControllerInstance()
+  {
+    setState(() {
+      inputController.text = widget.props.initVal ?? "";
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    doControllerInstance();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +41,15 @@ class _FuelRecordsTextFieldState extends State<FuelRecordsTextField> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: TextField(
+        enabled: widget.props.enabled ?? true,
         keyboardType: widget.props.keyboardType,
         autocorrect: widget.props.autocorrect,
         controller: inputController,
         style:
         GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
+
         decoration: InputDecoration(
+          suffix: Text(widget.props.unit?? "", style: GoogleFonts.readexPro(color: Colors.grey, fontSize: 16),),
           prefixIcon: widget.props.prefixIcon,
           contentPadding: const EdgeInsets.all(12),
           labelText: widget.props.labelText,

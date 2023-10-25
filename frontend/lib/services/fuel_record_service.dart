@@ -37,5 +37,23 @@ class FuelRecordService{
   }
 
 
+  Future<Map<String, dynamic>> getFuelRecordById(String token, String id) async
+  {
+    http.Response response = await http.get(Uri.parse((dotenv.env['getFuelRecordByIdURL']!) + id), headers: {
+      "Accept": "Application/json",
+      "Authorization": 'Bearer $token'
+    });
+
+    return json.decode(response.body);
+  }
+
+  Future<Map<String, dynamic>> deleteFuelRecordById(String token, String id) async {
+    http.Response response = await http.delete(Uri.parse((dotenv.env['deleteFuelRecordByIdURL']!) + id), headers: {
+      "Authorization": 'Bearer $token'
+    });
+
+    return json.decode(response.body);
+  }
+
 
 }

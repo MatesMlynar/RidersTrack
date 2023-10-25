@@ -108,6 +108,8 @@ export const createFuelRecord = async (req: authRequest, res: Response) => {
 
                 const decodedToken : TokenType = jwt.decode(token) as TokenType;
 
+                console.log(req.body)
+
                 const response : FuelRecord | null = await FuelRecordService.createFuelRecord(req.body, decodedToken.userData.id);
                 if(!response){
                     res.status(500).send({
