@@ -58,7 +58,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
     String consumption = consumptionController.text;
 
 
-    if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1) || consumption.isEmpty || distance.isEmpty){
+    if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1)){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
       return;
     }

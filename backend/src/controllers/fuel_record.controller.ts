@@ -223,3 +223,53 @@ export const deleteFuelRecordById = async (req: authRequest, res: Response) => {
         console.log(err);
     }
 }
+
+export const updateFuelRecordById = async (req: authRequest, res: Response) => {
+
+    try{
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any) => {
+         if (err)
+         {
+             res.status(403).send({
+                 status: 403,
+                 message: "Invalid token"
+             })
+         } else
+         {
+
+             //token is valid, decode then
+             const decodedToken : TokenType = jwt.decode(token) as TokenType;
+
+             const recordId : string = req.params.id;
+
+             if (!recordId){
+                 res.status(400).send({
+                     status: 400,
+                     message: "Fuel record id not provided or is invalid"
+                 })
+             }
+
+
+             const response : FuelRecord | null = await FuelRecordService.updateFuelRecordById(recordId, decodedToken.userData.id, req.body);
+
+             if (!response){
+                 res.status(500).send({
+                     status: 500,
+                     message: "Error updating fuel record"
+                 })
+             } else {
+                 res.status(200).send({
+                     status: 200,
+                     message: "Fuel record updated successfully",
+                     data: response
+                 })
+             }
+         }
+        })
+
+    }catch(err){
+        console.log(err);
+    }
+
+}

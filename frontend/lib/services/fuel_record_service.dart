@@ -55,5 +55,26 @@ class FuelRecordService{
     return json.decode(response.body);
   }
 
+  Future<Map<String, dynamic>> updateFuelRecordById(String id, String token, String liters, String price, DateTime date, String motorcycleId, String consumption, String distance) async {
+
+    var reqBody = {
+      "motorcycleId": motorcycleId,
+      "totalPrice": price,
+      "liters": liters,
+      "date": date.toIso8601String(),
+      "consumption": consumption,
+      "distance": distance
+    };
+
+    http.Response response = await http.put(Uri.parse(dotenv.env['updateFuelRecordByIdURL']! + id), headers: {
+      "Content-type": "application/json",
+      'Authorization': 'Bearer $token'
+    }, body: jsonEncode(reqBody));
+
+    return json.decode(response.body);
+  }
+
+
+
 
 }

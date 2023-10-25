@@ -22,7 +22,17 @@ class AddNewFuelRecordCommand extends BaseCommand{
       }
       else{
 
-        fuelRecordModel.fuelRecords!.add(result['data']);
+        Map<String, dynamic> newFuelRecord = {
+          "_id": result['data']['_id'],
+          "liters": num.parse(liters),
+          "totalPrice": num.parse(price),
+          "date": date,
+          "motorcycleId": motorcycleId,
+          "consumption": num.parse(consumption),
+          "distance": num.parse(distance),
+        };
+
+        fuelRecordModel.fuelRecords!.add(newFuelRecord);
         CalculateTotalFuelUsedCommand().run();
         CalculateTotalMoneySpentCommand().run();
         fuelRecordModel.notifyListeners();

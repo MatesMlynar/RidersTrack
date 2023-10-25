@@ -12,8 +12,6 @@ class FuelRecordModel extends ChangeNotifier{
   }
 
 
-  //todo add delete and update functions
-
   //Total fuel used based on fuel records
   num _totalFuelUsed = 0;
 

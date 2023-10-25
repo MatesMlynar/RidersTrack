@@ -18,9 +18,6 @@ class DeleteFuelRecordByIdCommand extends BaseCommand{
     else{
       Map<String, dynamic> result = await fuelRecordService.deleteFuelRecordById(token, id);
 
-
-
-
       if(result['status'] == 200){
 
         fuelRecordModel.fuelRecords!.removeWhere((item) => item['_id'] == id);

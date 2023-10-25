@@ -4,6 +4,7 @@ import 'package:frontend/commands/fuel_records/get_fuel_record_by_id_command.dar
 import 'package:frontend/views/components/fuel-records_disabled_date_picker_component.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../commands/fuel_records/update_fuel_record_by_id_command.dart';
 import '../../commands/motorcycle/get_all_motorcycles_command.dart';
 import '../../types/fuel_record_textField_type.dart';
 import '../components/fuel-records_text-field_component.dart';
@@ -32,7 +33,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   bool isMotoFetching = false;
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
-  late String moto_message = "";
+  late String motoMessage = "";
 
   void fetchFuelRecord() async {
     setState(() {
@@ -44,9 +45,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         isStatsLoading = false;
       });
     } else {
-      Map<String, dynamic> result =
-          await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
-      print(result);
+      Map<String, dynamic> result = await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
 
       if (result['status'] == 200) {
         setState(() {
@@ -54,7 +53,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
           litersController.text = result['data']['liters'].toString();
           priceController.text = result['data']['totalPrice'].toString();
-          distanceController.text = result['data']['distance'].toString();
           selectedDate = DateTime.parse(result['data']['date']);
           selectedMotorcycleId = result['data']['motorcycleId'].toString();
 
@@ -63,28 +61,30 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
           //optional
 
           if (result['data']['consumption'] != null) {
-            consumptionController.text =
-                result['data']['consumption'].toString();
+            consumptionController.text = result['data']['consumption'].toString();
           }
+
+          if (result['data']['distance'] != null) {
+            distanceController.text = result['data']['distance'].toString();
+          }
+
         });
 
         //get all motorcycles
 
         isMotoFetching = true;
 
-        Map<String, dynamic> motorcycleFetchResult =
-            await GetAllMotorcycles().run();
+        Map<String, dynamic> motorcycleFetchResult = await GetAllMotorcycles().run();
 
         if (motorcycleFetchResult['status'] != 200) {
           isMotoFetching = false;
-          moto_message = motorcycleFetchResult['message'];
+          motoMessage = motorcycleFetchResult['message'];
           return;
         }
 
         setState(() {
           isMotoFetching = false;
-          if (motorcycleFetchResult['data'] != null &&
-              motorcycleFetchResult['data'].isNotEmpty) {
+          if (motorcycleFetchResult['data'] != null && motorcycleFetchResult['data'].isNotEmpty) {
             motorcycleIdsList = motorcycleFetchResult['data'];
           }
         });
@@ -96,27 +96,54 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   void deleteFuelRecordById() async {
 
     if(widget.fuelRecordId == null){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("id is not provided"),
-        backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("id is not provided"), backgroundColor: Colors.red,));
     }else{
       Map<String, dynamic> response = await DeleteFuelRecordByIdCommand().run(widget.fuelRecordId!);
-      print('hello thereeeeeeeeeeeeeeee');
-      print(response);
 
       if(response['status'] == 200){
-        if(context.mounted){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("fuel record successfully deleted"),
-            backgroundColor: Colors.green,));
-
+        if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("fuel record successfully deleted"), backgroundColor: Colors.green,));
           Navigator.pop(context);
         }
       }
     }
   }
 
+  void updateFuelRecordById() async {
 
+    if(widget.fuelRecordId == null){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("id is not provided"), backgroundColor: Colors.red,));
+    }else{
+
+      String liters = litersController.text;
+      String price = priceController.text;
+      String distance = distanceController.text;
+      String consumption = consumptionController.text;
+
+
+      if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1)){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
+        return;
+      }
+
+      Map<String, dynamic> response = await UpdateFuelRecordByIdCommand().run(widget.fuelRecordId!,liters, price, selectedDate, selectedMotorcycleId!, consumption, distance );
+
+      if(response['status'] == 200){
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("fuel record successfully edited"), backgroundColor: Colors.green,));
+        }
+        setState(() {
+          enabled = false;
+        });
+      }
+      else{
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+        }
+      }
+    }
+
+
+  }
 
   void _showDatePicker() {
     showDatePicker(
@@ -311,7 +338,9 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       child: OutlinedButton(
-                          onPressed: enabled ? () {} : null,
+                          onPressed: enabled ? () {
+                            updateFuelRecordById();
+                          } : null,
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
