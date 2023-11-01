@@ -1,6 +1,6 @@
 import fuel_recordModel from "../models/fuel_record.model";
 import FuelRecord from "../types/models/fuel_record.type";
-import TokenType from "../types/auth/tokenType";
+import { ObjectId } from 'mongodb';
 
 export class FuelRecordService{
 
@@ -60,5 +60,32 @@ export class FuelRecordService{
             return false;
         }
     }
+
+    static async updateFuelRecordById(id : String, userId : string, recordBody : FuelRecord) : Promise<FuelRecord | null>{
+        try{
+            const record = await fuel_recordModel.findOne({_id: id, user: userId});
+
+            if(!record){
+                return null;
+            }
+
+            const {motorcycleId, liters, totalPrice, date, distance, consumption} = recordBody;
+
+            record.motorcycleId = new ObjectId(motorcycleId);
+            record.liters = liters;
+            record.totalPrice = totalPrice;
+            record.date = date!;
+            record.distance = distance != null ? +distance : undefined;
+            record.consumption = consumption != null ? +consumption : undefined
+
+            await record.save();
+            return record.toObject() as FuelRecord;
+        }catch(err){
+            console.log(err);
+            return null;
+        }
+    }
+
+
 
 }

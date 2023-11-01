@@ -52,6 +52,13 @@ class _HomePageState extends State<HomePage> {
             )],
           backgroundColor: Colors.white,
         ),
-        body: Center(child: FloatingActionButton(onPressed: () {logout(context);},child: const Icon(Icons.logout), backgroundColor: Colors.red,)));
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+
+              Center(child: FloatingActionButton(onPressed: () {logout(context);},child: const Icon(Icons.logout), backgroundColor: Colors.red,)),
+            ],
+          )
+        ));
   }
 }

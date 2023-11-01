@@ -2,7 +2,7 @@ import {
     createFuelRecord,
     deleteFuelRecordById,
     getAllFuelRecords, getFuelRecordById,
-    getFuelRecordsByMotorcycleId
+    getFuelRecordsByMotorcycleId, updateFuelRecordById
 } from "../controllers/fuel_record.controller";
 
 const router = require('express').Router();
@@ -23,5 +23,7 @@ router.delete('/deleteFuelRecordById/:id', checkToken, deleteFuelRecordById)
 
 //put
 //todo create put route to update fuel record
+router.put('/updateFuelRecordById/:id', checkToken, updateFuelRecordById)
+
 
 export default router;
