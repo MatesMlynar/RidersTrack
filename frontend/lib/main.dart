@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: isTokenValid ? const MapTest() : const LoginPage());
+          home: isTokenValid ? const LayoutPage() : const LoginPage());
     }));
   }
 }

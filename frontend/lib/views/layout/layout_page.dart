@@ -9,14 +9,12 @@ class LayoutPage extends StatefulWidget {
 }
 
 class _LayoutPageState extends State<LayoutPage> {
-
   int currentPage = 0;
 
   List<Widget> pages = const [
     HomePage(),
     //todo create garage page
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +23,8 @@ class _LayoutPageState extends State<LayoutPage> {
       bottomNavigationBar: NavigationBar(
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.account_circle_rounded), label: "Profile"),
-          //todo create garage page
+          NavigationDestination(
+              icon: Icon(Icons.account_circle_rounded), label: "Profile"),
         ],
         selectedIndex: currentPage,
         onDestinationSelected: (int value) {
@@ -34,7 +32,22 @@ class _LayoutPageState extends State<LayoutPage> {
             currentPage = value;
           });
         },
-      )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        height: 70.0,
+        width: 70.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            shape: const CircleBorder(),
+            onPressed: () {
+              print("yeah, tracking started");
+            },
+            backgroundColor: Colors.red,
+            child: const Icon(Icons.play_arrow),
+          ),
+        ),
+      ),
     );
   }
 }
