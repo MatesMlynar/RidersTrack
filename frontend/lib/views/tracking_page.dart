@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class TrackingPage extends StatefulWidget {
   const TrackingPage({super.key, required this.motorcycleId});
@@ -41,8 +40,8 @@ class _TrackingPageState extends State<TrackingPage> {
   }
 
   @override dispose() {
-    super.dispose();
     timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -70,20 +69,40 @@ class _TrackingPageState extends State<TrackingPage> {
                 const Text('duration', style: TextStyle(color: Colors.white, fontSize: 20.0)),
               ],
             ),
-            //do circle button that will be able to stop the recording
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                  isRunning = !isRunning;
-                });},
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(30),
-                  backgroundColor: Colors.red, // <-- Button color
-                  foregroundColor: Colors.grey, // <-- Splash color
-                ),
-                child: isRunning ? const Icon(Icons.pause, color: Colors.white) : const Icon(Icons.play_arrow, color: Colors.white)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isRunning = !isRunning;
+                        });},
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(30),
+                        backgroundColor: Colors.red, // <-- Button color
+                        foregroundColor: Colors.grey, // <-- Splash color
+                      ),
+                      child: isRunning ? const Icon(Icons.pause, color: Colors.white) : const Icon(Icons.play_arrow, color: Colors.white)
+                  ),
+                  !isRunning ? const SizedBox(width: 20) : const SizedBox(width: 0),
+                  !isRunning ? ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          print('todo create a command that will create new ride and call it here');
+                          //todo create a command that will create new ride and call it from here
+                        });},
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(30),
+                        backgroundColor: Colors.red, // <-- Button color
+                        foregroundColor: Colors.grey, // <-- Splash color
+                      ),
+                      child: const Icon(Icons.stop, color: Colors.white)
+                  ) : const SizedBox(width: 0),
+                ],
               )
+
 
           ],),
         ),
