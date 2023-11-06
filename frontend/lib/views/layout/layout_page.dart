@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/home_page.dart';
+import 'package:frontend/views/map_test.dart';
+import 'package:frontend/views/pre-tracking_page.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({super.key});
@@ -21,6 +23,7 @@ class _LayoutPageState extends State<LayoutPage> {
     return Scaffold(
       body: pages.elementAt(currentPage),
       bottomNavigationBar: NavigationBar(
+        //TODO create bottomAppBar widget with this settings clipBehavior: Clip.antiAlias,
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
           NavigationDestination(
@@ -39,9 +42,12 @@ class _LayoutPageState extends State<LayoutPage> {
         width: 70.0,
         child: FittedBox(
           child: FloatingActionButton(
+            heroTag: "homepageButton",
             shape: const CircleBorder(),
             onPressed: () {
-              print("yeah, tracking started");
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const PreTrackingPage();
+              }));
             },
             backgroundColor: Colors.red,
             child: const Icon(Icons.play_arrow),

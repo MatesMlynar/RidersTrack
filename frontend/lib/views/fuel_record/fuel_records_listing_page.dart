@@ -71,6 +71,7 @@ class _FuelRecordsState extends State<FuelRecords> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          heroTag: "fuelRecordListingButton",
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNewFuelRecordPage()));
           },

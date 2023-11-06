@@ -24,8 +24,8 @@ class _MapTestState extends State {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
+          title: const Text('gg', style: TextStyle(color: Colors.red)),
+          backgroundColor: Colors.white,
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
