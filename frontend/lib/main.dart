@@ -15,11 +15,23 @@ import 'package:frontend/views/map_test.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'models/fuel_record_model.dart';
 
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    print("Native called background task: $task"); //simpleTask will be emitted here.
+    return Future.value(true);
+  });
+}
+
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().registerOneOffTask("task-identifier", "simpleTask");
 
   SecureStorage secureStorage = SecureStorage();
   String? token = await secureStorage.getToken();

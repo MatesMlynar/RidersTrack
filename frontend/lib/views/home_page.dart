@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
 
-              Center(child: FloatingActionButton(onPressed: () {logout(context);},child: const Icon(Icons.logout), backgroundColor: Colors.red,)),
+              Center(child: FloatingActionButton(onPressed: () {logout(context);}, backgroundColor: Colors.red,child: const Icon(Icons.logout),)),
             ],
           )
         ));

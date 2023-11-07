@@ -2,6 +2,9 @@ buildscript {
     ext {
 
 
+        agp_version5 = '8.1.2'
+        agp_version4 = '8.0.0'
+        agp_version3 = '7.4.2'
         agp_version2 = '8.0.0'
         agp_version1 = '7.3.0'
         agp_version = '7.0.0'
@@ -13,7 +16,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$agp_version2"
+        classpath "com.android.tools.build:gradle:$agp_version5"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
     }
