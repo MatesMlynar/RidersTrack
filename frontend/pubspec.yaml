@@ -42,7 +42,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_dotenv: ^5.1.0
   google_maps_flutter: ^2.5.0
-  workmanager: ^0.5.2
+  permission_handler: ^11.0.1
   geolocator: ^10.1.0
 
 dev_dependencies:

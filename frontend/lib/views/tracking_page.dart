@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/views/layout/layout_page.dart';
+
 
 class TrackingPage extends StatefulWidget {
   const TrackingPage({super.key, required this.motorcycleId});
@@ -17,6 +17,7 @@ class _TrackingPageState extends State<TrackingPage> {
   int seconds = 0;
   late Timer timer;
   bool isRunning = true;
+
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
