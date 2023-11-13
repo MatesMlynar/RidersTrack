@@ -15,6 +15,7 @@ import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/map_test.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'models/fuel_record_model.dart';
@@ -25,6 +26,9 @@ Future main() async {
 
   SecureStorage secureStorage = SecureStorage();
   String? token = await secureStorage.getToken();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove('timer');
 
   bool isTokenValid = false;
 

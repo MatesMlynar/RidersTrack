@@ -20,6 +20,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
   late List<Map<String, dynamic>> motorcycleIdsList = [];
   late String message = "";
 
+  bool _isMounted = false;
+
   void fetchMotorcycles() async {
     isMotoFetching = true;
 
@@ -31,13 +33,15 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
       return;
     }
 
-    setState(() {
-      isMotoFetching = false;
-      if (result['data'] != null && result['data'].isNotEmpty) {
-        motorcycleIdsList = result['data'];
-        selectedMotorcycleId = motorcycleIdsList[0]['_id'];
-      }
-    });
+    if(_isMounted){
+      setState(() {
+        isMotoFetching = false;
+        if (result['data'] != null && result['data'].isNotEmpty) {
+          motorcycleIdsList = result['data'];
+          selectedMotorcycleId = motorcycleIdsList[0]['_id'];
+        }
+      });
+    }
   }
 
 
@@ -92,7 +96,15 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
   void initState() {
     super.initState();
     fetchMotorcycles();
+    _isMounted = true;
   }
+
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {

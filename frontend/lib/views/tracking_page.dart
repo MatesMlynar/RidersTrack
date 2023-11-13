@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/views/layout/layout_page.dart';
 import 'package:frontend/views/map_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TrackingPage extends StatefulWidget with WidgetsBindingObserver{
+class TrackingPage extends StatefulWidget with WidgetsBindingObserver {
   const TrackingPage({super.key, required this.motorcycleId});
 
   final String motorcycleId;
@@ -15,14 +17,18 @@ class TrackingPage extends StatefulWidget with WidgetsBindingObserver{
   State<TrackingPage> createState() => _TrackingPageState();
 }
 
-class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver {
+class _TrackingPageState extends State<TrackingPage>
+    with WidgetsBindingObserver {
   int seconds = 0;
   late Timer timer;
+  late Timer locationTimer;
   bool isRunning = true;
 
   List<Position> locationPoints = [];
   late StreamSubscription<Position> positionStream;
   late LocationSettings locationSettings;
+
+  List<Position> testListOfPositions = [];
 
 
   void _initTimer() {
@@ -35,7 +41,6 @@ class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver
     });
   }
 
-
   void _resumeTimer() async {
     print('wow1');
 
@@ -44,77 +49,97 @@ class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver
     String encodedMap = prefs.getString('timer') ?? '';
     print('wow3');
 
-    print(encodedMap);
+    if (encodedMap != '') {
+      isRunning = true;
 
-    if(encodedMap == ''){
-      _initTimer();
-    }
-    else{
       Map<String, dynamic> timerData = json.decode(encodedMap);
 
-      if (timerData.isNotEmpty && timerData.containsKey('timer_seconds') && timerData.containsKey('timer_timestamp')) {
-
+      if (timerData.isNotEmpty &&
+          timerData.containsKey('timer_seconds') &&
+          timerData.containsKey('timer_timestamp')) {
         int savedSeconds = timerData['timer_seconds'];
         String savedTime = timerData['timer_timestamp'];
-        print(savedSeconds);
-        Duration timeDifference = DateTime.now().difference(DateTime.parse(savedTime));
+        Duration timeDifference =
+        DateTime.now().difference(DateTime.parse(savedTime));
 
-        print(timeDifference.inSeconds);
 
         setState(() {
           seconds = savedSeconds + timeDifference.inSeconds;
         });
-
-        _initTimer();
       }
-
     }
-
   }
+
+  // void startTrackingRide() async {
+  //   if (defaultTargetPlatform == TargetPlatform.android) {
+  //     locationSettings = AndroidSettings(
+  //         accuracy: LocationAccuracy.high,
+  //         distanceFilter: 2,
+  //         forceLocationManager: true,
+  //         foregroundNotificationConfig: const ForegroundNotificationConfig(
+  //             notificationTitle: "Running in background",
+  //             notificationText:
+  //             "RidersTrack app will continue to receive your location even when you aren't using it"));
+  //   } else {
+  //     locationSettings = const LocationSettings(
+  //       accuracy: LocationAccuracy.high,
+  //       distanceFilter: 2,
+  //     );
+  //   }
+  //
+  //   positionStream =
+  //       Geolocator.getPositionStream(locationSettings: locationSettings)
+  //           .listen((Position? position) {
+  //         if (isRunning && position != null) {
+  //           Position newPoint = Position(
+  //               longitude: position.longitude,
+  //               latitude: position.latitude,
+  //               timestamp: position.timestamp,
+  //               accuracy: position.accuracy,
+  //               altitude: position.altitude,
+  //               altitudeAccuracy: position.altitudeAccuracy,
+  //               heading: position.heading,
+  //               headingAccuracy: position.headingAccuracy,
+  //               speed: position.speed,
+  //               speedAccuracy: position.speedAccuracy);
+  //
+  //           locationPoints.add(newPoint);
+  //         }
+  //         print(position == null
+  //             ? 'Unknown'
+  //             : '${position.latitude.toString()}, ${position.longitude
+  //             .toString()}');
+  //       });
+  // }
 
   void startTrackingRide() async {
 
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      locationSettings = AndroidSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 20,
-          timeLimit: const Duration(seconds: 2),
-          forceLocationManager: true,
-          foregroundNotificationConfig: const ForegroundNotificationConfig(
-              notificationTitle: "Running in background",
-              notificationText:
-                  "RidersTrack app will continue to receive your location even when you aren't using it"));
-    } else {
-      locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      );
-    }
+    Position point;
 
-     positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position? position) {
-      if (isRunning && position != null) {
+    locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high).then((Position? position) => {
 
-        Position newPoint = Position(
-            longitude: position.longitude,
-            latitude: position.latitude,
-            timestamp: position.timestamp,
-            accuracy: position.accuracy,
-            altitude: position.altitude,
-            altitudeAccuracy: position.altitudeAccuracy,
-            heading: position.heading,
-            headingAccuracy: position.headingAccuracy,
-            speed: position.speed,
-            speedAccuracy: position.speedAccuracy);
+            if(isRunning && position != null){
+              point = Position(
+                  longitude: position.longitude,
+                  latitude: position.latitude,
+                  timestamp: position.timestamp,
+                  accuracy: position.accuracy,
+                  altitude: position.altitude,
+                  altitudeAccuracy: position.altitudeAccuracy,
+                  heading: position.heading,
+                  headingAccuracy: position.headingAccuracy,
+                  speed: position.speed,
+                  speedAccuracy: position.speedAccuracy),
 
-        locationPoints.add(newPoint);
-      }
-      print(position == null
-          ? 'Unknown'
-          : '${position.latitude.toString()}, ${position.longitude.toString()}');
+              locationPoints.add(point),
+              print('SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED'),
+              print(point.speed),
+              print(locationPoints)
+      }});
     });
-
   }
-
 
   String formatTime(int seconds) {
     int minutes = (seconds / 60).floor();
@@ -122,58 +147,73 @@ class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-
   void saveRideAndRedirect() {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('timer');
-    });
-    positionStream.cancel();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MapTest(locationPoints: locationPoints)));
+
+    if(locationPoints.length > 1){
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.remove('timer');
+      });
+      //positionStream.cancel();
+      locationTimer.cancel();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MapTest(locationPoints: locationPoints)));
+    } else {
+      if(context.mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('You have no marks recorded!')));
+      }
+    }
+
+
+
   }
 
 
   @override
   void initState() {
     super.initState();
+    _initTimer();
     WidgetsBinding.instance.addObserver(this);
-    startTrackingRide();
     _resumeTimer();
+    startTrackingRide();
   }
 
   @override
   void dispose() {
     timer.cancel();
-    positionStream.cancel();
+    locationTimer.cancel();
+    //positionStream.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.remove('timer');
+    });
     super.dispose();
   }
 
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('Lifecycle state changed: $state');
 
-        print('Lifecycle state changed: $state');
+    if (state == AppLifecycleState.paused) {
+      isRunning = false;
+      print('PAUSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      Map<String, dynamic> timerData = {
+        'timer_seconds': seconds,
+        'timer_timestamp': DateTime.now().toIso8601String()
+      };
 
-        if (state == AppLifecycleState.paused) {
-          timer.cancel();
-
-          print('PAUSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-          Map<String, dynamic> timerData = {
-            'timer_seconds': seconds,
-            'timer_timestamp': DateTime.now().toIso8601String()
-          };
-
-          // Save the timer value when the app is paused
-          SharedPreferences.getInstance().then((prefs) {
-            prefs.setString('timer', json.encode(timerData));
-          });
+      // Save the timer value when the app is paused
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('timer', json.encode(timerData));
+      });
     } else if (state == AppLifecycleState.resumed) {
       print('RESUMED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       // Resume the timer when the app is resumed
       _resumeTimer();
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +259,11 @@ class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver
                         onPressed: () {
                           setState(() {
                             isRunning = !isRunning;
+                            if (isRunning) {
+                              startTrackingRide();
+                            } else {
+                              locationTimer.cancel();
+                            }
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -230,26 +275,27 @@ class _TrackingPageState extends State<TrackingPage> with WidgetsBindingObserver
                         child: isRunning
                             ? const Icon(Icons.pause, color: Colors.white)
                             : const Icon(Icons.play_arrow,
-                                color: Colors.white)),
+                            color: Colors.white)),
                     !isRunning
                         ? const SizedBox(width: 20)
                         : const SizedBox(width: 0),
                     !isRunning
                         ? ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                print('todo create a command that will create new ride and call it here');
-                                //todo create a command that will create new ride and call it from here
-                                saveRideAndRedirect();
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(30),
-                              backgroundColor: Colors.red, // <-- Button color
-                              foregroundColor: Colors.grey, // <-- Splash color
-                            ),
-                            child: const Icon(Icons.stop, color: Colors.white))
+                        onPressed: () {
+                          setState(() {
+                            print(
+                                'todo create a command that will create new ride and call it here');
+                            //todo create a command that will create new ride and call it from here
+                            saveRideAndRedirect();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(30),
+                          backgroundColor: Colors.red, // <-- Button color
+                          foregroundColor: Colors.grey, // <-- Splash color
+                        ),
+                        child: const Icon(Icons.stop, color: Colors.white))
                         : const SizedBox(width: 0),
                   ],
                 )
