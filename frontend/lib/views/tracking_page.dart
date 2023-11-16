@@ -23,12 +23,10 @@ class _TrackingPageState extends State<TrackingPage>
   bool isRunning = true;
 
   List<Position> locationPoints = [];
-  //List<LocationData> locationDataPoints = [];
   late StreamSubscription<Position> positionStream;
   late LocationSettings locationSettings;
 
   List<Position> testListOfPositions = [];
-
 
   void _initTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -105,9 +103,7 @@ class _TrackingPageState extends State<TrackingPage>
                 speed: position.speed,
                 speedAccuracy: position.speedAccuracy);
 
-            print("I am here");
             locationPoints.add(newPoint);
-            print(locationPoints);
           }
           print(position == null
               ? 'Unknown'
@@ -123,8 +119,6 @@ class _TrackingPageState extends State<TrackingPage>
   }
 
   void saveRideAndRedirect() {
-
-    print(locationPoints);
 
     if(locationPoints.isNotEmpty){
       SharedPreferences.getInstance().then((prefs) {
@@ -157,7 +151,6 @@ class _TrackingPageState extends State<TrackingPage>
   @override
   void dispose() {
     timer.cancel();
-    //locationTimer.cancel();
     positionStream.cancel();
     WidgetsBinding.instance.removeObserver(this);
     SharedPreferences.getInstance().then((prefs) {

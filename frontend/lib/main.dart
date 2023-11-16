@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/commands/base_command.dart';
 import 'package:frontend/commands/user/store_already_logged_user_command.dart';
+import 'package:frontend/models/ride_record_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/services/fuel_record_service.dart';
 import 'package:frontend/services/motorcycle_service.dart';
+import 'package:frontend/services/ride_record_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
@@ -53,9 +55,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (c) => UserModel()),
       ChangeNotifierProvider(create: (c) => FuelRecordModel()),
+      ChangeNotifierProvider(create: (c) => RideRecordModel()),
       Provider(create: (c) => UserService()),
       Provider(create: (c) => FuelRecordService()),
-      Provider(create: (c) => MotorcycleService())
+      Provider(create: (c) => MotorcycleService()),
+      Provider(create: (c) => RideRecordService())
     ],
     child: Sizer(builder: (context, orientation, deviceType) {
       init(context);
