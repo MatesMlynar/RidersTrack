@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/views/layout/layout_page.dart';
 import 'package:frontend/views/map_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +23,7 @@ class _TrackingPageState extends State<TrackingPage>
   bool isRunning = true;
 
   List<Position> locationPoints = [];
+  //List<LocationData> locationDataPoints = [];
   late StreamSubscription<Position> positionStream;
   late LocationSettings locationSettings;
 
@@ -70,75 +69,51 @@ class _TrackingPageState extends State<TrackingPage>
     }
   }
 
-  // void startTrackingRide() async {
-  //   if (defaultTargetPlatform == TargetPlatform.android) {
-  //     locationSettings = AndroidSettings(
-  //         accuracy: LocationAccuracy.high,
-  //         distanceFilter: 2,
-  //         forceLocationManager: true,
-  //         foregroundNotificationConfig: const ForegroundNotificationConfig(
-  //             notificationTitle: "Running in background",
-  //             notificationText:
-  //             "RidersTrack app will continue to receive your location even when you aren't using it"));
-  //   } else {
-  //     locationSettings = const LocationSettings(
-  //       accuracy: LocationAccuracy.high,
-  //       distanceFilter: 2,
-  //     );
-  //   }
-  //
-  //   positionStream =
-  //       Geolocator.getPositionStream(locationSettings: locationSettings)
-  //           .listen((Position? position) {
-  //         if (isRunning && position != null) {
-  //           Position newPoint = Position(
-  //               longitude: position.longitude,
-  //               latitude: position.latitude,
-  //               timestamp: position.timestamp,
-  //               accuracy: position.accuracy,
-  //               altitude: position.altitude,
-  //               altitudeAccuracy: position.altitudeAccuracy,
-  //               heading: position.heading,
-  //               headingAccuracy: position.headingAccuracy,
-  //               speed: position.speed,
-  //               speedAccuracy: position.speedAccuracy);
-  //
-  //           locationPoints.add(newPoint);
-  //         }
-  //         print(position == null
-  //             ? 'Unknown'
-  //             : '${position.latitude.toString()}, ${position.longitude
-  //             .toString()}');
-  //       });
-  // }
-
   void startTrackingRide() async {
 
-    Position point;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      locationSettings = AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          forceLocationManager: false,
+          intervalDuration: const Duration(seconds: 5),
+          foregroundNotificationConfig: const ForegroundNotificationConfig(
+              enableWakeLock: true,
+              notificationTitle: "Running in background",
+              notificationText:
+              "RidersTrack app will continue to receive your location even when you aren't using it"));
+    } else {
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5,
+      );
+    }
 
-    locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high).then((Position? position) => {
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
 
-            if(isRunning && position != null){
-              point = Position(
-                  longitude: position.longitude,
-                  latitude: position.latitude,
-                  timestamp: position.timestamp,
-                  accuracy: position.accuracy,
-                  altitude: position.altitude,
-                  altitudeAccuracy: position.altitudeAccuracy,
-                  heading: position.heading,
-                  headingAccuracy: position.headingAccuracy,
-                  speed: position.speed,
-                  speedAccuracy: position.speedAccuracy),
+          if (position != null) {
+            Position newPoint = Position(
+                longitude: position.longitude,
+                latitude: position.latitude,
+                timestamp: position.timestamp,
+                accuracy: position.accuracy,
+                altitude: position.altitude,
+                altitudeAccuracy: position.altitudeAccuracy,
+                heading: position.heading,
+                headingAccuracy: position.headingAccuracy,
+                speed: position.speed,
+                speedAccuracy: position.speedAccuracy);
 
-              locationPoints.add(point),
-              print('SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED'),
-              print(point.speed),
-              print(locationPoints)
-      }});
-    });
+            print("I am here");
+            locationPoints.add(newPoint);
+            print(locationPoints);
+          }
+          print(position == null
+              ? 'Unknown'
+              : '${position.latitude.toString()}, ${position.longitude
+              .toString()}');
+        });
   }
 
   String formatTime(int seconds) {
@@ -149,12 +124,13 @@ class _TrackingPageState extends State<TrackingPage>
 
   void saveRideAndRedirect() {
 
-    if(locationPoints.length > 1){
+    print(locationPoints);
+
+    if(locationPoints.isNotEmpty){
       SharedPreferences.getInstance().then((prefs) {
         prefs.remove('timer');
       });
-      //positionStream.cancel();
-      locationTimer.cancel();
+      positionStream.cancel();
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -165,8 +141,6 @@ class _TrackingPageState extends State<TrackingPage>
             const SnackBar(content: Text('You have no marks recorded!')));
       }
     }
-
-
 
   }
 
@@ -183,8 +157,8 @@ class _TrackingPageState extends State<TrackingPage>
   @override
   void dispose() {
     timer.cancel();
-    locationTimer.cancel();
-    //positionStream.cancel();
+    //locationTimer.cancel();
+    positionStream.cancel();
     WidgetsBinding.instance.removeObserver(this);
     SharedPreferences.getInstance().then((prefs) {
       prefs.remove('timer');
@@ -261,8 +235,10 @@ class _TrackingPageState extends State<TrackingPage>
                             isRunning = !isRunning;
                             if (isRunning) {
                               startTrackingRide();
+                              //startTrackingRideLocationPackage();
                             } else {
-                              locationTimer.cancel();
+                              positionStream.cancel();
+                              //locationTimer.cancel();
                             }
                           });
                         },

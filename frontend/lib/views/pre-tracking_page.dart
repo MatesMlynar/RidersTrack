@@ -45,6 +45,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
   }
 
 
+
   void checkPermission() async{
 
     //check the permissions and if valid -> route

@@ -60,22 +60,10 @@ class _MapTestState extends State<MapTest> {
         Polyline(
           polylineId: PolylineId('1'),
           points: polylinePoints,
-          color: Colors.green,
+          color: Colors.red,
         )
     );
 
-
-    for(int i=0; i<widget.locationPoints.length; i++){
-      // _markers.add(
-      //   // added markers
-      //     Marker(
-      //       markerId: MarkerId(i.toString()),
-      //       position: polylinePoints[i],
-      //       icon: BitmapDescriptor.defaultMarker,
-      //     )
-      // );
-
-    }
   }
 
   String calculateTotalDistance(){
@@ -130,11 +118,7 @@ class _MapTestState extends State<MapTest> {
         if (speedInKilometersPerHour > maxSpeed) {
           maxSpeed = speedInKilometersPerHour;
         }
-
-
-
     }
-
 
     return maxSpeed.toStringAsFixed(2);
   }
@@ -177,6 +161,7 @@ class _MapTestState extends State<MapTest> {
           backgroundColor: Colors.white,
         ),
         body: GoogleMap(
+
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _center,
@@ -184,6 +169,7 @@ class _MapTestState extends State<MapTest> {
           ),
           markers: _markers,
           polylines: _polyline,
+
         ),
       ),
     );

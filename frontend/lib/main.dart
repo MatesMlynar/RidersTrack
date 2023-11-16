@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,15 +11,12 @@ import 'package:frontend/services/motorcycle_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
-import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/layout/layout_page.dart';
 import 'package:frontend/views/login_page.dart';
-import 'package:frontend/views/map_test.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-
 import 'models/fuel_record_model.dart';
 
 
