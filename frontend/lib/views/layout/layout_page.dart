@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/home_page.dart';
-import 'package:frontend/views/map_test.dart';
 import 'package:frontend/views/pre-tracking_page.dart';
 
 class LayoutPage extends StatefulWidget {

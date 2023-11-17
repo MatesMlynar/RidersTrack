@@ -1,10 +1,11 @@
 import 'dart:ffi';
 
 import 'package:frontend/commands/base_command.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CreateRideRecordCommand extends BaseCommand{
 
-  Future<Map<String, dynamic>> run (String motorcycleId, DateTime date, num totalDistance, num duration, num maxSpeed, Array positionPoints) async {
+  Future<Map<String, dynamic>> run (String motorcycleId, DateTime date, num totalDistance, num duration, num maxSpeed, List<Position> positionPoints) async {
 
     String? token = await secureStorage.getToken();
     if(token == null){
@@ -26,7 +27,13 @@ class CreateRideRecordCommand extends BaseCommand{
       else{
 
         Map<String, dynamic> newRideRecord = {
-          //TODO implement
+          "_id": result['data']['_id'],
+          "date": date,
+          "motorcycleId": motorcycleId,
+          "totalDistance": totalDistance,
+          "duration": duration,
+          "maxSpeed": maxSpeed,
+          "positionPoints": positionPoints,
         };
 
         rideRecordModel.rideRecords!.add(newRideRecord);

@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/functions/ride_records/calculateTopSpeed.dart';
+import 'package:frontend/utils/functions/ride_records/calculateTotalDistance.dart';
 import 'package:frontend/views/map_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../commands/ride_records/create_ride_record_command.dart';
 
 class TrackingPage extends StatefulWidget with WidgetsBindingObserver {
   const TrackingPage({super.key, required this.motorcycleId});
@@ -118,17 +123,38 @@ class _TrackingPageState extends State<TrackingPage>
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  void saveRideAndRedirect() {
+  void saveRideAndRedirect() async {
 
     if(locationPoints.isNotEmpty){
       SharedPreferences.getInstance().then((prefs) {
         prefs.remove('timer');
       });
       positionStream.cancel();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MapTest(locationPoints: locationPoints)));
+
+      //todo get all data and call command to create new ride record
+      num totalDistance = calculateTotalDistance(locationPoints);
+      num maxSpeed = calculateMaxSpeed(locationPoints);
+      num duration = seconds;
+      DateTime date = DateTime.now();
+
+      Map<String, dynamic> result = await CreateRideRecordCommand().run(widget.motorcycleId, date, totalDistance, duration, maxSpeed, locationPoints);
+
+
+      if(result['status'] != 200){
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+        }
+        return;
+      }
+
+      if(context.mounted){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MapTest(locationPoints: locationPoints)));
+      }
+
+
     } else {
       if(context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(

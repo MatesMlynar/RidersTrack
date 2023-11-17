@@ -124,7 +124,6 @@ class _MapTestState extends State<MapTest> {
   }
 
 
-
   @override void initState() {
     super.initState();
     _center = LatLng(widget.locationPoints[0].latitude, widget.locationPoints[0].longitude);
