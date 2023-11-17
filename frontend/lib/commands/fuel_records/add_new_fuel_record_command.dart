@@ -35,7 +35,6 @@ class AddNewFuelRecordCommand extends BaseCommand{
         fuelRecordModel.fuelRecords!.add(newFuelRecord);
         CalculateTotalFuelUsedCommand().run();
         CalculateTotalMoneySpentCommand().run();
-        fuelRecordModel.notifyListeners();
 
         return {
           "status": result['status'],

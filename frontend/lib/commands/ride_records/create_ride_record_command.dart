@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:frontend/commands/base_command.dart';
+import 'package:frontend/types/ride_record.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CreateRideRecordCommand extends BaseCommand{
@@ -26,15 +25,15 @@ class CreateRideRecordCommand extends BaseCommand{
       }
       else{
 
-        Map<String, dynamic> newRideRecord = {
-          "_id": result['data']['_id'],
-          "date": date,
-          "motorcycleId": motorcycleId,
-          "totalDistance": totalDistance,
-          "duration": duration,
-          "maxSpeed": maxSpeed,
-          "positionPoints": positionPoints,
-        };
+        RideRecord newRideRecord = RideRecord(
+          id: result['data']['_id'],
+          date: date,
+          motorcycleId: motorcycleId,
+          totalDistance: totalDistance,
+          duration: duration,
+          maxSpeed: maxSpeed,
+          positionPoints: positionPoints,
+        );
 
         rideRecordModel.rideRecords!.add(newRideRecord);
 

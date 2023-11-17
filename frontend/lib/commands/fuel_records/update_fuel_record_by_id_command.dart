@@ -32,7 +32,6 @@ class UpdateFuelRecordByIdCommand extends BaseCommand{
           fuelRecordModel.fuelRecords![indexToUpdate]['motorcycleId'] = motorcycleId;
           fuelRecordModel.fuelRecords![indexToUpdate]['consumption'] = num.parse(consumption);
           fuelRecordModel.fuelRecords![indexToUpdate]['distance'] = num.parse(distance);
-          fuelRecordModel.notifyListeners();
           CalculateTotalMoneySpentCommand().run();
           CalculateTotalFuelUsedCommand().run();
         }

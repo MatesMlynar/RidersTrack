@@ -23,7 +23,6 @@ class DeleteFuelRecordByIdCommand extends BaseCommand{
         fuelRecordModel.fuelRecords!.removeWhere((item) => item['_id'] == id);
         CalculateTotalFuelUsedCommand().run();
         CalculateTotalMoneySpentCommand().run();
-        fuelRecordModel.notifyListeners();
 
 
         return{

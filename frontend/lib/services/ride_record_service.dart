@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +21,18 @@ class RideRecordService{
       "Authorization": "Bearer $token"
       },
       body: json.encode(reqBody)
+    );
+
+    return json.decode(response.body);
+
+  }
+
+  Future<Map<String, dynamic>> getAllRideRecords(String token) async{
+
+    http.Response response = await http.get(Uri.parse(dotenv.env['getAllRideRecordsURL']!), headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer $token"
+      }
     );
 
     return json.decode(response.body);

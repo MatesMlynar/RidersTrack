@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 
+import '../types/ride_record.dart';
+
 class RideRecordModel extends ChangeNotifier{
 
-  List<Map<String, dynamic>>? _rideRecords = [];
+  List<RideRecord>? _rideRecords = [];
 
-  List<Map<String, dynamic>>? get rideRecords => _rideRecords;
-  set rideRecords(List<Map<String, dynamic>>? rideRecords){
+  List<RideRecord>? get rideRecords => _rideRecords;
+  set rideRecords(List<RideRecord>? rideRecords){
     _rideRecords = rideRecords;
     notifyListeners();
   }

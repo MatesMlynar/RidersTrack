@@ -6,7 +6,7 @@ num calculateMaxSpeed(List<Position> position) {
   for (int i = 0; i < position.length - 1; i++) {
 
 
-    if(position[i].speed == null || position[i].speed == 0){
+    if(position[i].speed == 0){
       continue;
     }
     Position currentPoint = position[i];
@@ -22,8 +22,8 @@ num calculateMaxSpeed(List<Position> position) {
 
     // Calculate time difference in seconds
     double timeDifferenceInSeconds =
-        (nextPoint.timestamp!.millisecondsSinceEpoch -
-            currentPoint.timestamp!.millisecondsSinceEpoch) /
+        (nextPoint.timestamp.millisecondsSinceEpoch -
+            currentPoint.timestamp.millisecondsSinceEpoch) /
             1000;
 
     // Calculate speed in meters per second

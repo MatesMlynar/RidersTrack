@@ -7,7 +7,7 @@ class CalculateTotalFuelUsedCommand extends BaseCommand {
     num totalFuelUsed = 0;
 
     if (fuelRecords != null) {
-      for (var fuelRecord in fuelRecords!) {
+      for (var fuelRecord in fuelRecords) {
         if (fuelRecord.containsKey('liters')) {
           totalFuelUsed += fuelRecord['liters'];
         }

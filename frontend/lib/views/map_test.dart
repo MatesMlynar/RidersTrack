@@ -5,9 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'layout/layout_page.dart';
 
 class MapTest extends StatefulWidget {
-  MapTest({super.key, required this.locationPoints});
+  const MapTest({super.key, required this.locationPoints});
 
-  List<Position> locationPoints;
+  final List<Position> locationPoints;
 
   @override
   State createState() => _MapTestState();
@@ -35,7 +35,7 @@ class _MapTestState extends State<MapTest> {
 
     _markers.add(
       Marker(
-        markerId: MarkerId('0'),
+        markerId: const MarkerId('0'),
         position: polylinePoints[0],
         icon: BitmapDescriptor.defaultMarker,
         infoWindow: const InfoWindow(
@@ -58,7 +58,7 @@ class _MapTestState extends State<MapTest> {
     });
     _polyline.add(
         Polyline(
-          polylineId: PolylineId('1'),
+          polylineId: const PolylineId('1'),
           points: polylinePoints,
           color: Colors.red,
         )
@@ -88,7 +88,7 @@ class _MapTestState extends State<MapTest> {
     for (int i = 0; i < position.length - 1; i++) {
 
 
-      if(position[i].speed == null || position[i].speed == 0){
+      if(position[i].speed == 0){
         continue;
       }
         Position currentPoint = position[i];
@@ -104,8 +104,8 @@ class _MapTestState extends State<MapTest> {
 
         // Calculate time difference in seconds
         double timeDifferenceInSeconds =
-            (nextPoint.timestamp!.millisecondsSinceEpoch -
-                currentPoint.timestamp!.millisecondsSinceEpoch) /
+            (nextPoint.timestamp.millisecondsSinceEpoch -
+                currentPoint.timestamp.millisecondsSinceEpoch) /
                 1000;
 
         // Calculate speed in meters per second

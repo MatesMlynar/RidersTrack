@@ -17,8 +17,8 @@ class FuelRecordModel extends ChangeNotifier{
 
   num get totalFuelUsed => _totalFuelUsed;
 
-  set totalFuelUsed(num) {
-    _totalFuelUsed = num;
+  set totalFuelUsed(num number) {
+    _totalFuelUsed = number;
     notifyListeners();
   }
 
@@ -28,8 +28,8 @@ class FuelRecordModel extends ChangeNotifier{
 
   num get totalMoneySpent => _totalMoneySpent;
 
-  set totalMoneySpent(num) {
-    _totalMoneySpent = num;
+  set totalMoneySpent(num number) {
+    _totalMoneySpent = number;
     notifyListeners();
   }
 

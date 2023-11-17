@@ -10,7 +10,7 @@ class CalculateTotalMoneySpentCommand extends BaseCommand {
 
     if(fuelRecords != null)
     {
-      for (var fuelRecord in fuelRecords!) {
+      for (var fuelRecord in fuelRecords) {
         if(fuelRecord.containsKey('totalPrice'))
         {
           totalMoneySpent += fuelRecord['totalPrice'];

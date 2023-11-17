@@ -85,7 +85,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                     alignment: Alignment.center,
                     child: Image(
-                      image: AssetImage('assets/images/logo/logo.png'),
+                      image: const AssetImage('assets/images/logo/logo.png'),
                       fit: BoxFit.fitHeight,
                       height: 18.h,
                     ),
