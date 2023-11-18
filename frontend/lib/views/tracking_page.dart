@@ -190,6 +190,7 @@ class _TrackingPageState extends State<TrackingPage>
 
     if (state == AppLifecycleState.paused) {
       isRunning = false;
+      timer.cancel();
       print('PAUSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       Map<String, dynamic> timerData = {
         'timer_seconds': seconds,
@@ -203,13 +204,18 @@ class _TrackingPageState extends State<TrackingPage>
     } else if (state == AppLifecycleState.resumed) {
       print('RESUMED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       // Resume the timer when the app is resumed
-      _resumeTimer();
+      if(isRunning){
+        _resumeTimer();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     String formattedTime = formatTime(seconds);
+
+    print(isRunning);
+
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -252,6 +258,9 @@ class _TrackingPageState extends State<TrackingPage>
                           setState(() {
                             isRunning = !isRunning;
                             if (isRunning) {
+                              if(!timer.isActive){
+                                _initTimer();
+                              }
                               startTrackingRide();
                               //startTrackingRideLocationPackage();
                             } else {
