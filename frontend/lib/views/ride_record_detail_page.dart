@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.dart';
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +46,30 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
       SnackBarService.showSnackBar(
           content: result['message'],
           color: Colors.red);
+    }
+
+  }
+
+  void deleteRecord() async {
+
+    Map<String, dynamic> result = await DeleteRideRecordByIdCommand().run(widget.id);
+
+    if(result['status'] == 200){
+      if(context.mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Record deleted successfully'),
+              backgroundColor: Colors.green,
+            ));
+        Navigator.pop(context);
+      }
+    }
+    else{
+      if(context.mounted){
+        SnackBarService.showSnackBar(
+            content: result['message'],
+            color: Colors.red);
+      }
     }
 
   }
@@ -131,6 +156,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
             icon: const Icon(Icons.delete),
             onPressed: () {
               //TODO delete record
+              deleteRecord();
             },
           ),
         ],

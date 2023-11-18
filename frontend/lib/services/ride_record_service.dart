@@ -49,6 +49,16 @@ class RideRecordService{
     return json.decode(response.body);
   }
 
+  Future<Map<String, dynamic>> deleteRideRecordById(String token, String id) async{
+
+    http.Response response = await http.delete(Uri.parse((dotenv.env['deleteRideRecordByIdURL']!) + id), headers: {
+      "Authorization": "Bearer $token"
+      }
+    );
+
+    return json.decode(response.body);
+  }
+
 
 
 
