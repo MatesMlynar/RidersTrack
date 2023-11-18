@@ -70,6 +70,13 @@ class _RideRecordCardState extends State<RideRecordCard> {
 
   }
 
+  String formatTime(num seconds) {
+    int minutes = (seconds / 60).floor();
+    num remainingSeconds = seconds % 60;
+    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+
   @override initState() {
     super.initState();
     _center = LatLng(widget.locationPoints[0].latitude, widget.locationPoints[0].longitude);
@@ -132,7 +139,7 @@ class _RideRecordCardState extends State<RideRecordCard> {
                       ),
                       child: Column(
                           children: [
-                            Text('${widget.duration} sec', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),),
+                            Text('${formatTime(widget.duration)} min', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),),
                             const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 12),),
                           ]
                       ),

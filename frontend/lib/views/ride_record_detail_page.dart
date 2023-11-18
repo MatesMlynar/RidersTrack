@@ -31,7 +31,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
 
     Map<String, dynamic> result = await GetRideRecordByIdCommand().run(widget.id);
 
-    if(result['status'] == 180 && result['data'] != null){
+    if(result['status'] == 200 && result['data'] != null){
       setState(() {
         rideRecord = RideRecord.fromJson(result['data']);
         _center = LatLng(rideRecord!.positionPoints[0].latitude, rideRecord!.positionPoints[0].longitude);
@@ -91,6 +91,12 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
         )
     );
 
+  }
+
+  String formatTime(num seconds) {
+    int minutes = (seconds / 60).floor();
+    num remainingSeconds = seconds % 60;
+    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
 
@@ -172,7 +178,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           ),
                           child: Column(
                               children: [
-                                Text('${rideRecord!.duration} sec', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+                                Text('${formatTime(rideRecord!.duration)} min', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
                                 const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 14),),
                               ]
                           ),
