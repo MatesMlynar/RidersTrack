@@ -111,7 +111,7 @@ class _RideRecordCardState extends State<RideRecordCard> {
             padding: const EdgeInsets.fromLTRB(15, 0, 15,0),
             child: Column(
               children: [
-                Text(DateFormat('dd.MM.yyyy').format(widget.date.toLocal()), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                Text(DateFormat('dd.MM.yyyy').format(widget.date.toLocal()), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                 const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

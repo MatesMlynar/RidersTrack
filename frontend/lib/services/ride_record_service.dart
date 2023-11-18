@@ -36,7 +36,20 @@ class RideRecordService{
     );
 
     return json.decode(response.body);
-
   }
+
+  Future<Map<String, dynamic>> getRideRecordById(String token, String id) async{
+
+    http.Response response = await http.get(Uri.parse((dotenv.env['getRideRecordByIdURL']!) + id), headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer $token"
+      }
+    );
+
+    return json.decode(response.body);
+  }
+
+
+
 
 }

@@ -141,7 +141,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
             isMotoFetching
                 ? const CircularProgressIndicator()
                 : Column(
-              children: [
+              children: [ motorcycleIdsList.isNotEmpty && selectedMotorcycleId != null ?
                 DropdownButtonFormField(
                   value: selectedMotorcycleId,
                   //onChange method
@@ -179,8 +179,20 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                         borderSide:
                         BorderSide(color: Colors.white, width: 1.5)),
                   ),
-                ),
-                Row(
+                ) : const Column(
+                children: [
+                   Text(
+                    'No motorcycles found.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+                motorcycleIdsList.isNotEmpty ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
@@ -196,14 +208,14 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                       },
                     )
                   ],
-                )
+                ) : const SizedBox(width: 0, height: 0,)
               ],
             ),
             const SizedBox(
               height: 40,
             ),
             OutlinedButton(
-              onPressed: isMotoFetching ? null : () {
+              onPressed: isMotoFetching ? null : motorcycleIdsList.isNotEmpty ? () {
                 if (selectedMotorcycleId == null) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Select motorcycle or create one!'),
@@ -212,7 +224,9 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                 }
                 //todo create method that will check the user location permission
                 checkPermission();
-              },
+              } : () {//todo redirect where user will be able to create new motorcycle
+                    print('todo redirect where user will be able to create new motorcycle');
+                 },
               style: ButtonStyle(
                   shape:
                   MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -227,8 +241,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                       }
                       return const Color.fromARGB(255, 221, 28, 7);
                     })),
-                  child: Text(
-                    "Start tracking!",
+                  child: Text(motorcycleIdsList.isNotEmpty ?
+                    "Start tracking!" : "Create motorcycle!",
                     style: GoogleFonts.readexPro(
                         fontSize: 16,
                         color: Colors.white,

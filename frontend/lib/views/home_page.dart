@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/get_all_ride_records_command.dart';
 import 'package:frontend/views/components/rideRecordCard_component.dart';
 import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
+import 'package:frontend/views/ride_record_detail_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../models/ride_record_model.dart';
@@ -115,14 +116,14 @@ class _HomePageState extends State<HomePage> {
             Center(
               child: isLoadingRecords
                   ? const CircularProgressIndicator()
-                  : SizedBox(
+                  : rideRecords != null && rideRecords!.isNotEmpty ? SizedBox(
                       height: swiperHeight,
                       child: Swiper(
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             child: RideRecordCard(maxSpeed: rideRecords![index].maxSpeed, date: rideRecords![index].date, distance: rideRecords![index].totalDistance, duration: rideRecords![index].duration, locationPoints: (rideRecords![index].positionPoints),),
                             onTap: () {
-                              print('tapped');
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => RideRecordDetailPage(id: rideRecords![index].id)));
                             },
                           );
                         },
@@ -134,7 +135,29 @@ class _HomePageState extends State<HomePage> {
                               MediaQuery.of(context).size.height * 0.17, 0, 0),
                         ),
                       ),
+                    ) :  Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.5),
+                  const Text(
+                    'No ride records found.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Start tracking your rides!',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
