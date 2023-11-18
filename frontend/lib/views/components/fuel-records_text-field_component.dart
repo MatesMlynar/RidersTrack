@@ -6,7 +6,6 @@ import '../../types/fuel_record_textField_type.dart';
 class FuelRecordsTextField extends StatefulWidget {
   const FuelRecordsTextField({super.key, required this.props});
   final FuelRecordTextFieldType props;
-
   @override
   State<FuelRecordsTextField> createState() => _FuelRecordsTextFieldState();
 }

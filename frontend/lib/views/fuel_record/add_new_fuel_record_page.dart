@@ -28,7 +28,6 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   late List<Map<String, dynamic>> motorcycleIdsList = [];
   late String message = "";
 
-
   void fetchMotorcycles () async {
     isMotoFetching = true;
 
@@ -50,6 +49,21 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
         }
     });
   }
+
+  void calculateConsumption() {
+    String liters = litersController.text;
+    String distance = distanceController.text;
+
+    if(liters.isEmpty || distance.isEmpty){
+      return;
+    }
+
+    double consumption = (num.parse(liters) / num.parse(distance)) * 100;
+    setState(() {
+      consumptionController.text = consumption.toStringAsFixed(2);
+    });
+  }
+
 
   void addFuelRecord () async {
     String liters = litersController.text;
@@ -82,6 +96,10 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   void initState() {
     super.initState();
     fetchMotorcycles();
+    calculateConsumption();
+
+    litersController.addListener(calculateConsumption);
+    distanceController.addListener(calculateConsumption);
   }
 
 
@@ -104,6 +122,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         appBar:
@@ -143,16 +162,28 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   prefixIcon: const Icon(Icons.landscape, color: Colors.white),
                   labelText: "Distance"
               )),
-              FuelRecordsTextField(props: FuelRecordTextFieldType(
-                  unit: "l/100",
-                  keyboardType: TextInputType.number,
-                  autocorrect: false,
-                  onValueChanged: (val) {
-                    consumptionController.text = val;
-                  },
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+              child: TextField(
+                keyboardType: TextInputType.number,
+                autocorrect: false,
+                controller: consumptionController,
+                style:
+                GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
+                decoration: InputDecoration(
+                  suffix: Text("l/100", style: GoogleFonts.readexPro(color: Colors.grey, fontSize: 16),),
                   prefixIcon: const Icon(Icons.water_drop, color: Colors.white),
-                  labelText: "Consumption"
-              )),
+                  contentPadding: const EdgeInsets.all(12),
+                  labelText: "Consumption",
+                  labelStyle: GoogleFonts.readexPro(
+                      color: Colors.white, fontSize: 16),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Colors.grey, width: 1.5)),
+                  focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.5)),
+                ),
+              ),
+            ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 child: GestureDetector(

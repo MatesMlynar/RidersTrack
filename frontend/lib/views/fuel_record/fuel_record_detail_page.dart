@@ -45,7 +45,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         isStatsLoading = false;
       });
     } else {
-      Map<String, dynamic> result = await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
+      Map<String, dynamic> result =
+          await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
 
       if (result['status'] == 200) {
         setState(() {
@@ -60,21 +61,17 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
           //optional
 
-          if (result['data']['consumption'] != null) {
-            consumptionController.text = result['data']['consumption'].toString();
-          }
-
           if (result['data']['distance'] != null) {
             distanceController.text = result['data']['distance'].toString();
           }
-
         });
 
         //get all motorcycles
 
         isMotoFetching = true;
 
-        Map<String, dynamic> motorcycleFetchResult = await GetAllMotorcycles().run();
+        Map<String, dynamic> motorcycleFetchResult =
+            await GetAllMotorcycles().run();
 
         if (motorcycleFetchResult['status'] != 200) {
           isMotoFetching = false;
@@ -84,7 +81,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
         setState(() {
           isMotoFetching = false;
-          if (motorcycleFetchResult['data'] != null && motorcycleFetchResult['data'].isNotEmpty) {
+          if (motorcycleFetchResult['data'] != null &&
+              motorcycleFetchResult['data'].isNotEmpty) {
             motorcycleIdsList = motorcycleFetchResult['data'];
           }
         });
@@ -92,16 +90,22 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
     }
   }
 
-
   void deleteFuelRecordById() async {
+    if (widget.fuelRecordId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("id is not provided"),
+        backgroundColor: Colors.red,
+      ));
+    } else {
+      Map<String, dynamic> response =
+          await DeleteFuelRecordByIdCommand().run(widget.fuelRecordId!);
 
-    if(widget.fuelRecordId == null){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("id is not provided"), backgroundColor: Colors.red,));
-    }else{
-      Map<String, dynamic> response = await DeleteFuelRecordByIdCommand().run(widget.fuelRecordId!);
-
-      if(response['status'] == 200){
-        if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("fuel record successfully deleted"), backgroundColor: Colors.green,));
+      if (response['status'] == 200) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("fuel record successfully deleted"),
+            backgroundColor: Colors.green,
+          ));
           Navigator.pop(context);
         }
       }
@@ -109,40 +113,55 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   }
 
   void updateFuelRecordById() async {
-
-    if(widget.fuelRecordId == null){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("id is not provided"), backgroundColor: Colors.red,));
-    }else{
-
+    if (widget.fuelRecordId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("id is not provided"),
+        backgroundColor: Colors.red,
+      ));
+    } else {
       String liters = litersController.text;
       String price = priceController.text;
       String distance = distanceController.text;
       String consumption = consumptionController.text;
 
-
-      if(liters.isEmpty || price.isEmpty || selectedDate == DateTime(2023, 1, 1)){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
+      if (liters.isEmpty ||
+          price.isEmpty ||
+          selectedDate == DateTime(2023, 1, 1)) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Please fill in all fields"),
+          backgroundColor: Colors.red,
+        ));
         return;
       }
 
-      Map<String, dynamic> response = await UpdateFuelRecordByIdCommand().run(widget.fuelRecordId!,liters, price, selectedDate, selectedMotorcycleId!, consumption, distance );
+      Map<String, dynamic> response = await UpdateFuelRecordByIdCommand().run(
+          widget.fuelRecordId!,
+          liters,
+          price,
+          selectedDate,
+          selectedMotorcycleId!,
+          consumption,
+          distance);
 
-      if(response['status'] == 200){
-        if(context.mounted){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("fuel record successfully edited"), backgroundColor: Colors.green,));
+      if (response['status'] == 200) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("fuel record successfully edited"),
+            backgroundColor: Colors.green,
+          ));
         }
         setState(() {
           enabled = false;
         });
-      }
-      else{
-        if(context.mounted){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(response['message']),
+            backgroundColor: Colors.red,
+          ));
         }
       }
     }
-
-
   }
 
   void _showDatePicker() {
@@ -160,10 +179,29 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         });
   }
 
+  void calculateConsumption() {
+    String liters = litersController.text;
+    String distance = distanceController.text;
+
+    if(liters.isEmpty || distance.isEmpty){
+      return;
+    }
+
+    double consumption = (num.parse(liters) / num.parse(distance)) * 100;
+    setState(() {
+      consumptionController.text = consumption.toStringAsFixed(2);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     fetchFuelRecord();
+
+    calculateConsumption();
+
+    litersController.addListener(calculateConsumption);
+    distanceController.addListener(calculateConsumption);
   }
 
   @override
@@ -234,19 +272,35 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                             prefixIcon: const Icon(Icons.landscape,
                                 color: Colors.white),
                             labelText: "Distance")),
-                    FuelRecordsTextField(
-                        props: FuelRecordTextFieldType(
-                            enabled: enabled,
-                            unit: "l/100",
-                            initVal: consumptionController.text,
-                            keyboardType: TextInputType.number,
-                            autocorrect: false,
-                            onValueChanged: (val) {
-                              consumptionController.text = val;
-                            },
-                            prefixIcon: const Icon(Icons.water_drop,
-                                color: Colors.white),
-                            labelText: "Consumption")),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        autocorrect: false,
+                        controller: consumptionController,
+                        style: GoogleFonts.readexPro(
+                            color: Colors.white, fontSize: 16),
+                        decoration: InputDecoration(
+                          suffix: Text(
+                            "l/100",
+                            style: GoogleFonts.readexPro(
+                                color: Colors.grey, fontSize: 16),
+                          ),
+                          prefixIcon:
+                              const Icon(Icons.water_drop, color: Colors.white),
+                          contentPadding: const EdgeInsets.all(12),
+                          labelText: "Consumption",
+                          labelStyle: GoogleFonts.readexPro(
+                              color: Colors.white, fontSize: 16),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 1.5)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 1.5)),
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       child: !enabled
@@ -338,9 +392,11 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       child: OutlinedButton(
-                          onPressed: enabled ? () {
-                            updateFuelRecordById();
-                          } : null,
+                          onPressed: enabled
+                              ? () {
+                                  updateFuelRecordById();
+                                }
+                              : null,
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
