@@ -275,6 +275,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       child: TextField(
+                        enabled: enabled,
                         keyboardType: TextInputType.number,
                         autocorrect: false,
                         controller: consumptionController,
