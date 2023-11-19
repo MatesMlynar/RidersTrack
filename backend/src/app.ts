@@ -12,7 +12,8 @@ require('dotenv').config();
 const app: Application = express(); 
 
 //BODY-PARSER
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 //MIDDLEWARE

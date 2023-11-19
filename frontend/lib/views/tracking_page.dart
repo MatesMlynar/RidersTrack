@@ -22,12 +22,12 @@ class TrackingPage extends StatefulWidget with WidgetsBindingObserver {
 class _TrackingPageState extends State<TrackingPage>
     with WidgetsBindingObserver {
   int seconds = 0;
-  late Timer timer;
+  Timer? timer;
   late Timer locationTimer;
   bool isRunning = true;
 
   List<Position> locationPoints = [];
-  late StreamSubscription<Position> positionStream;
+  StreamSubscription<Position>? positionStream;
   late LocationSettings locationSettings;
 
   List<Position> testListOfPositions = [];
@@ -43,12 +43,9 @@ class _TrackingPageState extends State<TrackingPage>
   }
 
   void _resumeTimer() async {
-    print('wow1');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('wow2');
     String encodedMap = prefs.getString('timer') ?? '';
-    print('wow3');
 
     if (encodedMap != '') {
       isRunning = true;
@@ -62,7 +59,6 @@ class _TrackingPageState extends State<TrackingPage>
         String savedTime = timerData['timer_timestamp'];
         Duration timeDifference =
         DateTime.now().difference(DateTime.parse(savedTime));
-
 
         setState(() {
           seconds = savedSeconds + timeDifference.inSeconds;
@@ -128,9 +124,10 @@ class _TrackingPageState extends State<TrackingPage>
       SharedPreferences.getInstance().then((prefs) {
         prefs.remove('timer');
       });
-      positionStream.cancel();
+      if(positionStream != null){
+        positionStream!.cancel();
+      }
 
-      //todo get all data and call command to create new ride record
       num totalDistance = calculateTotalDistance(locationPoints);
       num maxSpeed = calculateMaxSpeed(locationPoints);
       num duration = seconds;
@@ -169,14 +166,17 @@ class _TrackingPageState extends State<TrackingPage>
     super.initState();
     _initTimer();
     WidgetsBinding.instance.addObserver(this);
-    _resumeTimer();
     startTrackingRide();
   }
 
   @override
   void dispose() {
-    timer.cancel();
-    positionStream.cancel();
+    if(timer != null){
+      timer!.cancel();
+    }
+    if(positionStream != null){
+      positionStream!.cancel();
+    }
     WidgetsBinding.instance.removeObserver(this);
     SharedPreferences.getInstance().then((prefs) {
       prefs.remove('timer');
@@ -190,7 +190,10 @@ class _TrackingPageState extends State<TrackingPage>
 
     if (state == AppLifecycleState.paused) {
       isRunning = false;
-      timer.cancel();
+      if(timer != null){
+        timer!.cancel();
+        timer = null;
+      }
       print('PAUSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       Map<String, dynamic> timerData = {
         'timer_seconds': seconds,
@@ -204,7 +207,11 @@ class _TrackingPageState extends State<TrackingPage>
     } else if (state == AppLifecycleState.resumed) {
       print('RESUMED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       // Resume the timer when the app is resumed
-      if(isRunning){
+      if(timer == null){
+        _initTimer();
+      }
+
+      if(positionStream != null && !positionStream!.isPaused){
         _resumeTimer();
       }
     }
@@ -214,7 +221,6 @@ class _TrackingPageState extends State<TrackingPage>
   Widget build(BuildContext context) {
     String formattedTime = formatTime(seconds);
 
-    print(isRunning);
 
 
     return WillPopScope(
@@ -257,14 +263,17 @@ class _TrackingPageState extends State<TrackingPage>
                         onPressed: () {
                           setState(() {
                             isRunning = !isRunning;
-                            if (isRunning) {
-                              if(!timer.isActive){
+                            if (isRunning && timer != null) {
+                              if(!timer!.isActive){
                                 _initTimer();
                               }
                               startTrackingRide();
                               //startTrackingRideLocationPackage();
                             } else {
-                              positionStream.cancel();
+                              if(positionStream != null){
+                                positionStream!.cancel();
+                                positionStream = null;
+                              }
                               //locationTimer.cancel();
                             }
                           });
@@ -287,8 +296,8 @@ class _TrackingPageState extends State<TrackingPage>
                         onPressed: () {
                           setState(() {
                             print(
-                                'todo create a command that will create new ride and call it here');
-                            //todo create a command that will create new ride and call it from here
+                                'todo check if internet connection is on. If not show snack-bar');
+                            //todo check if internet connection is on. If not show snack-bar
                             saveRideAndRedirect();
                           });
                         },

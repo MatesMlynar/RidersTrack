@@ -20,7 +20,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   final priceController = TextEditingController();
   final distanceController = TextEditingController();
   final consumptionController = TextEditingController();
-  late DateTime selectedDate = DateTime(2023, 1, 1);
+  late DateTime selectedDate = DateTime.now();
 
   bool isMotoFetching = false;
 
