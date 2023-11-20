@@ -1,6 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
 
-class CalculateTotalMoneySpentCommand extends BaseCommand {
+class UpdateTotalMoneySpentCommand extends BaseCommand {
 
   Future<num> run () async {
 

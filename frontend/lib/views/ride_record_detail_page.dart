@@ -145,6 +145,9 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
         calculatedDistance = (rideRecord!.totalDistance/1000).toStringAsFixed(2);
       }
     }
+    
+    double fontSize = MediaQuery.of(context).size.width * 0.04;
+    
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 24, 27),
@@ -183,7 +186,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(DateFormat('dd.MM.yyyy').format(rideRecord!.date.toLocal()), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+                    Text(DateFormat('dd.MM.yyyy').format(rideRecord!.date.toLocal()), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -192,7 +195,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
                           child:  Column(
                               children: [
-                                Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+                                Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
                                 const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 14),),
                               ]
                           ),
@@ -204,7 +207,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           ),
                           child: Column(
                               children: [
-                                Text('${formatTime(rideRecord!.duration)} min', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+                                Text('${formatTime(rideRecord!.duration)} min', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
                                 const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 14),),
                               ]
                           ),
@@ -213,7 +216,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
                           child:  Column(
                               children: [
-                                Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
+                                Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
                                 const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 14),),
                               ]
                           ),

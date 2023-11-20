@@ -1,6 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
-import 'package:frontend/commands/fuel_records/calculate_total_fuel_used_command.dart';
-import 'package:frontend/commands/fuel_records/calculate_total_money_spent_command.dart';
+import 'package:frontend/commands/fuel_records/update_total_fuel_used_command.dart';
+import 'package:frontend/commands/fuel_records/update_total_money_spent_command.dart';
 
 class AddNewFuelRecordCommand extends BaseCommand{
 
@@ -33,8 +33,8 @@ class AddNewFuelRecordCommand extends BaseCommand{
         };
 
         fuelRecordModel.fuelRecords!.add(newFuelRecord);
-        CalculateTotalFuelUsedCommand().run();
-        CalculateTotalMoneySpentCommand().run();
+        UpdateTotalFuelUsedCommand().run();
+        UpdateTotalMoneySpentCommand().run();
 
         return {
           "status": result['status'],

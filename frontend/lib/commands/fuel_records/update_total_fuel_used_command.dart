@@ -1,6 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
 
-class CalculateTotalFuelUsedCommand extends BaseCommand {
+class UpdateTotalFuelUsedCommand extends BaseCommand {
   Future<num> run() async {
     List<Map<String, dynamic>>? fuelRecords = fuelRecordModel.fuelRecords;
 

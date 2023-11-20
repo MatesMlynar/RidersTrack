@@ -147,7 +147,7 @@ class _TrackingPageState extends State<TrackingPage>
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => MapTest(locationPoints: locationPoints)));
+                builder: (context) => MapTest(locationPoints: locationPoints, totalDistance: totalDistance, maxSpeed: maxSpeed,)));
       }
 
 

@@ -1,6 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
-import 'package:frontend/commands/fuel_records/calculate_total_fuel_used_command.dart';
-import 'package:frontend/commands/fuel_records/calculate_total_money_spent_command.dart';
+import 'package:frontend/commands/fuel_records/update_total_fuel_used_command.dart';
+import 'package:frontend/commands/fuel_records/update_total_money_spent_command.dart';
 
 class DeleteFuelRecordByIdCommand extends BaseCommand{
 
@@ -21,8 +21,8 @@ class DeleteFuelRecordByIdCommand extends BaseCommand{
       if(result['status'] == 200){
 
         fuelRecordModel.fuelRecords!.removeWhere((item) => item['_id'] == id);
-        CalculateTotalFuelUsedCommand().run();
-        CalculateTotalMoneySpentCommand().run();
+        UpdateTotalFuelUsedCommand().run();
+        UpdateTotalMoneySpentCommand().run();
 
 
         return{

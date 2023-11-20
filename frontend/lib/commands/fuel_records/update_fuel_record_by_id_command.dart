@@ -1,7 +1,7 @@
 import 'package:frontend/commands/base_command.dart';
 
-import 'calculate_total_fuel_used_command.dart';
-import 'calculate_total_money_spent_command.dart';
+import 'update_total_fuel_used_command.dart';
+import 'update_total_money_spent_command.dart';
 
 class UpdateFuelRecordByIdCommand extends BaseCommand{
 
@@ -32,8 +32,8 @@ class UpdateFuelRecordByIdCommand extends BaseCommand{
           fuelRecordModel.fuelRecords![indexToUpdate]['motorcycleId'] = motorcycleId;
           fuelRecordModel.fuelRecords![indexToUpdate]['consumption'] = num.parse(consumption);
           fuelRecordModel.fuelRecords![indexToUpdate]['distance'] = num.parse(distance);
-          CalculateTotalMoneySpentCommand().run();
-          CalculateTotalFuelUsedCommand().run();
+          UpdateTotalMoneySpentCommand().run();
+          UpdateTotalFuelUsedCommand().run();
         }
 
         return {
