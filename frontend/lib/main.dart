@@ -34,6 +34,7 @@ Future main() async {
   bool isTokenValid = false;
 
   if(token != null){
+    print(token);
     isTokenValid = Jwt.isExpired(token) == false;
   }
 

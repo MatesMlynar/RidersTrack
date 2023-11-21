@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/pre-tracking_page.dart';
+import 'package:frontend/views/profile_page.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({super.key});
@@ -14,7 +15,7 @@ class _LayoutPageState extends State<LayoutPage> {
 
   List<Widget> pages = const [
     HomePage(),
-    //todo create garage page
+    ProfilePage()
   ];
 
   @override

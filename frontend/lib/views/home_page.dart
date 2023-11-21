@@ -36,20 +36,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchData() async {
-    setState(() {
-      isLoadingRecords = true;
-    });
-    Map<String, dynamic> result = await GetAllRideRecordsCommand().run();
-    if (result['status'] == 200) {
+    if(context.mounted){
       setState(() {
-        message = result['message'];
-        isLoadingRecords = false;
+        isLoadingRecords = true;
       });
-    } else {
-      setState(() {
-        message = result['message'];
-        isLoadingRecords = false;
-      });
+      Map<String, dynamic> result = await GetAllRideRecordsCommand().run();
+      if (result['status'] == 200) {
+        setState(() {
+          message = result['message'];
+          isLoadingRecords = false;
+        });
+      } else {
+        setState(() {
+          message = result['message'];
+          isLoadingRecords = false;
+        });
+      }
     }
   }
 
@@ -78,12 +80,6 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.logout, color: Colors.white),
-          onPressed: () {
-            logout(context);
-          },
-        ),
         automaticallyImplyLeading: false,
         actions: [
           Padding(
