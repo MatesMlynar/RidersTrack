@@ -146,7 +146,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
       }
     }
     
-    double fontSize = MediaQuery.of(context).size.width * 0.04;
+    double fontSize = MediaQuery.of(context).size.height * 0.024;
     
 
     return Scaffold(

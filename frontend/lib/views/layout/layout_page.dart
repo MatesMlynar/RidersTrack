@@ -21,19 +21,29 @@ class _LayoutPageState extends State<LayoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages.elementAt(currentPage),
-      bottomNavigationBar: NavigationBar(
-        //TODO create bottomAppBar widget with this settings clipBehavior: Clip.antiAlias,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(
-              icon: Icon(Icons.account_circle_rounded), label: "Profile"),
-        ],
-        selectedIndex: currentPage,
-        onDestinationSelected: (int value) {
-          setState(() {
-            currentPage = value;
-          });
-        },
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+          labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+                (Set<MaterialState> states) => states.contains(MaterialState.selected)
+                ? const TextStyle(color: Colors.white)
+                : const TextStyle(color: Colors.grey),
+          ),
+        ),
+        child: NavigationBar(
+          //TODO create bottomAppBar widget with this settings clipBehavior: Clip.antiAlias,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home,), label: "Home"),
+            NavigationDestination(
+                icon: Icon(Icons.account_circle_rounded, color: Colors.white), label: "Profile", ),
+          ],
+          selectedIndex: currentPage,
+          onDestinationSelected: (int value) {
+            setState(() {
+              currentPage = value;
+            });
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(

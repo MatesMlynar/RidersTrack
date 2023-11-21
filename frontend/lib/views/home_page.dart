@@ -71,14 +71,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       appBar: AppBar(
+
         title: const Text(
           'RIDERS TRACK',
           style: TextStyle(
-              color: Colors.black, fontSize: 26, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.logout, color: Colors.black),
+          icon: const Icon(Icons.logout, color: Colors.white),
           onPressed: () {
             logout(context);
           },
@@ -97,11 +98,11 @@ class _HomePageState extends State<HomePage> {
               child: const Icon(
                 Icons.local_gas_station_sharp,
                 size: 26.0,
+                color: Colors.white,
               ),
             ),
           )
         ],
-        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0),

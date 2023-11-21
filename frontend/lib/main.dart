@@ -71,6 +71,15 @@ class MyApp extends StatelessWidget {
           scaffoldMessengerKey: SnackBarService.scaffoldKey,
           title: 'Rider\'s Track',
           theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              color: Color.fromARGB(255, 20, 24, 27),
+            ),
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
