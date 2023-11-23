@@ -15,6 +15,7 @@ import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
 import 'package:frontend/views/layout/layout_page.dart';
 import 'package:frontend/views/login_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +35,6 @@ Future main() async {
   bool isTokenValid = false;
 
   if(token != null){
-    print(token);
     isTokenValid = Jwt.isExpired(token) == false;
   }
 

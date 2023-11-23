@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
-import 'package:frontend/views/home_page.dart';
+import 'package:frontend/views/motorcycle_list_page.dart';
 
 import '../utils/secure_storage.dart';
 import 'layout/layout_page.dart';
@@ -114,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const ProfilePageBox(icon: Icons.security, label: "Change password", routeWidget: LayoutPage()),
-            const ProfilePageBox(icon: Icons.motorcycle, label: "My motorcycles", routeWidget: LayoutPage()),
+            const ProfilePageBox(icon: Icons.motorcycle, label: "My motorcycles", routeWidget: MotorcycleList()),
             const ProfilePageBox(icon: Icons.settings, label: "Settings", routeWidget: LayoutPage()),
             Align(
               alignment: const AlignmentDirectional(0.00, 0.00),

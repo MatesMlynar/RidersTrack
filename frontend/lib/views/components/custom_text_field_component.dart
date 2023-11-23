@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../types/fuel_record_textField_type.dart';
+import '../../types/textField_type.dart';
 
-class FuelRecordsTextField extends StatefulWidget {
-  const FuelRecordsTextField({super.key, required this.props});
-  final FuelRecordTextFieldType props;
+class CustomTextField extends StatefulWidget {
+  const CustomTextField({super.key, required this.props});
+  final CustomTextFieldType props;
   @override
-  State<FuelRecordsTextField> createState() => _FuelRecordsTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
-class _FuelRecordsTextFieldState extends State<FuelRecordsTextField> {
+class _CustomTextFieldState extends State<CustomTextField> {
 
 
   TextEditingController inputController = TextEditingController();

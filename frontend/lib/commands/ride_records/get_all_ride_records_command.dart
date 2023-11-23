@@ -1,5 +1,4 @@
 import 'package:frontend/types/ride_record.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../base_command.dart';
 

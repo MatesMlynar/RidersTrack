@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
-import 'package:frontend/types/fuel_record_textField_type.dart';
-import 'package:frontend/views/components/fuel-records_text-field_component.dart';
+import 'package:frontend/types/textField_type.dart';
+import 'package:frontend/views/components/custom_text_field_component.dart';
 import 'package:frontend/views/components/no_moto_found_component.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -131,7 +131,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
             child: Column(children: [
-              FuelRecordsTextField(props: FuelRecordTextFieldType(
+              CustomTextField(props: CustomTextFieldType(
                   unit: "liters",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
@@ -142,7 +142,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                       color: Colors.white),
                   labelText: "Fuel amount *"
               )),
-              FuelRecordsTextField(props: FuelRecordTextFieldType(
+              CustomTextField(props: CustomTextFieldType(
                   unit: "czk",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
@@ -152,7 +152,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   prefixIcon: const Icon(Icons.attach_money, color: Colors.white),
                   labelText: "Price *"
               )),
-              FuelRecordsTextField(props: FuelRecordTextFieldType(
+              CustomTextField(props: CustomTextFieldType(
                   unit: "Km",
                   keyboardType: TextInputType.number,
                   autocorrect: false,

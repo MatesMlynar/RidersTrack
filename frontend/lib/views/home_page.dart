@@ -4,7 +4,6 @@ import 'package:frontend/commands/ride_records/get_all_ride_records_command.dart
 import 'package:frontend/views/components/rideRecordCard_component.dart';
 import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
 import 'package:frontend/views/ride_record_detail_page.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../models/ride_record_model.dart';
 import '../models/user_model.dart';

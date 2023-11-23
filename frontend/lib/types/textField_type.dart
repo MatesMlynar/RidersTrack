@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-class FuelRecordTextFieldType {
+class CustomTextFieldType {
   final TextInputType keyboardType;
   final bool autocorrect;
   final Function(String) onValueChanged;
@@ -12,7 +12,7 @@ class FuelRecordTextFieldType {
   final bool? enabled;
 
 
-  FuelRecordTextFieldType({
+  CustomTextFieldType({
     required this.keyboardType,
     required this.autocorrect,
     required this.onValueChanged,

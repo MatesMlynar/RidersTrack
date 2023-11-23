@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../commands/fuel_records/update_fuel_record_by_id_command.dart';
 import '../../commands/motorcycle/get_all_motorcycles_command.dart';
-import '../../types/fuel_record_textField_type.dart';
-import '../components/fuel-records_text-field_component.dart';
+import '../../types/textField_type.dart';
+import '../components/custom_text_field_component.dart';
 import '../components/no_moto_found_component.dart';
 
 class FuelRecordDetailPage extends StatefulWidget {
@@ -233,8 +233,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
             child: isStatsLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(children: [
-                    FuelRecordsTextField(
-                        props: FuelRecordTextFieldType(
+                    CustomTextField(
+                        props: CustomTextFieldType(
                             enabled: enabled,
                             unit: "liters",
                             initVal: litersController.text,
@@ -246,8 +246,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                             prefixIcon: const Icon(Icons.local_gas_station,
                                 color: Colors.white),
                             labelText: "Fuel amount *")),
-                    FuelRecordsTextField(
-                        props: FuelRecordTextFieldType(
+                    CustomTextField(
+                        props: CustomTextFieldType(
                             enabled: enabled,
                             unit: "czk",
                             initVal: priceController.text,
@@ -259,8 +259,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                             prefixIcon: const Icon(Icons.attach_money,
                                 color: Colors.white),
                             labelText: "Price *")),
-                    FuelRecordsTextField(
-                        props: FuelRecordTextFieldType(
+                    CustomTextField(
+                        props: CustomTextFieldType(
                             enabled: enabled,
                             unit: "Km",
                             initVal: distanceController.text,
