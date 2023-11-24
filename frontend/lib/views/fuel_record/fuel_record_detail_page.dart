@@ -350,7 +350,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                                         .map((itemVal) => DropdownMenuItem(
                                               value: itemVal['_id'],
                                               child: Text(
-                                                itemVal['name'],
+                                                itemVal['brand'] + " " + itemVal['model'],
                                                 style: const TextStyle(
                                                     color: Colors.white),
                                               ),

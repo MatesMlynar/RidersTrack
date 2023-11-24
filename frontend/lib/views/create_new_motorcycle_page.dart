@@ -35,7 +35,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
       num? ccm = num.tryParse(this.ccm.text);
 
       if(brand.isEmpty || model.isEmpty){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all required (*) fields"), backgroundColor: Colors.red,));
         return;
       }
 
@@ -192,7 +192,6 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: OutlinedButton(
                   onPressed: () {
-                    //todo add new motorcycle to database
                     createNewMotorcycle();
                   },
                   style: ButtonStyle(

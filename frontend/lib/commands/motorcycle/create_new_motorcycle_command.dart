@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:frontend/commands/base_command.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,7 +15,16 @@ class CreateNewMotorcycleCommand extends BaseCommand{
       };
     }
     else{
-      Map<String, dynamic> result = await motorcycleService.createNewMotorcycle(token, brand, model, yearOfManufacture, ccm, null);
+
+      String? base64Image;
+
+      // If image is not null, convert it to base64
+      if(image != null){
+        List<int> imageBytes = await image.readAsBytes();
+        base64Image = base64Encode(imageBytes);
+      }
+
+      Map<String, dynamic> result = await motorcycleService.createNewMotorcycle(token, brand, model, yearOfManufacture, ccm, base64Image);
       if(result['status'] != 200){
         return {
           "status": result['status'],
@@ -27,12 +38,13 @@ class CreateNewMotorcycleCommand extends BaseCommand{
           "model": model,
           "yearOfManufacture": yearOfManufacture,
           "ccm": ccm,
-          "image": image
+          "image": base64Image
         };
 
         Motorcycle motorcycle = Motorcycle.fromJson(newMotorcycle);
 
         motorcycleModel.motorcycles!.add(motorcycle);
+        motorcycleModel.notifyListeners();
 
         return {
           "status": result['status'],

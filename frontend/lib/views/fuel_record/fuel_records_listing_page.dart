@@ -73,7 +73,10 @@ class _FuelRecordsState extends State<FuelRecords> {
       floatingActionButton: FloatingActionButton(
           heroTag: "fuelRecordListingButton",
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNewFuelRecordPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddNewFuelRecordPage()));
           },
           backgroundColor: Colors.white,
           child: const Icon(Icons.add)),
@@ -88,21 +91,20 @@ class _FuelRecordsState extends State<FuelRecords> {
                   Expanded(
                     child: StatisticCard(
                         props: StatisticCardType(
-                            title: 'total fuel used', value: "$totalFuelUsed l", isLoading: isLoadingRecords)),
+                            title: 'total fuel used',
+                            value: "$totalFuelUsed l",
+                            isLoading: isLoadingRecords)),
                   ),
                   Expanded(
                     child: StatisticCard(
                         props: StatisticCardType(
-                            title: 'money spent', value: "$totalMoneySpent Kč", isLoading: isLoadingRecords)),
+                            title: 'money spent',
+                            value: "$totalMoneySpent Kč",
+                            isLoading: isLoadingRecords)),
                   )
                 ],
               ),
-              const Column(children: [
-                 SizedBox(height: 20.0),
-                 Text('recently saved records',
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
-                 SizedBox(height: 10.0),
-              ],),
+              const SizedBox(height: 30),
               Expanded(
                 child: isLoadingRecords
                     ? const Center(child: CircularProgressIndicator())
@@ -112,9 +114,30 @@ class _FuelRecordsState extends State<FuelRecords> {
                             style: const TextStyle(color: Colors.red),
                           )
                         : fuelRecords?.isEmpty ?? true
-                            ? const Text(
-                                "no record found",
-                                style: TextStyle(color: Colors.red),
+                            ? Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.4),
+                                    const Text(
+                                      'No fuel records found.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'Create one!',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )
                             : ListView.builder(
                                 clipBehavior: Clip.antiAlias,
@@ -122,12 +145,19 @@ class _FuelRecordsState extends State<FuelRecords> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                        const EdgeInsets.fromLTRB(5, 0, 5, 10),
                                     child: Material(
                                       child: ListTile(
                                         onTap: () {
-                                          //todo provide list tile id to the fuel record page
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => FuelRecordDetailPage(fuelRecordId: fuelRecords?[index]['_id'],)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      FuelRecordDetailPage(
+                                                        fuelRecordId:
+                                                            fuelRecords?[index]
+                                                                ['_id'],
+                                                      )));
                                         },
                                         tileColor: Colors.white,
                                         shape: const RoundedRectangleBorder(

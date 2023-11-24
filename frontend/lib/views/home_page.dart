@@ -35,16 +35,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchData() async {
-    if(context.mounted){
+    if (context.mounted) {
       setState(() {
         isLoadingRecords = true;
       });
       Map<String, dynamic> result = await GetAllRideRecordsCommand().run();
       if (result['status'] == 200) {
-        setState(() {
-          message = result['message'];
-          isLoadingRecords = false;
-        });
+        if (context.mounted) {
+          setState(() {
+            message = result['message'];
+            isLoadingRecords = false;
+          });
+        }
       } else {
         setState(() {
           message = result['message'];
@@ -68,11 +70,10 @@ class _HomePageState extends State<HomePage> {
 
     rideRecords = context.watch<RideRecordModel>().rideRecords;
     print(rideRecords);
-    
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       appBar: AppBar(
-
         title: const Text(
           'RIDERS TRACK',
           style: TextStyle(
@@ -112,48 +113,67 @@ class _HomePageState extends State<HomePage> {
             Center(
               child: isLoadingRecords
                   ? const CircularProgressIndicator()
-                  : rideRecords != null && rideRecords!.isNotEmpty ? SizedBox(
-                      height: swiperHeight,
-                      child: Swiper(
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            child: RideRecordCard(maxSpeed: rideRecords![index].maxSpeed, date: rideRecords![index].date, distance: rideRecords![index].totalDistance, duration: rideRecords![index].duration, locationPoints: (rideRecords![index].positionPoints),),
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => RideRecordDetailPage(id: rideRecords![index].id)));
+                  : rideRecords != null && rideRecords!.isNotEmpty
+                      ? SizedBox(
+                          height: swiperHeight,
+                          child: Swiper(
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                child: RideRecordCard(
+                                  maxSpeed: rideRecords![index].maxSpeed,
+                                  date: rideRecords![index].date,
+                                  distance: rideRecords![index].totalDistance,
+                                  duration: rideRecords![index].duration,
+                                  locationPoints:
+                                      (rideRecords![index].positionPoints),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RideRecordDetailPage(
+                                                  id: rideRecords![index].id)));
+                                },
+                              );
                             },
-                          );
-                        },
-                        itemCount:
-                            rideRecords == null ? 0 : rideRecords!.length,
-                        pagination: const SwiperPagination(),
-                        control: SwiperControl(
-                          padding: EdgeInsets.fromLTRB(0,
-                              MediaQuery.of(context).size.height * 0.17, 0, 0),
+                            itemCount:
+                                rideRecords == null ? 0 : rideRecords!.length,
+                            pagination: const SwiperPagination(),
+                            control: SwiperControl(
+                              padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.height * 0.17,
+                                  0,
+                                  0),
+                            ),
+                          ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5),
+                            const Text(
+                              'No ride records found.',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Start tracking your rides!',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ) :  Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.5),
-                  const Text(
-                    'No ride records found.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Start tracking your rides!',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

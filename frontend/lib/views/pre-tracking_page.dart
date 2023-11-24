@@ -6,6 +6,8 @@ import 'package:frontend/views/tracking_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'create_new_motorcycle_page.dart';
+
 class PreTrackingPage extends StatefulWidget {
   const PreTrackingPage({super.key});
 
@@ -155,7 +157,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                       .map((itemVal) =>
                       DropdownMenuItem(
                         value: itemVal['_id'],
-                        child: Text(itemVal['name']),
+                        child: Text(itemVal['brand'] + " " + itemVal['model'],
+                          style: const TextStyle(color: Colors.white),),
                       ))
                       .toList(),
                   //style
@@ -202,9 +205,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                           decoration: TextDecoration.underline,
                           decorationColor: Colors.white),),
                       onTap: () {
-                        print(
-                            'todo add navigator that will open page where user can create new motorcycle');
-                        //todo add navigator that will open page where user can create new motorcycle
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateNewMotorcycle()));
                       },
                     )
                   ],
@@ -224,8 +225,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                 }
                 //todo create method that will check the user location permission
                 checkPermission();
-              } : () {//todo redirect where user will be able to create new motorcycle
-                    print('todo redirect where user will be able to create new motorcycle');
+              } : () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateNewMotorcycle()));
                  },
               style: ButtonStyle(
                   shape:

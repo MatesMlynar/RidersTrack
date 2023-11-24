@@ -1,13 +1,44 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
-class MotorcycleItemComponent extends StatelessWidget {
-  const MotorcycleItemComponent({super.key});
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../types/motorcycle_type.dart';
+
+class MotorcycleItemComponent extends StatefulWidget {
+  const MotorcycleItemComponent({super.key, required this.data});
+
+  final Motorcycle data;
+
+  @override
+  State<MotorcycleItemComponent> createState() => _MotorcycleItemComponentState();
+}
+
+class _MotorcycleItemComponentState extends State<MotorcycleItemComponent> {
+
+  Uint8List? imageBytes;
+
+  void decodeImage() async {
+    if(widget.data.image == null){
+      return;
+    }
+    // Decode image from base64
+    List<int> decodedBase = base64Decode(widget.data.image!);
+    imageBytes = Uint8List.fromList(decodedBase);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    decodeImage();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     double height = MediaQuery.of(context).size.height;
-
 
     return GestureDetector(
       onTap: () {
@@ -30,36 +61,35 @@ class MotorcycleItemComponent extends StatelessWidget {
           ),
           child: Column(
             children: [
+              imageBytes == null ? const SizedBox(height: 0, width: 0,) :
               Container(
                 width: double.infinity,
                 height: height * 0.20,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: Image.network(
-                      'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                    ).image,
+                    image: Image.memory(imageBytes!).image,
                     fit: BoxFit.cover,
               ))),
-              const Column(
+              Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: SizedBox(
                       width: double.infinity,
                       child: Wrap(
                         alignment: WrapAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Yamaha YZF-R6',
-                            style: TextStyle(
+                            widget.data.brand,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '2018',
-                            style: TextStyle(
+                            widget.data.yearOfManufacture.toString(),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -70,15 +100,15 @@ class MotorcycleItemComponent extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     child: SizedBox(
                       width: double.infinity,
                       child: Wrap(
                         alignment: WrapAlignment.spaceBetween,
                         children: [
                           Text(
-                            '600cc',
-                            style: TextStyle(
+                            widget.data.model,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                             ),

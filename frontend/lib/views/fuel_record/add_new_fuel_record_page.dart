@@ -213,7 +213,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                     value: selectedMotorcycleId,
                     items: motorcycleIdsList.map((itemVal) => DropdownMenuItem(
                               value: itemVal['_id'],
-                              child: Text(itemVal['name']),
+                              child: Text(itemVal['brand'] + " " + itemVal['model']),
                             ))
                         .toList(),
                     onChanged: (val) {
