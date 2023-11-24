@@ -80,13 +80,14 @@ class _MotorcycleItemComponentState extends State<MotorcycleItemComponent> {
                         alignment: WrapAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.data.brand,
+                            '${widget.data.brand} ${widget.data.model}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          widget.data.yearOfManufacture == null ? const SizedBox(height: 0, width: 0,) :
                           Text(
                             widget.data.yearOfManufacture.toString(),
                             style: const TextStyle(
@@ -106,8 +107,9 @@ class _MotorcycleItemComponentState extends State<MotorcycleItemComponent> {
                       child: Wrap(
                         alignment: WrapAlignment.spaceBetween,
                         children: [
+                          widget.data.ccm == null ? const SizedBox(height: 0, width: 0,) :
                           Text(
-                            widget.data.model,
+                            '${widget.data.ccm} ccm',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
