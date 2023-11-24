@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/commands/base_command.dart';
 import 'package:frontend/commands/user/store_already_logged_user_command.dart';
+import 'package:frontend/models/motorcycle_model.dart';
 import 'package:frontend/models/ride_record_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/services/fuel_record_service.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (c) => UserModel()),
       ChangeNotifierProvider(create: (c) => FuelRecordModel()),
       ChangeNotifierProvider(create: (c) => RideRecordModel()),
+      ChangeNotifierProvider(create: (c) => MotorcycleModel()),
       Provider(create: (c) => UserService()),
       Provider(create: (c) => FuelRecordService()),
       Provider(create: (c) => MotorcycleService()),

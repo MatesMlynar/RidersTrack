@@ -21,9 +21,9 @@ export class MotorcycleService{
         }
     }
 
-    static async addMotorcycle(name : String, km : Number, userId : String) : Promise<Motorcycle | null>{
+    static async addMotorcycle(brand : String, model : String, userId : String, ccm: Number, image : String, yearOfManufacture : number) : Promise<Motorcycle | null>{
         try{
-            const motorcycle  = new MotorcycleModel({name, km, user : userId})
+            const motorcycle  = new MotorcycleModel({brand, model, user : userId, ccm, image, yearOfManufacture});
             const response = await motorcycle.save()
             return response.toObject() as Motorcycle;
         }catch(err){

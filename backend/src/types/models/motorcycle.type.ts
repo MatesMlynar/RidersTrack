@@ -4,4 +4,6 @@ export default interface Motorcycle extends Document{
     name: string;
     image: string;
     km: number;
+    yearOfManufacture: number;
+    ccm: number;
 }

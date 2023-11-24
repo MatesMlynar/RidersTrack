@@ -9,16 +9,23 @@ const motorcycleSchema = new Schema({
         ref: "user",
         required: true,
     },
-    name: {
+    brand: {
+        type: String,
+        required: true,
+    },
+    model: {
         type: String,
         required: true,
     },
     image: {
         type: String,
     },
-    km: {
+    yearOfManufacture: {
         type: Number,
     },
+    ccm: {
+        type: Number,
+    }
 })
 
 

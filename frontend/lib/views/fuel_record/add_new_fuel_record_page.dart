@@ -22,6 +22,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   final consumptionController = TextEditingController();
   late DateTime selectedDate = DateTime.now();
 
+
   bool isMotoFetching = false;
 
   late String? selectedMotorcycleId;

@@ -28,8 +28,8 @@ class AddNewFuelRecordCommand extends BaseCommand{
           "totalPrice": num.parse(price),
           "date": date,
           "motorcycleId": motorcycleId,
-          "consumption": num.parse(consumption),
-          "distance": num.parse(distance),
+          "consumption": num.parse(consumption == ""? "0" : consumption),
+          "distance": num.parse(distance == ""? "0" : distance),
         };
 
         fuelRecordModel.fuelRecords!.add(newFuelRecord);

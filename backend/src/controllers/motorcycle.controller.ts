@@ -109,7 +109,7 @@ export const addMotorcycle = async (req: authRequest, res: Response) => {
             else{
                 //token is valid, add motorcycle
                 const decodedToken : TokenType = jwt.decode(token) as TokenType;
-                const response : Motorcycle | null = await MotorcycleService.addMotorcycle(req.body.name, req.body.km, decodedToken.userData.id);
+                const response : Motorcycle | null = await MotorcycleService.addMotorcycle(req.body.brand, req.body.model, decodedToken.userData.id, req.body.ccm, req.body.image, req.body.yearOfManufacture);
                 if(!response){
                     res.status(500).send({
                         status: 500,

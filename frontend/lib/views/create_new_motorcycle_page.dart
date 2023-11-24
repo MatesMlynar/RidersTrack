@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../commands/motorcycle/create_new_motorcycle_command.dart';
 import '../types/textField_type.dart';
 import 'components/custom_text_field_component.dart';
 
@@ -17,13 +18,42 @@ class CreateNewMotorcycle extends StatefulWidget {
 class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
   TextEditingController brandController = TextEditingController();
   TextEditingController modelController = TextEditingController();
-  TextEditingController distance = TextEditingController();
+  TextEditingController yearOfManufacture = TextEditingController();
+  TextEditingController ccm = TextEditingController();
 
   XFile? selectedImage;
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+
+    void createNewMotorcycle() async {
+
+      String brand = brandController.text;
+      String model = modelController.text;
+      num? yearOfManufacture = num.tryParse(this.yearOfManufacture.text);
+      num? ccm = num.tryParse(this.ccm.text);
+
+      if(brand.isEmpty || model.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red,));
+        return;
+      }
+
+      Map<String,dynamic> result = await CreateNewMotorcycleCommand().run(brand, model, yearOfManufacture, ccm, selectedImage);
+
+      if(result['status'] != 200){
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+        }
+        return;
+      }
+
+      if(context.mounted){
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Motorcycle added"), backgroundColor: Colors.green,));
+      }
+    }
+
 
     Future<XFile?> _getImage(ImageSource source) async {
       final ImagePicker _picker = ImagePicker();
@@ -55,16 +85,16 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(Icons.photo_library),
-                  title: Text('From gallery'),
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('From gallery'),
                   onTap: () async {
                     Navigator.pop(context);
                     await _getImage(ImageSource.gallery);
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.camera_alt),
-                  title: Text('Take a photo'),
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text('Take a photo'),
                   onTap: () async {
                     Navigator.pop(context);
                     await _getImage(ImageSource.camera);
@@ -85,7 +115,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
         ),
         body: SingleChildScrollView(
             child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
+          padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
           child: Column(children: [
             GestureDetector(
               onTap: () {
@@ -114,7 +144,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
                     : null, // Pokud je vybrána fotografie, nezobrazujte žádný další obsah
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             CustomTextField(
@@ -134,26 +164,36 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
                     onValueChanged: (val) {
                       modelController.text = val;
                     },
-                    prefixIcon: const Icon(Icons.motorcycle_outlined,
+                    prefixIcon: const Icon(Icons.build_outlined,
                         color: Colors.white),
                     labelText: "Model *")),
             CustomTextField(
                 props: CustomTextFieldType(
-                    unit: 'km',
                     keyboardType: TextInputType.number,
                     autocorrect: false,
                     onValueChanged: (val) {
-                      distance.text = val;
+                      yearOfManufacture.text = val;
                     },
                     prefixIcon:
-                        const Icon(Icons.place_outlined, color: Colors.white),
-                    labelText: "Distance")),
+                        const Icon(Icons.date_range, color: Colors.white),
+                    labelText: "Year of manufacture")),
+            CustomTextField(
+                props: CustomTextFieldType(
+                    unit: 'ccm',
+                    keyboardType: TextInputType.number,
+                    autocorrect: false,
+                    onValueChanged: (val) {
+                      ccm.text = val;
+                    },
+                    prefixIcon:
+                    const Icon(Icons.speed, color: Colors.white),
+                    labelText: "Engine size")),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: OutlinedButton(
                   onPressed: () {
                     //todo add new motorcycle to database
-                    print('todo add new motorcycle to database');
+                    createNewMotorcycle();
                   },
                   style: ButtonStyle(
                       shape:
