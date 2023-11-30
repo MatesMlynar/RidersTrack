@@ -1,7 +1,14 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/pre-tracking_page.dart';
 import 'package:frontend/views/profile_page.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/network_connection_model.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({super.key});
@@ -13,6 +20,8 @@ class LayoutPage extends StatefulWidget {
 class _LayoutPageState extends State<LayoutPage> {
   int currentPage = 0;
 
+  bool isOffline = false;
+
   List<Widget> pages = const [
     HomePage(),
     ProfilePage()
@@ -20,6 +29,7 @@ class _LayoutPageState extends State<LayoutPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: pages.elementAt(currentPage),
       bottomNavigationBar: NavigationBarTheme(

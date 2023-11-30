@@ -7,6 +7,14 @@ class UpdateFuelRecordByIdCommand extends BaseCommand{
 
 
   Future<Map<String, dynamic>> run (String fuelRecordId,String liters, String price, DateTime date, String motorcycleId, consumption, distance) async {
+
+    if(networkConnectionModel.isDeviceConnected == false){
+      return {
+        "status": 400,
+        "message": "No internet connection"
+      };
+    }
+
     String? token = await secureStorage.getToken();
     if(token == null){
       return {

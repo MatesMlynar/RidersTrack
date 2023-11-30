@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.dart';
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../models/network_connection_model.dart';
 import '../types/ride_record.dart';
 import '../utils/snack_bar_service.dart';
 
@@ -24,6 +27,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
   bool isLessThan100Meters = false;
   String calculatedDistance = "";
   late LatLng _center;
+  bool isDeviceConnected = false;
 
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
@@ -147,7 +151,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
     }
     
     double fontSize = MediaQuery.of(context).size.height * 0.024;
-    
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 24, 27),
@@ -158,13 +162,12 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              //TODO delete record
               deleteRecord();
             },
           ),
         ],
       ),
-      body: isFetchingData ? const Center(child: CircularProgressIndicator()) : rideRecord == null ? const Text('todo update this error message') : Column(
+      body: isDeviceConnected ? isFetchingData ? const Center(child: CircularProgressIndicator()) : rideRecord == null ? const Text('todo update this error message') : Column(
         children: [
           Expanded(
               flex: 2,
@@ -228,7 +231,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
               ),
           ),
         ],
-      ),
+      ) : const NoConnectionComponent(),
     );
   }
 }

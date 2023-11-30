@@ -1,10 +1,12 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/get_all_ride_records_command.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/rideRecordCard_component.dart';
 import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
 import 'package:frontend/views/ride_record_detail_page.dart';
 import 'package:provider/provider.dart';
+import '../models/network_connection_model.dart';
 import '../models/ride_record_model.dart';
 import '../models/user_model.dart';
 import '../types/ride_record.dart';
@@ -25,6 +27,8 @@ class _HomePageState extends State<HomePage> {
   bool isLoadingRecords = true;
   String message = "";
 
+  bool isDeviceConnected = false;
+
   void logout(BuildContext context) async {
     await _secureStorage.deleteToken();
 
@@ -35,25 +39,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchData() async {
-    if (context.mounted) {
       setState(() {
         isLoadingRecords = true;
       });
       Map<String, dynamic> result = await GetAllRideRecordsCommand().run();
       if (result['status'] == 200) {
-        if (context.mounted) {
           setState(() {
             message = result['message'];
             isLoadingRecords = false;
           });
-        }
       } else {
         setState(() {
           message = result['message'];
           isLoadingRecords = false;
         });
       }
-    }
   }
 
   @override
@@ -68,8 +68,9 @@ class _HomePageState extends State<HomePage> {
 
     double swiperHeight = MediaQuery.of(context).size.height * 0.6;
 
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     rideRecords = context.watch<RideRecordModel>().rideRecords;
-    print(rideRecords);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Padding(
+      body: isDeviceConnected ? Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0),
         child: Column(
           children: [
@@ -177,7 +178,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
+      ) : const NoConnectionComponent(),
     );
   }
 }

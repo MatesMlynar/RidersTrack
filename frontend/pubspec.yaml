@@ -42,12 +42,13 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_dotenv: ^5.1.0
   google_maps_flutter: ^2.5.0
-  permission_handler: ^11.0.1
   geolocator: ^10.1.0
   shared_preferences: ^2.2.2
   card_swiper: ^3.0.1
   intl: ^0.18.1
   image_picker: ^1.0.4
+  internet_connection_checker: ^1.0.0+1
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:

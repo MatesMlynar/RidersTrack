@@ -7,6 +7,12 @@ class GetAllFuelRecordsCommand extends BaseCommand {
 
   Future<Map<String, dynamic>> run () async {
 
+    if(networkConnectionModel.isDeviceConnected == false){
+      return {
+        "status": 400,
+        "message": "No internet connection"
+      };
+    }
     //get token from secure storage
     String? token = await secureStorage.getToken();
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle_list_page.dart';
+import 'package:provider/provider.dart';
 
+import '../models/network_connection_model.dart';
 import '../utils/secure_storage.dart';
 import 'layout/layout_page.dart';
 import 'login_page.dart';
@@ -16,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   final SecureStorage _secureStorage = SecureStorage();
+  bool isDeviceConnected = false;
 
 
   void logout(BuildContext context) async {
@@ -31,12 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
 
     double height = MediaQuery.of(context).size.height;
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
       body: SafeArea(
         top: true,
-        child: Column(
+        child: isDeviceConnected ? Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -136,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             )
           ],
-        ),
+        ) : const NoConnectionComponent(),
       ),
     );
   }

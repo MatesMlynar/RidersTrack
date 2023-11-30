@@ -3,8 +3,10 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/models/motorcycle_model.dart';
+import 'package:frontend/models/network_connection_model.dart';
 import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/views/components/motorcycle_item_component.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/create_new_motorcycle_page.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,7 @@ class MotorcycleList extends StatefulWidget {
 class _MotorcycleListState extends State<MotorcycleList> {
   List<Motorcycle>? motorcycleData = [];
   bool isLoading = false;
+  bool isDeviceConnected = false;
 
   void fetchMotorcycleData() async {
     setState(() {
@@ -45,7 +48,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
   @override
   Widget build(BuildContext context) {
     motorcycleData = context.watch<MotorcycleModel>().motorcycles;
-    print(motorcycleData);
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
@@ -56,7 +59,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isDeviceConnected ? FloatingActionButton(
         heroTag: 'motorcycleListingTag',
         onPressed: () {
           Navigator.push(
@@ -66,8 +69,8 @@ class _MotorcycleListState extends State<MotorcycleList> {
         },
         backgroundColor: Colors.white,
         child: const Icon(Icons.add),
-      ),
-      body: isLoading
+      ) : null,
+      body: isDeviceConnected ? isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: motorcycleData != null && motorcycleData!.isNotEmpty
@@ -105,7 +108,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
                         )
                       ],
                     ),
-            ),
+            ) : const NoConnectionComponent(),
     );
   }
 }

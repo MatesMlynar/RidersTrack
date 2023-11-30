@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_all_fuel_records_command.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/fuel_record/add_new_fuel_record_page.dart';
 import 'package:frontend/views/components/statistic_card_component.dart';
 import 'package:frontend/views/fuel_record/fuel_record_detail_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/fuel_record_model.dart';
+import '../../models/network_connection_model.dart';
 import '../../types/statistic_card_type.dart';
 
 class FuelRecords extends StatefulWidget {
@@ -21,8 +23,10 @@ class _FuelRecordsState extends State<FuelRecords> {
   bool isLoadingRecords = false;
   num totalFuelUsed = 0;
   num totalMoneySpent = 0;
+  bool isDeviceConnected = false;
 
-  void fetchData() async {
+
+  void fetchData(BuildContext context) async {
     setState(() {
       isLoadingRecords = true;
     });
@@ -43,7 +47,7 @@ class _FuelRecordsState extends State<FuelRecords> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    fetchData(context);
   }
 
   @override
@@ -51,6 +55,8 @@ class _FuelRecordsState extends State<FuelRecords> {
     fuelRecords = context.watch<FuelRecordModel>().fuelRecords;
     totalFuelUsed = context.watch<FuelRecordModel>().totalFuelUsed;
     totalMoneySpent = context.watch<FuelRecordModel>().totalMoneySpent;
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
@@ -70,7 +76,7 @@ class _FuelRecordsState extends State<FuelRecords> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isDeviceConnected ? FloatingActionButton(
           heroTag: "fuelRecordListingButton",
           onPressed: () {
             Navigator.push(
@@ -79,8 +85,8 @@ class _FuelRecordsState extends State<FuelRecords> {
                     builder: (context) => const AddNewFuelRecordPage()));
           },
           backgroundColor: Colors.white,
-          child: const Icon(Icons.add)),
-      body: Center(
+          child: const Icon(Icons.add)) : null,
+      body: isDeviceConnected ? Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
           child: Column(
@@ -184,7 +190,7 @@ class _FuelRecordsState extends State<FuelRecords> {
             ],
           ),
         ),
-      ),
+      ) : const NoConnectionComponent(),
     );
   }
 }

@@ -7,6 +7,14 @@ import '../../types/motorcycle_type.dart';
 
 class CreateNewMotorcycleCommand extends BaseCommand{
   Future<Map<String, dynamic>> run(String brand, String model, num? yearOfManufacture, num? ccm, XFile? image) async{
+
+    if(networkConnectionModel.isDeviceConnected == false){
+      return {
+        "status": 400,
+        "message": "No internet connection"
+      };
+    }
+
     String? token = await secureStorage.getToken();
     if(token == null){
       return {

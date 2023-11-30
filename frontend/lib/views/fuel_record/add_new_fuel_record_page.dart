@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/types/textField_type.dart';
 import 'package:frontend/views/components/custom_text_field_component.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/no_moto_found_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../commands/fuel_records/add_new_fuel_record_command.dart';
+import '../../models/network_connection_model.dart';
 
 class AddNewFuelRecordPage extends StatefulWidget {
   const AddNewFuelRecordPage({super.key});
@@ -28,6 +31,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
   late String message = "";
+  bool isDeviceConnected = false;
 
   void fetchMotorcycles () async {
     isMotoFetching = true;
@@ -124,6 +128,8 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
   @override
   Widget build(BuildContext context) {
 
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         appBar:
@@ -131,7 +137,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
-            child: Column(children: [
+            child: isDeviceConnected ? Column(children: [
               CustomTextField(props: CustomTextFieldType(
                   unit: "liters",
                   keyboardType: TextInputType.number,
@@ -258,7 +264,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                           fontWeight: FontWeight.w500),
                     )),
               ),
-            ]),
+            ]) : const NoConnectionComponent(),
           ),
         ));
   }

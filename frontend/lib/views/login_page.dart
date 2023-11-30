@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/login_command.dart';
 import 'package:frontend/views/registration_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/network_connection_model.dart';
 import '../utils/secure_storage.dart';
+import 'components/no_connection_component.dart';
 import 'layout/layout_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,6 +23,7 @@ class _LoginPage extends State<LoginPage> {
   final passwordController = TextEditingController();
   final SecureStorage _secureStorage = SecureStorage();
   bool isLoading = false;
+  bool isDeviceConnected = false;
 
   void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
@@ -75,6 +79,9 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     return isLoading
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -106,6 +113,7 @@ class _LoginPage extends State<LoginPage> {
                   ),
                 ),
               ),
+              isDeviceConnected ?
               Flexible(
                 flex: 3,
                 fit: FlexFit.loose,
@@ -236,7 +244,7 @@ class _LoginPage extends State<LoginPage> {
                         ]),
                   ),
                 ),
-              ),
+              ) : const NoConnectionComponent()
             ],
           ),
         ),

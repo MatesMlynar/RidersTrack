@@ -5,6 +5,14 @@ import 'package:frontend/commands/fuel_records/update_total_money_spent_command.
 class AddNewFuelRecordCommand extends BaseCommand{
 
   Future<Map<String, dynamic>> run (String liters, String price, DateTime date, String motorcycleId, consumption, distance) async {
+
+    if(networkConnectionModel.isDeviceConnected == false){
+      return {
+        "status": 400,
+        "message": "No internet connection"
+      };
+    }
+
     String? token = await secureStorage.getToken();
     if(token == null){
       return {

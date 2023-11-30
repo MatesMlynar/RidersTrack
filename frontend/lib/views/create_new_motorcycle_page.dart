@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../commands/motorcycle/create_new_motorcycle_command.dart';
+import '../models/network_connection_model.dart';
 import '../types/textField_type.dart';
 import 'components/custom_text_field_component.dart';
 
@@ -21,11 +24,15 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
   TextEditingController yearOfManufacture = TextEditingController();
   TextEditingController ccm = TextEditingController();
 
+  bool isDeviceConnected = false;
+
   XFile? selectedImage;
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     void createNewMotorcycle() async {
 
@@ -116,7 +123,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-          child: Column(children: [
+          child: isDeviceConnected ? Column(children: [
             GestureDetector(
               onTap: () {
                 _showImagePickerBottomSheet(context);
@@ -211,7 +218,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
                         fontWeight: FontWeight.w500),
                   )),
             ),
-          ]),
+          ]) : const NoConnectionComponent(),
         )));
   }
 }

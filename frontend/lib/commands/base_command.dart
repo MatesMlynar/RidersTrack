@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:frontend/models/fuel_record_model.dart';
 import 'package:frontend/models/motorcycle_model.dart';
+import 'package:frontend/models/network_connection_model.dart';
 import 'package:frontend/models/ride_record_model.dart';
 import 'package:frontend/services/fuel_record_service.dart';
 import 'package:frontend/services/motorcycle_service.dart';
@@ -23,6 +24,7 @@ class BaseCommand{
   FuelRecordModel fuelRecordModel = _mainContext.read();
   RideRecordModel rideRecordModel = _mainContext.read();
   MotorcycleModel motorcycleModel = _mainContext.read();
+  NetworkConnectionModel networkConnectionModel = _mainContext.read();
 
   //Services
   UserService userService = _mainContext.read();

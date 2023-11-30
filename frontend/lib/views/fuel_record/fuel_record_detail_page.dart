@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/delete_fuel_record_by_id_command.dart';
 import 'package:frontend/commands/fuel_records/get_fuel_record_by_id_command.dart';
 import 'package:frontend/views/components/fuel-records_disabled_date_picker_component.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../commands/fuel_records/update_fuel_record_by_id_command.dart';
 import '../../commands/motorcycle/get_all_motorcycles_command.dart';
+import '../../models/network_connection_model.dart';
 import '../../types/textField_type.dart';
 import '../components/custom_text_field_component.dart';
 import '../components/no_moto_found_component.dart';
@@ -34,6 +37,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
   late String motoMessage = "";
+  bool isDeviceConnected = false;
+
 
   void fetchFuelRecord() async {
     setState(() {
@@ -206,6 +211,9 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         appBar: AppBar(
@@ -230,7 +238,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
-            child: isStatsLoading
+            child: isDeviceConnected ? isStatsLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(children: [
                     CustomTextField(
@@ -422,7 +430,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                                 fontWeight: FontWeight.w500),
                           )),
                     ),
-                  ]),
+                  ]) : const NoConnectionComponent(),
           ),
         ));
   }

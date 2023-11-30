@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/register_command.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../models/network_connection_model.dart';
 
 
 class RegistrationPage extends StatefulWidget {
@@ -20,6 +23,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final confirmPasswordController = TextEditingController();
 
   bool isLoading = false;
+  bool isDeviceConnected = false;
 
   //registrate user
   void registerUser() async {
@@ -69,6 +73,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         body: SingleChildScrollView(

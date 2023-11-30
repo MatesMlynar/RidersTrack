@@ -2,10 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/tracking_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../models/network_connection_model.dart';
 import 'create_new_motorcycle_page.dart';
 
 class PreTrackingPage extends StatefulWidget {
@@ -21,6 +24,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
   late String message = "";
+  bool isDeviceConnected = false;
 
   bool _isMounted = false;
 
@@ -116,6 +120,9 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         appBar: AppBar(
@@ -127,7 +134,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
             },
           ),
         ),
-        body: Center(
+        body: isDeviceConnected ? Center(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: Column(
@@ -252,6 +259,6 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
               ],
             ),
           ),
-        ));
+        ) : const NoConnectionComponent());
   }
 }
