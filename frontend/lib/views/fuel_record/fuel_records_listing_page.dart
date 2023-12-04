@@ -39,6 +39,13 @@ class _FuelRecordsState extends State<FuelRecords> {
     } else {
       setState(() {
         message = result['message'];
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result['message']),
+            ),
+          );
+        }
         isLoadingRecords = false;
       });
     }

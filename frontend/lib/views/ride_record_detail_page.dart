@@ -195,7 +195,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
                           child:  Column(
                               children: [
                                 Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
@@ -204,7 +204,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                          padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
                           decoration: const BoxDecoration(
                               border: Border(right: BorderSide(color: Colors.grey, width: 1), left: BorderSide(color: Colors.grey, width: 1))
                           ),
@@ -216,7 +216,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
                           child:  Column(
                               children: [
                                 Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/register_command.dart';
+import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +79,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
-        body: SingleChildScrollView(
+        body: isDeviceConnected ? SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height,
@@ -273,7 +274,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ],
             ),
           ),
-        ),
+        ) : const NoConnectionComponent(),
     );
   }
 }

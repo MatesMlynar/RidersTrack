@@ -27,7 +27,6 @@ class _MotorcycleListState extends State<MotorcycleList> {
       isLoading = true;
     });
     Map<String, dynamic> result = await GetAllMotorcycles().run();
-    print(result);
     if (result['status'] == 200) {
       setState(() {
         isLoading = false;
@@ -36,6 +35,14 @@ class _MotorcycleListState extends State<MotorcycleList> {
       setState(() {
         isLoading = false;
       });
+      if(context.mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

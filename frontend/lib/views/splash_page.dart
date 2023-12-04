@@ -21,7 +21,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
 
   late StreamSubscription subscription;
-  var isDeviceConnected = false;
+  bool isDeviceConnected = false;
+  bool isModelInitialized = false;
 
   @override void initState() {
     super.initState();
@@ -40,6 +41,7 @@ class _SplashPageState extends State<SplashPage> {
               Provider.of<NetworkConnectionModel>(context, listen: false).isDeviceConnected = isDeviceConnected;
             }
             setState(() {
+              isModelInitialized = true;
             });
 
             if(!isDeviceConnected){
@@ -58,6 +60,13 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.isTokenValid ? LayoutPage() : const LoginPage();
+    return isModelInitialized ? (widget.isTokenValid ? const LayoutPage() : const LoginPage()) : const Scaffold(
+      backgroundColor: Color.fromARGB(255, 20, 24, 27),
+      body: Center(
+        child: CircularProgressIndicator(
+          color: Colors.deepPurple,
+        ),
+      ),
+    );
   }
 }

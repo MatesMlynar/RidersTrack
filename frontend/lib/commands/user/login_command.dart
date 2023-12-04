@@ -8,6 +8,13 @@ class LoginCommand extends BaseCommand{
 
     Map<String, dynamic> result = await userService.login(email, password);
 
+    if(result['status'] != 200){
+      return {
+        "status": result['status'],
+        "message": result['message']
+      };
+    }
+
     if(result['status'] == 200){
 
       //store token in some local/secured preferences

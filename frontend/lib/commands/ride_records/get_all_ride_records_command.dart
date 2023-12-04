@@ -6,6 +6,8 @@ class GetAllRideRecordsCommand extends BaseCommand {
 
   Future<Map<String, dynamic>> run () async {
 
+    print(networkConnectionModel.isDeviceConnected);
+
     if(networkConnectionModel.isDeviceConnected == false){
       return {
         "status": 400,

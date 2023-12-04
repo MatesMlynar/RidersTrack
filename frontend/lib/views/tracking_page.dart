@@ -6,9 +6,11 @@ import 'package:frontend/utils/functions/ride_records/calculateTopSpeed.dart';
 import 'package:frontend/utils/functions/ride_records/calculateTotalDistance.dart';
 import 'package:frontend/views/map_test.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../commands/ride_records/create_ride_record_command.dart';
+import '../models/network_connection_model.dart';
 
 class TrackingPage extends StatefulWidget with WidgetsBindingObserver {
   const TrackingPage({super.key, required this.motorcycleId});
@@ -25,6 +27,8 @@ class _TrackingPageState extends State<TrackingPage>
   Timer? timer;
   late Timer locationTimer;
   bool isRunning = true;
+
+  bool isDeviceConnected = false;
 
   List<Position> locationPoints = [];
   StreamSubscription<Position>? positionStream;
@@ -119,14 +123,7 @@ class _TrackingPageState extends State<TrackingPage>
   }
 
   void saveRideAndRedirect() async {
-
     if(locationPoints.isNotEmpty){
-      SharedPreferences.getInstance().then((prefs) {
-        prefs.remove('timer');
-      });
-      if(positionStream != null){
-        positionStream!.cancel();
-      }
 
       num totalDistance = calculateTotalDistance(locationPoints);
       num maxSpeed = calculateMaxSpeed(locationPoints);
@@ -135,21 +132,31 @@ class _TrackingPageState extends State<TrackingPage>
 
       Map<String, dynamic> result = await CreateRideRecordCommand().run(widget.motorcycleId, date, totalDistance, duration, maxSpeed, locationPoints);
 
-
       if(result['status'] != 200){
         if(context.mounted){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
         }
         return;
       }
+      else if(result['status'] == 200){
 
-      if(context.mounted){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MapTest(locationPoints: locationPoints, totalDistance: totalDistance, maxSpeed: maxSpeed,)));
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.remove('timer');
+        });
+        if(positionStream != null){
+          positionStream!.cancel();
+        }
+
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.green,));
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MapTest(locationPoints: locationPoints, totalDistance: totalDistance, maxSpeed: maxSpeed,)));
+        }
+
       }
-
 
     } else {
       if(context.mounted){
@@ -159,7 +166,6 @@ class _TrackingPageState extends State<TrackingPage>
     }
 
   }
-
 
   @override
   void initState() {
@@ -221,7 +227,7 @@ class _TrackingPageState extends State<TrackingPage>
   Widget build(BuildContext context) {
     String formattedTime = formatTime(seconds);
 
-
+    isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -295,10 +301,13 @@ class _TrackingPageState extends State<TrackingPage>
                         ? ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            print(
-                                'todo check if internet connection is on. If not show snack-bar');
-                            //todo check if internet connection is on. If not show snack-bar
-                            saveRideAndRedirect();
+                            if(isDeviceConnected){
+                              saveRideAndRedirect();
+                            }
+                            else{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('No internet connection!, please connect to the internet and try again.')));
+                            }
                           });
                         },
                         style: ElevatedButton.styleFrom(

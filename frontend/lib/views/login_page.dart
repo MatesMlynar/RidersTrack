@@ -25,7 +25,9 @@ class _LoginPage extends State<LoginPage> {
   bool isLoading = false;
   bool isDeviceConnected = false;
 
-  void loginUser() async {
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  void loginUser(BuildContext context) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       setState(() {
         isLoading = true;
@@ -47,7 +49,7 @@ class _LoginPage extends State<LoginPage> {
           isLoading = false;
         });
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red));
         }
       }
     }
@@ -82,11 +84,9 @@ class _LoginPage extends State<LoginPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Scaffold(
+    return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
-      body: SingleChildScrollView(
+      body: isLoading? const Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
               minHeight: MediaQuery
@@ -192,7 +192,7 @@ class _LoginPage extends State<LoginPage> {
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                             child: OutlinedButton(
                                 onPressed: () {
-                                  loginUser();
+                                  loginUser(context);
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<

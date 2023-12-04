@@ -55,7 +55,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
         return;
       }
 
-      if(context.mounted){
+      if(context.mounted && result['status'] == 200){
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Motorcycle added"), backgroundColor: Colors.green,));
       }

@@ -36,7 +36,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   bool isMotoFetching = false;
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
-  late String motoMessage = "";
   bool isDeviceConnected = false;
 
 
@@ -50,8 +49,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         isStatsLoading = false;
       });
     } else {
-      Map<String, dynamic> result =
-          await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
+      Map<String, dynamic> result = await GetFuelRecordByIdCommand().run(widget.fuelRecordId!);
 
       if (result['status'] == 200) {
         setState(() {
@@ -75,12 +73,20 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
         isMotoFetching = true;
 
-        Map<String, dynamic> motorcycleFetchResult =
-            await GetAllMotorcycles().run();
+        Map<String, dynamic> motorcycleFetchResult = await GetAllMotorcycles().run();
+
+        print(motorcycleFetchResult);
 
         if (motorcycleFetchResult['status'] != 200) {
-          isMotoFetching = false;
-          motoMessage = motorcycleFetchResult['message'];
+          setState(() {
+            isMotoFetching = false;
+          });
+          if(context.mounted){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(motorcycleFetchResult['message']),
+              backgroundColor: Colors.red,
+            ));
+          }
           return;
         }
 
@@ -91,6 +97,20 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
             motorcycleIdsList = motorcycleFetchResult['data'];
           }
         });
+      }
+      else{
+
+        setState(() {
+          isStatsLoading = false;
+          isMotoFetching = false;
+        });
+
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(result['message']),
+            backgroundColor: Colors.red,
+          ));
+        }
       }
     }
   }
@@ -112,6 +132,14 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
             backgroundColor: Colors.green,
           ));
           Navigator.pop(context);
+        }
+      }
+      else{
+        if(context.mounted){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(response['message']),
+            backgroundColor: Colors.red,
+          ));
         }
       }
     }
@@ -203,8 +231,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
     super.initState();
     fetchFuelRecord();
 
-    calculateConsumption();
-
     litersController.addListener(calculateConsumption);
     distanceController.addListener(calculateConsumption);
   }
@@ -213,6 +239,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   Widget build(BuildContext context) {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
+    print(isMotoFetching);
 
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),

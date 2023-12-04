@@ -13,6 +13,8 @@ class GetFuelRecordByIdCommand extends BaseCommand {
 
     String? token = await secureStorage.getToken();
 
+
+
     if(token == null)
       {
         return {
@@ -23,6 +25,13 @@ class GetFuelRecordByIdCommand extends BaseCommand {
     else{
 
       Map<String, dynamic> result = await fuelRecordService.getFuelRecordById(token, id);
+
+      if(result['status'] != 200){
+        return {
+          "status": result['status'],
+          "message": result['message']
+        };
+      }
 
       if(result.isEmpty){
         return {

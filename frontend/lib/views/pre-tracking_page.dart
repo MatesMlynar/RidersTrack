@@ -36,6 +36,14 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
     if (result['status'] != 200) {
       isMotoFetching = false;
       message = result['message'];
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       return;
     }
 

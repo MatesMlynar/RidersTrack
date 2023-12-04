@@ -6,6 +6,7 @@ class RegisterCommand extends BaseCommand{
 
   Future<Map<String, dynamic>> run(String email, String username, String password, String confirmPassword) async {
 
+
     if(password != confirmPassword){
       return {
         "status": 400,
@@ -13,7 +14,20 @@ class RegisterCommand extends BaseCommand{
       };
     }
     else{
-      return await userService.register(email,username, password);
+
+      Map<String, dynamic> result = await userService.register(email, username, password);
+
+      if(result['status'] != 200){
+        return {
+          "status": result['status'],
+          "message": result['message']
+        };
+      }
+
+      return {
+        "status": result['status'],
+        "message": result['message'],
+      };
     }
   }
 
