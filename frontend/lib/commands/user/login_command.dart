@@ -34,7 +34,6 @@ class LoginCommand extends BaseCommand{
       User userData = User(username: payload['userData']['username'], email: payload['userData']['email'], id: payload['userData']['id']);
 
       userModel.currentUser = userData;
-      print('USER DATA: ${userModel.currentUser}');
       return result;
     }
 

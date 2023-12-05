@@ -23,8 +23,6 @@ class GetAllMotorcycles extends BaseCommand{
       Map<String, dynamic> result = await motorcycleService.getAllMotorcycles(token);
 
       if(result['status'] != 200){
-        print('what is going on');
-        print(result['status']);
         return {
           "status": result['status'],
           "message": result['message']

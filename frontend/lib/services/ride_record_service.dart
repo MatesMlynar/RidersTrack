@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -26,9 +27,12 @@ class RideRecordService{
       ).timeout(const Duration(seconds: 15));
 
       return json.decode(response.body);
-    } on TimeoutException catch (e) {
+    }on TimeoutException catch (e) {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on Error catch (e) {
+    } on SocketException catch(e) {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error catch (e) {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
 
@@ -46,7 +50,10 @@ class RideRecordService{
     }
     on TimeoutException catch (e) {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on Error catch (e) {
+    } on SocketException catch(e) {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error catch (e) {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
 
@@ -64,9 +71,12 @@ class RideRecordService{
       return json.decode(response.body);
     }
     on TimeoutException catch (e) {
-    return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on Error catch (e) {
-    return {'status': 500, 'message': 'Internal server error. Please try again.'};
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException catch(e) {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error catch (e) {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
 
   }
@@ -80,11 +90,13 @@ class RideRecordService{
 
       return json.decode(response.body);
     }
-
     on TimeoutException catch (e) {
-    return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on Error catch (e) {
-    return {'status': 500, 'message': 'Internal server error. Please try again.'};
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException catch(e) {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error catch (e) {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
   }
 
