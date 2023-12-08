@@ -148,7 +148,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
                           color: Colors.white,
                         ),
                       )
-                    : null, // Pokud je vybrána fotografie, nezobrazujte žádný další obsah
+                    : null,
               ),
             ),
             const SizedBox(

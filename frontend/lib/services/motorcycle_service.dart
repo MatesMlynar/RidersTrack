@@ -17,12 +17,12 @@ class MotorcycleService {
           }).timeout(const Duration(seconds: 15));
 
       return json.decode(response.body);
-    }on TimeoutException catch (e) {
+    }on TimeoutException {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on SocketException catch(e) {
+    } on SocketException {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
     }
-    on Error catch (e) {
+    on Error {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
   }
@@ -47,12 +47,12 @@ class MotorcycleService {
           body: jsonEncode(reqBody)).timeout(const Duration(seconds: 15));
 
       return json.decode(response.body);
-    }on TimeoutException catch (e) {
+    }on TimeoutException {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
-    } on SocketException catch(e) {
+    } on SocketException {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
     }
-    on Error catch (e) {
+    on Error {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
 

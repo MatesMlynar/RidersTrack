@@ -1,7 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/get_all_ride_records_command.dart';
-import 'package:frontend/models/motorcycle_model.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/rideRecordCard_component.dart';
 import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';

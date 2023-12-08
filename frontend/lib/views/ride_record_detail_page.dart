@@ -157,7 +157,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
       backgroundColor: const Color.fromARGB(255, 18, 24, 27),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Ride Record Details"),
+        title: rideRecord?.date == null ? null : Text(DateFormat('dd.MM.yyyy').format(rideRecord!.date.toLocal())),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
@@ -170,7 +170,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
       body: isDeviceConnected ? isFetchingData ? const Center(child: CircularProgressIndicator()) : rideRecord == null ? const Text('todo update this error message') : Column(
         children: [
           Expanded(
-              flex: 2,
+              flex: 4,
               child: GoogleMap(
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
@@ -189,39 +189,43 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(DateFormat('dd.MM.yyyy').format(rideRecord!.date.toLocal()), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-                    const SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                          child:  Column(
+                        Card(
+                          color: Colors.grey[800],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
+                                const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
-                                const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 14),),
-                              ]
+                              ],
+                            ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-                          decoration: const BoxDecoration(
-                              border: Border(right: BorderSide(color: Colors.grey, width: 1), left: BorderSide(color: Colors.grey, width: 1))
-                          ),
-                          child: Column(
+                        Card(
+                          color: Colors.grey[800],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
+                                const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('${formatTime(rideRecord!.duration)} min', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
-                                const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 14),),
-                              ]
+                              ],
+                            ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                          child:  Column(
+                        Card(
+                          color: Colors.grey[800],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
+                                const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
-                                const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 14),),
-                              ]
+                              ],
+                            ),
                           ),
                         ),
                       ],

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,10 +14,7 @@ import 'package:frontend/services/ride_record_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
-import 'package:frontend/views/layout/layout_page.dart';
-import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/splash_page.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,6 +78,7 @@ class _MyAppState extends State<MyApp> {
       return MaterialApp(
           scaffoldMessengerKey: SnackBarService.scaffoldKey,
           title: 'Rider\'s Track',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               iconTheme: IconThemeData(color: Colors.white),

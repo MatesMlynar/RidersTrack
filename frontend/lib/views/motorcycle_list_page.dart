@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/models/motorcycle_model.dart';
@@ -96,7 +94,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
                           child: Column(
                             children: [
                               Text(
-                                'No ride records found.',
+                                'No motorcycle found.',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
