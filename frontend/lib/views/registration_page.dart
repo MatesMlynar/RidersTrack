@@ -77,7 +77,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
-    return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
+    return Scaffold(
         backgroundColor: const Color.fromARGB(255, 20, 24, 27),
         body: isDeviceConnected ? SingleChildScrollView(
           child: ConstrainedBox(
@@ -218,21 +218,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                               child: OutlinedButton(
-                                  onPressed: () => registerUser(),
+                                  onPressed: isLoading ? null : () => registerUser(),
                                   style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12))),
-                                      minimumSize:
-                                          MaterialStateProperty.all<Size>(
-                                              const Size(double.infinity, 50)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              const Color.fromARGB(
-                                                  255, 221, 28, 7))),
-                                  child: Text(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                                      minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
+                                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 221, 28, 7)),
+                                      ),
+                                  child: isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,))  : Text(
                                     "Create Account",
                                     style: GoogleFonts.readexPro(
                                         fontSize: 16,

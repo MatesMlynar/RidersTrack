@@ -25,6 +25,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
   TextEditingController ccm = TextEditingController();
 
   bool isDeviceConnected = false;
+  bool isAddingNewMotorcycle = false;
 
   XFile? selectedImage;
 
@@ -36,6 +37,8 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
 
     void createNewMotorcycle() async {
 
+
+
       String brand = brandController.text;
       String model = modelController.text;
       num? yearOfManufacture = num.tryParse(this.yearOfManufacture.text);
@@ -46,17 +49,30 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
         return;
       }
 
+
+      setState(() {
+        isAddingNewMotorcycle = true;
+      });
+
       Map<String,dynamic> result = await CreateNewMotorcycleCommand().run(brand, model, yearOfManufacture, ccm, selectedImage);
 
       if(result['status'] != 200){
         if(context.mounted){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
         }
+
+        setState(() {
+          isAddingNewMotorcycle = false;
+        });
+
         return;
       }
 
       if(context.mounted && result['status'] == 200){
         Navigator.pop(context);
+        setState(() {
+          isAddingNewMotorcycle = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Motorcycle added"), backgroundColor: Colors.green,));
       }
     }
@@ -198,19 +214,14 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: OutlinedButton(
-                  onPressed: () {
+                  onPressed: isAddingNewMotorcycle ? null : () {
                     createNewMotorcycle();
                   },
                   style: ButtonStyle(
-                      shape:
-                      MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12))),
-                      minimumSize: MaterialStateProperty.all<Size>(
-                          const Size(150, 50)),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 221, 28, 7))),
-                  child: Text(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                      minimumSize: MaterialStateProperty.all<Size>(const Size(150, 50)),
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 221, 28, 7))),
+                  child: isAddingNewMotorcycle ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,)) : Text(
                     "Add",
                     style: GoogleFonts.readexPro(
                         fontSize: 16,

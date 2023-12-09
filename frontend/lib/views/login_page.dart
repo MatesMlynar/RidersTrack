@@ -86,7 +86,7 @@ class _LoginPage extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 24, 27),
-      body: isLoading? const Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
+      body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
               minHeight: MediaQuery
@@ -191,22 +191,15 @@ class _LoginPage extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                             child: OutlinedButton(
-                                onPressed: () {
+                                onPressed: isLoading ? null : () {
                                   loginUser(context);
                                 },
                                 style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(12))),
-                                    minimumSize:
-                                    MaterialStateProperty.all<Size>(
-                                        const Size(double.infinity, 50)),
-                                    backgroundColor: MaterialStateProperty.all<
-                                        Color>(
-                                        const Color.fromARGB(255, 221, 28, 7))),
-                                child: Text(
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                                    minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
+                                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 221, 28, 7))),
+                                child: isLoading ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,)) : Text(
                                   "Sign In",
                                   style: GoogleFonts.readexPro(
                                       fontSize: 16,

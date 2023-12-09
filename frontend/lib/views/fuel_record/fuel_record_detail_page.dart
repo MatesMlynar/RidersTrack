@@ -32,6 +32,8 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
   bool enabled = false;
   late String message;
+  bool isEditingNewFuelRecord = false;
+
 
   bool isMotoFetching = false;
   late String? selectedMotorcycleId;
@@ -167,6 +169,10 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         return;
       }
 
+
+      setState(() {
+        isEditingNewFuelRecord = true;
+      });
       Map<String, dynamic> response = await UpdateFuelRecordByIdCommand().run(
           widget.fuelRecordId!,
           liters,
@@ -177,6 +183,9 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
           distance);
 
       if (response['status'] == 200) {
+        setState(() {
+          isEditingNewFuelRecord = false;
+        });
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("fuel record successfully edited"),
@@ -188,6 +197,9 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
         });
       } else {
         if (context.mounted) {
+          setState(() {
+            isEditingNewFuelRecord = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(response['message']),
             backgroundColor: Colors.red,
@@ -428,28 +440,19 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                       child: OutlinedButton(
-                          onPressed: enabled
-                              ? () {
-                                  updateFuelRecordById();
-                                }
-                              : null,
+                          onPressed: !enabled ?  null : () {
+                            updateFuelRecordById();
+                          },
                           style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                  const Size(150, 50)),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.disabled)) {
-                                    return Colors.grey;
-                                  }
-                                  return const Color.fromARGB(255, 221, 28, 7);
-                                },
-                              )),
-                          child: Text(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                              minimumSize: MaterialStateProperty.all<Size>(const Size(150, 50)),
+                              backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Colors.grey;
+                                }
+                                return const Color.fromARGB(255, 221, 28, 7);
+                              })),
+                          child: isEditingNewFuelRecord ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,)) : Text(
                             "Edit",
                             style: GoogleFonts.readexPro(
                                 fontSize: 16,

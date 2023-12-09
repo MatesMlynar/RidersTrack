@@ -27,6 +27,8 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
 
 
   bool isMotoFetching = false;
+  bool isAddingNewFuelRecord = false;
+
 
   late String? selectedMotorcycleId;
   late List<Map<String, dynamic>> motorcycleIdsList = [];
@@ -82,16 +84,26 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
       return;
     }
 
+    setState(() {
+      isAddingNewFuelRecord = true;
+    });
+
     Map<String, dynamic> result = await AddNewFuelRecordCommand().run(liters, price, selectedDate, selectedMotorcycleId!, consumption, distance);
 
     if(result['status'] != 200){
       if(context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
       }
+      setState(() {
+        isAddingNewFuelRecord = false;
+      });
       return;
     }
 
     if(context.mounted){
+      setState(() {
+        isAddingNewFuelRecord = true;
+      });
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fuel record added"), backgroundColor: Colors.green,));
     }
@@ -244,19 +256,14 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 child: OutlinedButton(
-                    onPressed: () {
+                    onPressed: isAddingNewFuelRecord ? null : () {
                       addFuelRecord();
                     },
                     style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                        minimumSize: MaterialStateProperty.all<Size>(
-                            const Size(150, 50)),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 221, 28, 7))),
-                    child: Text(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                        minimumSize: MaterialStateProperty.all<Size>(const Size(150, 50)),
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 221, 28, 7))),
+                    child: isAddingNewFuelRecord ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,)) : Text(
                       "Add",
                       style: GoogleFonts.readexPro(
                           fontSize: 16,

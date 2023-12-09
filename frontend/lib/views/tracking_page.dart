@@ -29,6 +29,8 @@ class _TrackingPageState extends State<TrackingPage>
   bool isRunning = true;
 
   bool isDeviceConnected = false;
+  bool isAddingNewRideRecord = false;
+
 
   List<Position> locationPoints = [];
   StreamSubscription<Position>? positionStream;
@@ -130,9 +132,15 @@ class _TrackingPageState extends State<TrackingPage>
       num duration = seconds;
       DateTime date = DateTime.now();
 
+      setState(() {
+        isAddingNewRideRecord = true;
+      });
       Map<String, dynamic> result = await CreateRideRecordCommand().run(widget.motorcycleId, date, totalDistance, duration, maxSpeed, locationPoints);
 
       if(result['status'] != 200){
+        setState(() {
+          isAddingNewRideRecord = false;
+        });
         if(context.mounted){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red,));
         }
@@ -146,6 +154,10 @@ class _TrackingPageState extends State<TrackingPage>
         if(positionStream != null){
           positionStream!.cancel();
         }
+
+        setState(() {
+          isAddingNewRideRecord = false;
+        });
 
         if(context.mounted){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.green,));
@@ -299,7 +311,7 @@ class _TrackingPageState extends State<TrackingPage>
                         : const SizedBox(width: 0),
                     !isRunning
                         ? ElevatedButton(
-                        onPressed: () {
+                        onPressed: isAddingNewRideRecord ? null : () {
                           setState(() {
                             if(isDeviceConnected){
                               saveRideAndRedirect();
@@ -316,8 +328,13 @@ class _TrackingPageState extends State<TrackingPage>
                           backgroundColor: Colors.red, // <-- Button color
                           foregroundColor: Colors.grey, // <-- Splash color
                         ),
-                        child: const Icon(Icons.stop, color: Colors.white))
-                        : const SizedBox(width: 0),
+                        child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: isAddingNewRideRecord
+                                ? const CircularProgressIndicator()
+                                : const Icon(Icons.stop, color: Colors.white)
+                        )) : const SizedBox(width: 0),
                   ],
                 )
               ],
