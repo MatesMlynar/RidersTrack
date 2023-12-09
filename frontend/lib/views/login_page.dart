@@ -85,7 +85,7 @@ class _LoginPage extends State<LoginPage> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+      backgroundColor: const Color(0xFF14151B),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -119,13 +119,6 @@ class _LoginPage extends State<LoginPage> {
                 fit: FlexFit.loose,
                 child: Container(
                   margin: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 29, 36, 40),
-                      width: 2,
-                    ),
-                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(

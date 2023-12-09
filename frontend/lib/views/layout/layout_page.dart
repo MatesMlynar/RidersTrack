@@ -27,7 +27,7 @@ class _LayoutPageState extends State<LayoutPage> {
       body: pages.elementAt(currentPage),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+          backgroundColor:  Colors.black,
           labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
                 (Set<MaterialState> states) => states.contains(MaterialState.selected)
                 ? const TextStyle(color: Colors.white)
@@ -39,7 +39,7 @@ class _LayoutPageState extends State<LayoutPage> {
           destinations: const [
             NavigationDestination(icon: Icon(Icons.home,), label: "Home"),
             NavigationDestination(
-                icon: Icon(Icons.account_circle_rounded, color: Colors.white), label: "Profile", ),
+                icon: Icon(Icons.account_circle_rounded), label: "Profile", ),
           ],
           selectedIndex: currentPage,
           onDestinationSelected: (int value) {

@@ -143,9 +143,9 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         appBar:
-            AppBar(title: const Text('Create fuel record'), centerTitle: true),
+            AppBar(title: const Text('Create fuel record'), centerTitle: true, backgroundColor: const Color(0xFF14151B)),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
@@ -227,7 +227,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
               ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-                  child: isMotoFetching ? const CircularProgressIndicator() : motorcycleIdsList.isEmpty ? const NoMotoFoundComponent() : DropdownButtonFormField(
+                  child: isMotoFetching ? const CircularProgressIndicator(color: Colors.white,) : motorcycleIdsList.isEmpty ? const NoMotoFoundComponent() : DropdownButtonFormField(
                     value: selectedMotorcycleId,
                     items: motorcycleIdsList.map((itemVal) => DropdownMenuItem(
                               value: itemVal['_id'],

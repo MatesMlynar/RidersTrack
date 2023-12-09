@@ -332,7 +332,7 @@ class _TrackingPageState extends State<TrackingPage>
                             width: 24,
                             height: 24,
                             child: isAddingNewRideRecord
-                                ? const CircularProgressIndicator()
+                                ? const CircularProgressIndicator(color: Colors.white)
                                 : const Icon(Icons.stop, color: Colors.white)
                         )) : const SizedBox(width: 0),
                   ],

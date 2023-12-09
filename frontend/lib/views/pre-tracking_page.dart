@@ -156,7 +156,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
               height: 20,
             ),
             isMotoFetching
-                ? const CircularProgressIndicator()
+                ? const CircularProgressIndicator(color: Colors.white)
                 : Column(
               children: [ motorcycleIdsList.isNotEmpty && selectedMotorcycleId != null ?
                 DropdownButtonFormField(

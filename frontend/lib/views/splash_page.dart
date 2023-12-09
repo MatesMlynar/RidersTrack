@@ -64,7 +64,7 @@ class _SplashPageState extends State<SplashPage> {
       backgroundColor: Color.fromARGB(255, 20, 24, 27),
       body: Center(
         child: CircularProgressIndicator(
-          color: Colors.deepPurple,
+          color: Colors.white,
         ),
       ),
     );

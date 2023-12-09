@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
-              color: Color.fromARGB(255, 20, 24, 27),
+              color: Color(0xFF14151B),
             ),
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,

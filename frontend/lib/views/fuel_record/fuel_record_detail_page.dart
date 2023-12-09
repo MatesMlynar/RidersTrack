@@ -278,7 +278,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 50, 15, 0),
             child: isDeviceConnected ? isStatsLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Colors.white))
                 : Column(children: [
                     CustomTextField(
                         props: CustomTextFieldType(
@@ -388,7 +388,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                         child: isMotoFetching
-                            ? const CircularProgressIndicator()
+                            ? const CircularProgressIndicator(color: Colors.white)
                             : motorcycleIdsList.isEmpty
                                 ? const NoMotoFoundComponent()
                                 : DropdownButtonFormField(

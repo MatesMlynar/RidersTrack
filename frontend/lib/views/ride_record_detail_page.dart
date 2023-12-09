@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.dart';
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
+import 'package:frontend/views/pre-tracking_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
   String calculatedDistance = "";
   late LatLng _center;
   bool isDeviceConnected = false;
+  MapType _currentMapType = MapType.normal;
+
 
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
@@ -117,6 +120,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
           polylineId: const PolylineId('1'),
           points: polylinePoints,
           color: Colors.red,
+          width: 4,
         )
     );
 
@@ -134,7 +138,13 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
     fetchData();
   }
 
-  //todo create error theme when rideRecord is null and error code is not 180
+  void _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +175,13 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
               deleteRecord();
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.map),
+            onPressed: _onMapTypeButtonPressed,
+          ),
         ],
       ),
-      body: isDeviceConnected ? isFetchingData ? const Center(child: CircularProgressIndicator()) : rideRecord == null ? const Text('todo update this error message') : Column(
+      body: isDeviceConnected ? isFetchingData ? const Center(child: CircularProgressIndicator(color: Colors.white)) : rideRecord == null ? const Text('todo update this error message') : Column(
         children: [
           Expanded(
               flex: 4,
@@ -179,6 +193,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                 ),
                 markers: _markers,
                 polylines: _polyline,
+                mapType: _currentMapType,
               ),
           ),
           Expanded(
@@ -193,37 +208,37 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage> {
                       alignment: WrapAlignment.spaceBetween,
                       children: [
                         Card(
-                          color: Colors.grey[800],
+                          color: Colors.grey[900],
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
+                                const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                               ],
                             ),
                           ),
                         ),
                         Card(
-                          color: Colors.grey[800],
+                          color: Colors.grey[900],
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('${formatTime(rideRecord!.duration)} min', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
+                                const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                               ],
                             ),
                           ),
                         ),
                         Card(
-                          color: Colors.grey[800],
+                          color: Colors.grey[900],
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
+                                const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                               ],
                             ),
                           ),

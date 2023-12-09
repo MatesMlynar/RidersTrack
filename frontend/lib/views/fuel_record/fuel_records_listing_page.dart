@@ -66,8 +66,9 @@ class _FuelRecordsState extends State<FuelRecords> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+      backgroundColor: const Color(0xFF14151B),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF14151B),
         title: const Text('Fuel Records'),
         centerTitle: true,
         actions: [
@@ -120,7 +121,7 @@ class _FuelRecordsState extends State<FuelRecords> {
               const SizedBox(height: 30),
               Expanded(
                 child: isLoadingRecords
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator(color: Colors.white))
                     : message.isNotEmpty && message != "Success"
                         ? Text(
                             message,

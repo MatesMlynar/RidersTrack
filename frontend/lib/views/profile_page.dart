@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle_list_page.dart';
+import 'package:frontend/views/ride_record_list_page.dart';
 import 'package:provider/provider.dart';
 
 import '../models/network_connection_model.dart';
@@ -40,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return WillPopScope(
         onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         body: SafeArea(
           top: true,
           child: isDeviceConnected ? Column(
@@ -122,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const ProfilePageBox(icon: Icons.security, label: "Change password", routeWidget: LayoutPage()),
               const ProfilePageBox(icon: Icons.motorcycle, label: "My motorcycles", routeWidget: MotorcycleList()),
-              const ProfilePageBox(icon: Icons.settings, label: "Settings", routeWidget: LayoutPage()),
+              const ProfilePageBox(icon: Icons.list_alt_outlined, label: "My rides", routeWidget: RideRecordListPage()),
               Align(
                 alignment: const AlignmentDirectional(0.00, 0.00),
                 child: GestureDetector(

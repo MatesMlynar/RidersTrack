@@ -56,7 +56,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+      backgroundColor: const Color(0xFF14151B),
       appBar: AppBar(
         title: const Text(
           'Your motorcycles',
@@ -76,7 +76,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
         child: const Icon(Icons.add),
       ) : null,
       body: isDeviceConnected ? isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Colors.white,))
           : SingleChildScrollView(
               child: motorcycleData != null && motorcycleData!.isNotEmpty
                   ? Column(

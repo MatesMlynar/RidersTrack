@@ -79,8 +79,9 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
         onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         appBar: AppBar(
+          backgroundColor: const Color(0xFF14151B),
           title: const Text(
             'RIDERS TRACK',
             style: TextStyle(
@@ -111,15 +112,12 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0),
           child: Column(
             children: [
-              Center(
-                  child: Text('Welcome back! ${user?.username}',
-                      style: const TextStyle(color: Colors.grey, fontSize: 15))),
               const SizedBox(
                 height: 10,
               ),
               Center(
                 child: isLoadingRecords
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(color: Colors.white)
                     : rideRecords != null && rideRecords!.isNotEmpty
                         ? SizedBox(
                             height: swiperHeight,
