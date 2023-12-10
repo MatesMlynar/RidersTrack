@@ -254,7 +254,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
     print(isMotoFetching);
 
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         appBar: AppBar(
           title: const Text('Fuel Record detail'),
           centerTitle: true,

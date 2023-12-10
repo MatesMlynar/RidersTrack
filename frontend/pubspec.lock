@@ -340,18 +340,18 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: "4023e79184c762e63efe04da629d876085e0c296a7ca26745fb5750d4acd0aa2"
+      sha256: "4279a338b79288fad5c8b03e5ae6ec30888bff210e0bab10b1f31f31e5a90558"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.3"
+    version: "2.6.0"
   google_maps_flutter_ios:
     dependency: transitive
     description:
       name: google_maps_flutter_ios
-      sha256: "2aa28eb9b9d5dfdce6932a7b7f096430bf83a1a09b4e21e81939351f407c787f"
+      sha256: "6ad65362aeeeda44b7c2c807e36bf578ef4b1c163882e085bdb040bf2934b246"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:
@@ -628,18 +628,18 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      sha256: da3fdfeccc4d4ff2da8f8c556704c08f912542c5fb3cf2233ed75372384a034d
+      sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   provider:
     dependency: "direct main"
     description:
       name: provider
-      sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
+      sha256: "9a96a0a19b594dbc5bf0f1f27d2bc67d5f95957359b461cd9feb44ed6ae75096"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.5"
+    version: "6.1.1"
   sanitize_html:
     dependency: transitive
     description:
@@ -765,6 +765,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_charts:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_charts
+      sha256: "9b3087a6b2e06a23ae322123a4cd6a9f06256958eee1aeceda47d043bb2dd794"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.12"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "9f0a4593f7642b2f106e329734d0e5fc746baf8d0a59495eec586cd0d9ba7d02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "22.2.12"
   term_glyph:
     dependency: transitive
     description:
@@ -825,10 +841,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "350a11abd2d1d97e0cc7a28a81b781c08002aa2864d9e3f192ca0ffa18b06ed3"
+      sha256: b0f37db61ba2f2e9b7a78a1caece0052564d1bc70668156cf3a29d676fe4e574
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.9"
+    version: "5.1.1"
   xdg_directories:
     dependency: transitive
     description:

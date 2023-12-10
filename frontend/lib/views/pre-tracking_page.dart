@@ -132,9 +132,9 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+          backgroundColor: const Color(0xFF14151B),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {

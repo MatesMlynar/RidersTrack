@@ -244,7 +244,7 @@ class _TrackingPageState extends State<TrackingPage>
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 20, 24, 27),
+        backgroundColor: const Color(0xFF14151B),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),
           child: Center(
