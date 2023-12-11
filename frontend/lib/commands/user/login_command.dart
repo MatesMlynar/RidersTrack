@@ -8,6 +8,8 @@ class LoginCommand extends BaseCommand{
 
     Map<String, dynamic> result = await userService.login(email, password);
 
+    print(result);
+
     if(result['status'] != 200){
       return {
         "status": result['status'],

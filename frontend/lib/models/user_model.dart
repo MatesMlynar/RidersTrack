@@ -10,4 +10,8 @@ class UserModel extends ChangeNotifier {
     _currentUser = user;
     notifyListeners();
   }
+
+  void reset(){
+    _currentUser = null;
+  }
 }

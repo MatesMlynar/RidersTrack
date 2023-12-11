@@ -20,6 +20,16 @@ class GetAllMotorcycles extends BaseCommand{
       };
     }
     else{
+
+
+      if(motorcycleModel.motorcycles != null && motorcycleModel.motorcycles!.isNotEmpty){
+        return {
+          "status": 200,
+          "message": "Motorcycles already fetched",
+          "data": motorcycleModel.motorcycles
+        };
+      }
+
       Map<String, dynamic> result = await motorcycleService.getAllMotorcycles(token);
 
       if(result['status'] != 200){

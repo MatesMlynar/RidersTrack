@@ -154,7 +154,6 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
   @override
   Widget build(BuildContext context) {
 
-    print(isFetchingData);
     if(rideRecord != null){
       if(rideRecord!.totalDistance < 100){
         isLessThan100Meters = true;
@@ -166,7 +165,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
       }
     }
     
-    double fontSize = MediaQuery.of(context).size.height * 0.024;
+    double fontSize = MediaQuery.of(context).size.height * 0.023;
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     return Scaffold(

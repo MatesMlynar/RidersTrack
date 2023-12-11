@@ -24,6 +24,14 @@ class GetAllFuelRecordsCommand extends BaseCommand {
     }
     else{
 
+      if(fuelRecordModel.fuelRecords != null && fuelRecordModel.fuelRecords!.isNotEmpty){
+        return {
+          "status": 200,
+          "data": fuelRecordModel.fuelRecords
+        };
+      }
+
+
       Map<String, dynamic> result = await fuelRecordService.getAllFuelRecords(token);
 
       if(result['status'] != 200){

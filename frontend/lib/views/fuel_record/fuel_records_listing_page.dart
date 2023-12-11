@@ -33,7 +33,6 @@ class _FuelRecordsState extends State<FuelRecords> {
     Map<String, dynamic> result = await GetAllFuelRecordsCommand().run();
     if (result['status'] == 200) {
       setState(() {
-        message = result['message'];
         isLoadingRecords = false;
       });
     } else {

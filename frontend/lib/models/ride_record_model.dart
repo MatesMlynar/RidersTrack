@@ -12,5 +12,7 @@ class RideRecordModel extends ChangeNotifier{
     notifyListeners();
   }
 
-
+  void reset(){
+    _rideRecords = [];
+  }
 }

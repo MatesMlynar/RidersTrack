@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/commands/user/logout_command.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle_list_page.dart';
@@ -19,17 +20,11 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  final SecureStorage _secureStorage = SecureStorage();
   bool isDeviceConnected = false;
 
 
   void logout(BuildContext context) async {
-    await _secureStorage.deleteToken();
-
-    if (context.mounted) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const LoginPage()));
-    }
+    Map<String, dynamic> result = await LogoutCommand().run(context);
   }
 
   @override

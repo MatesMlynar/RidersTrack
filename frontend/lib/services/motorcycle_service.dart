@@ -14,7 +14,7 @@ class MotorcycleService {
           headers: {
             'Accept': 'Application/json',
             'Authorization': 'Bearer $token'
-          }).timeout(const Duration(seconds: 15));
+          }).timeout(const Duration(seconds: 30));
 
       return json.decode(response.body);
     }on TimeoutException {

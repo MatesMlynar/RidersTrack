@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
+import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/types/textField_type.dart';
 import 'package:frontend/views/components/custom_text_field_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
@@ -31,7 +32,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
 
 
   late String? selectedMotorcycleId;
-  late List<Map<String, dynamic>> motorcycleIdsList = [];
+  late List<Motorcycle> motorcycleIdsList = [];
   late String message = "";
   bool isDeviceConnected = false;
 
@@ -52,7 +53,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
       if(result['data'] != null && result['data'].isNotEmpty)
         {
           motorcycleIdsList = result['data'];
-          selectedMotorcycleId = motorcycleIdsList[0]['_id'];
+          selectedMotorcycleId = motorcycleIdsList[0].id;
         }
     });
   }
@@ -230,8 +231,8 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   child: isMotoFetching ? const CircularProgressIndicator(color: Colors.white,) : motorcycleIdsList.isEmpty ? const NoMotoFoundComponent() : DropdownButtonFormField(
                     value: selectedMotorcycleId,
                     items: motorcycleIdsList.map((itemVal) => DropdownMenuItem(
-                              value: itemVal['_id'],
-                              child: Text(itemVal['brand'] + " " + itemVal['model']),
+                              value: itemVal.id,
+                              child: Text("${itemVal.brand} ${itemVal.model}"),
                             ))
                         .toList(),
                     onChanged: (val) {

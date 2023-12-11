@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/delete_fuel_record_by_id_command.dart';
 import 'package:frontend/commands/fuel_records/get_fuel_record_by_id_command.dart';
+import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/views/components/fuel-records_disabled_date_picker_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +38,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
   bool isMotoFetching = false;
   late String? selectedMotorcycleId;
-  late List<Map<String, dynamic>> motorcycleIdsList = [];
+  late List<Motorcycle> motorcycleIdsList = [];
   bool isDeviceConnected = false;
 
 
@@ -61,8 +62,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
           priceController.text = result['data']['totalPrice'].toString();
           selectedDate = DateTime.parse(result['data']['date']);
           selectedMotorcycleId = result['data']['motorcycleId'].toString();
-
-          message = result['message'];
 
           //optional
 
@@ -395,9 +394,9 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                                     value: selectedMotorcycleId,
                                     items: motorcycleIdsList
                                         .map((itemVal) => DropdownMenuItem(
-                                              value: itemVal['_id'],
+                                              value: itemVal.id,
                                               child: Text(
-                                                itemVal['brand'] + " " + itemVal['model'],
+                                                "${itemVal.brand} ${itemVal.model}",
                                                 style: const TextStyle(
                                                     color: Colors.white),
                                               ),

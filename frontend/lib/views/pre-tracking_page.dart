@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
+import 'package:frontend/models/motorcycle_model.dart';
+import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/tracking_page.dart';
@@ -22,7 +24,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
   bool isMotoFetching = false;
 
   late String? selectedMotorcycleId;
-  late List<Map<String, dynamic>> motorcycleIdsList = [];
+  late List<Motorcycle> motorcycleIdsList = [];
   late String message = "";
   bool isDeviceConnected = false;
 
@@ -32,7 +34,6 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
     isMotoFetching = true;
 
     Map<String, dynamic> result = await GetAllMotorcycles().run();
-
     if (result['status'] != 200) {
       isMotoFetching = false;
       message = result['message'];
@@ -51,8 +52,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
       setState(() {
         isMotoFetching = false;
         if (result['data'] != null && result['data'].isNotEmpty) {
-          motorcycleIdsList = result['data'];
-          selectedMotorcycleId = motorcycleIdsList[0]['_id'];
+          motorcycleIdsList = result['data'] as List<Motorcycle>;
+          selectedMotorcycleId = motorcycleIdsList[0].id;
         }
       });
     }
@@ -131,6 +132,11 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
+    if(context.watch<MotorcycleModel>().motorcycles != null){
+      motorcycleIdsList = context.watch<MotorcycleModel>().motorcycles!;
+      selectedMotorcycleId = motorcycleIdsList[0].id;
+    }
+
     return Scaffold(
         backgroundColor: const Color(0xFF14151B),
         appBar: AppBar(
@@ -171,8 +177,8 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
                   items: motorcycleIdsList
                       .map((itemVal) =>
                       DropdownMenuItem(
-                        value: itemVal['_id'],
-                        child: Text(itemVal['brand'] + " " + itemVal['model'],
+                        value: itemVal.id,
+                        child: Text(itemVal.brand + " " + itemVal.model,
                           style: const TextStyle(color: Colors.white),),
                       ))
                       .toList(),

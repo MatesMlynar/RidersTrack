@@ -33,4 +33,10 @@ class FuelRecordModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  void reset(){
+    _fuelRecords = [];
+    _totalFuelUsed = 0;
+    _totalMoneySpent = 0;
+  }
+
 }

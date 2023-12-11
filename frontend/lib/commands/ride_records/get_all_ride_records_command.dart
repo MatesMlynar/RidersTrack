@@ -26,6 +26,14 @@ class GetAllRideRecordsCommand extends BaseCommand {
     }
     else{
 
+      if(rideRecordModel.rideRecords != null && rideRecordModel.rideRecords!.isNotEmpty){
+        return {
+          "status": 200,
+          "message": "Ride records already fetched",
+          "data": rideRecordModel.rideRecords
+        };
+      }
+
       Map<String, dynamic> result = await rideRecordService.getAllRideRecords(token);
 
       if(result['status'] != 200){
