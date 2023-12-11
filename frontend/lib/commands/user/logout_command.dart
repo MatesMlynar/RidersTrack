@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/models/fuel_record_model.dart';
 
 import '../../utils/secure_storage.dart';
 import '../../views/login_page.dart';

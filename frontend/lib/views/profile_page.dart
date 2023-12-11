@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/logout_command.dart';
+import 'package:frontend/types/user_type.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle_list_page.dart';
 import 'package:frontend/views/ride_record_list_page.dart';
 import 'package:provider/provider.dart';
 
+import '../commands/user/get_user_command.dart';
 import '../models/network_connection_model.dart';
 import '../utils/secure_storage.dart';
 import 'layout/layout_page.dart';
@@ -21,11 +23,31 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   bool isDeviceConnected = false;
-
+  User? user;
 
   void logout(BuildContext context) async {
     Map<String, dynamic> result = await LogoutCommand().run(context);
   }
+
+  void getUser() async {
+    Map<String, dynamic> response = await GetUserCommand().run(context);
+    if(response['success'] == true){
+      setState(() {
+        user = response['user'];
+      });
+    }
+    else{
+      user = null;
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,22 +116,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                 child: Text(
-                  'Matteo',
-                  style: TextStyle(
+                  user != null ? user!.username : '',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24, 4, 0, 16),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 16),
                 child: Text(
-                  'matteo@example.com',
-                  style: TextStyle(
+                  user != null ? user!.email : '',
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
