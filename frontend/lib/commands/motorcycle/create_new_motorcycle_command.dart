@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:typed_data';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:frontend/commands/base_command.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,8 +31,13 @@ class CreateNewMotorcycleCommand extends BaseCommand{
 
       // If image is not null, convert it to base64
       if(image != null){
-        List<int> imageBytes = await image.readAsBytes();
-        base64Image = base64Encode(imageBytes);
+        Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
+          image.path,
+          minHeight: 200,
+          minWidth: 200,
+          quality: 50,
+        );
+        base64Image = base64Encode(compressedImage!);
       }
 
       Map<String, dynamic> result = await motorcycleService.createNewMotorcycle(token, brand, model, yearOfManufacture, ccm, base64Image);
