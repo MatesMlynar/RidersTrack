@@ -5,13 +5,13 @@ import 'package:frontend/models/motorcycle_model.dart';
 import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
-import 'package:frontend/views/tracking_page.dart';
+import 'package:frontend/views/ride_record/tracking_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../models/network_connection_model.dart';
-import 'create_new_motorcycle_page.dart';
+import '../../models/network_connection_model.dart';
+import '../motorcycle/create_new_motorcycle_page.dart';
 
 class PreTrackingPage extends StatefulWidget {
   const PreTrackingPage({super.key});

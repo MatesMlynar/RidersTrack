@@ -5,14 +5,14 @@ import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
 import 'package:frontend/views/components/max_speed_chart_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
-import 'package:frontend/views/pre-tracking_page.dart';
+import 'package:frontend/views/ride_record/pre-tracking_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../models/network_connection_model.dart';
-import '../types/ride_record.dart';
-import '../utils/snack_bar_service.dart';
+import '../../models/network_connection_model.dart';
+import '../../types/ride_record.dart';
+import '../../utils/snack_bar_service.dart';
 
 class RideRecordDetailPage extends StatefulWidget {
   const RideRecordDetailPage({super.key, required this.id});

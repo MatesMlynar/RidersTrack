@@ -50,4 +50,29 @@ class UserService{
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
   }
+
+  Future<Map<String, dynamic>> changePassword(String token,String oldPassword, String newPassword, String userEmail) async {
+    try{
+      var reqBody = {
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+        "email": userEmail
+      };
+
+      http.Response response = await http.post(Uri.parse(dotenv.env['changePasswordURL']!),
+        headers: {"Content-type": "application/json", "Authorization": "Bearer $token"},
+        body: jsonEncode(reqBody), ).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'something went wrong'};
+    }
+  }
+
 }

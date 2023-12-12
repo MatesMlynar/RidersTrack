@@ -1,15 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/login_command.dart';
-import 'package:frontend/views/registration_page.dart';
+import 'package:frontend/views/other_page/registration_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../models/network_connection_model.dart';
-import '../utils/secure_storage.dart';
-import 'components/no_connection_component.dart';
-import 'layout/layout_page.dart';
+import '../../models/network_connection_model.dart';
+import '../../utils/secure_storage.dart';
+import '../components/no_connection_component.dart';
+import '../layout/layout_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

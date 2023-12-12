@@ -47,7 +47,6 @@ userSchema.methods.comparePasswords = async function(userPassword: string) : Pro
 }
 
 
-
 const UserModel = db.model<User>('user', userSchema);
 
 export default UserModel;

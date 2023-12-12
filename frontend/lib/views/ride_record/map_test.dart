@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'layout/layout_page.dart';
+import '../layout/layout_page.dart';
 
 class MapTest extends StatefulWidget {
   const MapTest({super.key, required this.locationPoints, required this.totalDistance, required this.maxSpeed});

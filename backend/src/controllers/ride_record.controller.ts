@@ -11,7 +11,7 @@ export const getAllRideRecords = async (req: authRequest, res: Response) => {
         const token: string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err: any) => {
             if (err) {
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -22,12 +22,12 @@ export const getAllRideRecords = async (req: authRequest, res: Response) => {
                 const response: RideRecord[] | null = await RideRecordService.getAllRideRecords(decodedToken.userData.id);
 
                 if (response == null) {
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error getting ride records"
                     })
                 } else {
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Ride records retrieved successfully",
                         data: response
@@ -50,7 +50,7 @@ export const getRideRecordById = async (req: authRequest, res: Response) => {
         const token: string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err: any) => {
             if (err) {
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -61,12 +61,12 @@ export const getRideRecordById = async (req: authRequest, res: Response) => {
                 const response: RideRecord | null = await RideRecordService.getRideRecordById(req.params.id, decodedToken.userData.id);
 
                 if (response == null) {
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error getting ride record"
                     })
                 } else {
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Ride record retrieved successfully",
                         data: response
@@ -87,7 +87,7 @@ export const createRideRecord = async (req: authRequest, res: Response) => {
         const token: string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err: any) => {
             if (err) {
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -98,12 +98,12 @@ export const createRideRecord = async (req: authRequest, res: Response) => {
                 const response: RideRecord | null = await RideRecordService.createRideRecord(req.body, decodedToken.userData.id);
 
                 if (response == null) {
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error creating ride record"
                     })
                 } else {
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Ride record created successfully",
                         data: response
@@ -123,7 +123,7 @@ export const deleteRideRecordById = async (req: authRequest, res: Response) => {
         const token: string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err: any) => {
             if (err) {
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -134,12 +134,12 @@ export const deleteRideRecordById = async (req: authRequest, res: Response) => {
                 const response: Boolean = await RideRecordService.deleteRideRecordById(req.params.id, decodedToken.userData.id);
 
                 if (response == null) {
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error deleting ride record"
                     })
                 } else {
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Ride record deleted successfully",
                         data: response

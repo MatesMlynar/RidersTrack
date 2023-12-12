@@ -3,7 +3,7 @@ import 'package:frontend/types/ride_record.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-import '../ride_record_detail_page.dart';
+import '../ride_record/ride_record_detail_page.dart';
 
 class RideRecordListComponent extends StatefulWidget {
   const RideRecordListComponent({super.key, required this.rideRecordData});

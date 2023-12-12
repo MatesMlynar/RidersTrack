@@ -4,13 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/utils/functions/ride_records/calculateTopSpeed.dart';
 import 'package:frontend/utils/functions/ride_records/calculateTotalDistance.dart';
-import 'package:frontend/views/map_test.dart';
+import 'package:frontend/views/ride_record/map_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../commands/ride_records/create_ride_record_command.dart';
-import '../models/network_connection_model.dart';
+import '../../commands/ride_records/create_ride_record_command.dart';
+import '../../models/network_connection_model.dart';
 
 class TrackingPage extends StatefulWidget with WidgetsBindingObserver {
   const TrackingPage({super.key, required this.motorcycleId});

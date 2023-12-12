@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/home_page.dart';
-import 'package:frontend/views/pre-tracking_page.dart';
-import 'package:frontend/views/profile_page.dart';
+import 'package:frontend/views/other_page/home_page.dart';
+import 'package:frontend/views/ride_record/pre-tracking_page.dart';
+import 'package:frontend/views/other_page/profile_page.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/secure_storage.dart';
-import '../../views/login_page.dart';
+import '../../views/other_page/login_page.dart';
 import '../base_command.dart';
 
 class LogoutCommand extends BaseCommand{

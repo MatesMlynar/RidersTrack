@@ -6,10 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../commands/motorcycle/create_new_motorcycle_command.dart';
-import '../models/network_connection_model.dart';
-import '../types/textField_type.dart';
-import 'components/custom_text_field_component.dart';
+import '../../commands/motorcycle/create_new_motorcycle_command.dart';
+import '../../models/network_connection_model.dart';
+import '../../types/textField_type.dart';
+import '../components/custom_text_field_component.dart';
 
 class CreateNewMotorcycle extends StatefulWidget {
   const CreateNewMotorcycle({super.key});
@@ -36,8 +36,6 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
     void createNewMotorcycle() async {
-
-
 
       String brand = brandController.text;
       String model = modelController.text;

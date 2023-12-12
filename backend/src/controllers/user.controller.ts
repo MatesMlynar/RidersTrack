@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import User from "../types/models/user.type";
+import jwt from "jsonwebtoken";
+import authRequest from "../types/auth/authRequest";
+import TokenType from "../types/auth/tokenType";
 
 require('dotenv').config();
 
@@ -45,13 +48,13 @@ export const login = async (req: Request, res: Response) => {
         const user: User | null = await UserService.findUser(email);
 
         if (!user) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: 404,
                 message: "User not found"
             })
         }else if(user){
             if (!await user!.comparePasswords(password)) {
-                res.status(401).send({
+                return res.status(401).send({
                     status: 401,
                     message: "Incorrect password"
                 })
@@ -66,25 +69,69 @@ export const login = async (req: Request, res: Response) => {
             const token = await UserService.generateToken({ userData }, process.env.JWT_SECRET!, '24h');
     
             if (!token) {
-                res.status(500).send({
+                return res.status(500).send({
                     status: 500,
                     message: "Error generating token"
                 })
             }
     
-            res.status(200).send({
+            return res.status(200).send({
                 status: 200,
                 message: "User logged in successfully",
                 token: token,
             })
         }
         else {
-            res.status(500).send({
+            return res.status(500).send({
                 status: 500,
                 message: "Something went wrong"
             })
         }
 
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const changePassword = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+            const { oldPassword, newPassword, email } = req.body;
+
+            const decodedToken : TokenType = jwt.decode(token) as TokenType;
+            const userId : string = decodedToken.userData.id;
+            const user: User | null = await UserService.findUser(email);
+
+            if (!user) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+
+            if (!(await user!.comparePasswords(oldPassword))) {
+                return res.status(401).send({
+                    status: 401,
+                    message: "Incorrect password"
+                })
+            }
+
+            const response = await UserService.changePassword(userId, newPassword);
+
+            if (!response.success) {
+                return res.status(500).send({
+                    status: 500,
+                    message: response.message
+                })
+            }
+
+            return res.status(200).send({
+                status: 200,
+                message: response.message
+            })
+        })
     } catch (err) {
         console.log(err);
     }

@@ -13,7 +13,7 @@ export const getAllMotorcycles = async (req: authRequest, res: Response) => {
         const token : string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any) => {
             if(err){
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -23,13 +23,13 @@ export const getAllMotorcycles = async (req: authRequest, res: Response) => {
                 const decodedToken : TokenType = jwt.decode(token) as TokenType;
                 const response : Motorcycle[] | null = await MotorcycleService.getAllMotorcycles(decodedToken.userData.id);
                 if(!response){
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error getting motorcycles"
                     })
                 }
                 else{
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Motorcycles retrieved successfully",
                         data: response
@@ -50,7 +50,7 @@ export const getMotorcycleById = async (req: authRequest, res: Response) => {
         const token : string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any) => {
             if(err){
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -63,7 +63,7 @@ export const getMotorcycleById = async (req: authRequest, res: Response) => {
                 const motoId : string = req.params.id;
 
                 if (!motoId){
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "No motorcycle exists with this id"
                     })
@@ -74,13 +74,13 @@ export const getMotorcycleById = async (req: authRequest, res: Response) => {
                 // add list of fueling records with id of this motorcycle to response
 
                 if(!response){
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error getting motorcycle"
                     })
                 }
                 else{
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Motorcycle retrieved successfully",
                         data: response
@@ -101,7 +101,7 @@ export const addMotorcycle = async (req: authRequest, res: Response) => {
         const token : string = req.token;
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
             if(err){
-                res.status(403).send({
+                return res.status(403).send({
                     status: 403,
                     message: "Invalid token"
                 })
@@ -111,13 +111,13 @@ export const addMotorcycle = async (req: authRequest, res: Response) => {
                 const decodedToken : TokenType = jwt.decode(token) as TokenType;
                 const response : Motorcycle | null = await MotorcycleService.addMotorcycle(req.body.brand, req.body.model, decodedToken.userData.id, req.body.ccm, req.body.image, req.body.yearOfManufacture);
                 if(!response){
-                    res.status(500).send({
+                    return res.status(500).send({
                         status: 500,
                         message: "Error adding motorcycle"
                     })
                 }
                 else{
-                    res.status(200).send({
+                    return res.status(200).send({
                         status: 200,
                         message: "Motorcycle added successfully",
                         data: response

@@ -5,7 +5,7 @@ import 'package:frontend/models/network_connection_model.dart';
 import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/views/components/motorcycle_item_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
-import 'package:frontend/views/create_new_motorcycle_page.dart';
+import 'package:frontend/views/motorcycle/create_new_motorcycle_page.dart';
 import 'package:provider/provider.dart';
 
 class MotorcycleList extends StatefulWidget {

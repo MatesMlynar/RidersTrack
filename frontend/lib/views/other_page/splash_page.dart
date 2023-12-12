@@ -6,7 +6,7 @@ import 'package:frontend/views/layout/layout_page.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
-import '../models/network_connection_model.dart';
+import '../../models/network_connection_model.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {

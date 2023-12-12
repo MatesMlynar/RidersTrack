@@ -14,7 +14,7 @@ import 'package:frontend/services/ride_record_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:frontend/utils/snack_bar_service.dart';
-import 'package:frontend/views/splash_page.dart';
+import 'package:frontend/views/other_page/splash_page.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

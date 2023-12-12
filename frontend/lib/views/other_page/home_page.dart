@@ -4,14 +4,14 @@ import 'package:frontend/commands/ride_records/get_all_ride_records_command.dart
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/rideRecordCard_component.dart';
 import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
-import 'package:frontend/views/ride_record_detail_page.dart';
+import 'package:frontend/views/ride_record/ride_record_detail_page.dart';
 import 'package:provider/provider.dart';
-import '../models/network_connection_model.dart';
-import '../models/ride_record_model.dart';
-import '../models/user_model.dart';
-import '../types/ride_record.dart';
-import '../types/user_type.dart';
-import '../utils/secure_storage.dart';
+import '../../models/network_connection_model.dart';
+import '../../models/ride_record_model.dart';
+import '../../models/user_model.dart';
+import '../../types/ride_record.dart';
+import '../../types/user_type.dart';
+import '../../utils/secure_storage.dart';
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {

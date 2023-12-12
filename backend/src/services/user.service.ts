@@ -48,4 +48,23 @@ export class UserService{
             return null;
         }
     }}
+
+    static async changePassword(userId : string, newPassword: String) : Promise<{success: boolean, message: string}>{
+        try{
+
+            const user = await UserModel.findOne({_id: userId});
+
+            if (!user) {
+                return {success: false, message: "User not found"}
+            }
+
+            user.password = newPassword as string;
+            await user.save();
+            return {success: true, message: "Password changed successfully"}
+        }catch (err){
+            return {success: false, message: 'Error while changing password'};
+        }
+    }
+
+
 }

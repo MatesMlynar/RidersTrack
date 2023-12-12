@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/types/ride_record.dart';
-import 'package:frontend/views/pre-tracking_page.dart';
+import 'package:frontend/views/ride_record/pre-tracking_page.dart';
 import 'package:provider/provider.dart';
 
-import '../commands/ride_records/get_all_ride_records_command.dart';
-import '../models/network_connection_model.dart';
-import '../models/ride_record_model.dart';
-import 'components/no_connection_component.dart';
-import 'components/rideRecordList_component.dart';
+import '../../commands/ride_records/get_all_ride_records_command.dart';
+import '../../models/network_connection_model.dart';
+import '../../models/ride_record_model.dart';
+import '../components/no_connection_component.dart';
+import '../components/rideRecordList_component.dart';
 
 class RideRecordListPage extends StatefulWidget {
   const RideRecordListPage({super.key});

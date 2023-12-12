@@ -2,12 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/user/register_command.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
-import 'package:frontend/views/login_page.dart';
+import 'package:frontend/views/other_page/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../models/network_connection_model.dart';
+import '../../models/network_connection_model.dart';
 
 
 class RegistrationPage extends StatefulWidget {
