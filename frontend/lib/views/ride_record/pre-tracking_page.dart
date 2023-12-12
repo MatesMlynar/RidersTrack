@@ -52,7 +52,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
       setState(() {
         isMotoFetching = false;
         if (result['data'] != null && result['data'].isNotEmpty) {
-          motorcycleIdsList = result['data'] as List<Motorcycle>;
+          motorcycleIdsList = result['data'];
           selectedMotorcycleId = motorcycleIdsList[0].id;
         }
       });
@@ -132,7 +132,7 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
-    if(context.watch<MotorcycleModel>().motorcycles != null){
+    if(context.watch<MotorcycleModel>().motorcycles != null && context.watch<MotorcycleModel>().motorcycles!.isNotEmpty){
       motorcycleIdsList = context.watch<MotorcycleModel>().motorcycles!;
       selectedMotorcycleId = motorcycleIdsList[0].id;
     }

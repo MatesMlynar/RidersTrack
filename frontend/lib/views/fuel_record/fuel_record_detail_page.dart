@@ -76,8 +76,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
         Map<String, dynamic> motorcycleFetchResult = await GetAllMotorcycles().run();
 
-        print(motorcycleFetchResult);
-
         if (motorcycleFetchResult['status'] != 200) {
           setState(() {
             isMotoFetching = false;
@@ -250,7 +248,6 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
   Widget build(BuildContext context) {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
-    print(isMotoFetching);
 
     return Scaffold(
         backgroundColor: const Color(0xFF14151B),

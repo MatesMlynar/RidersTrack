@@ -32,8 +32,6 @@ class CreateNewMotorcycleCommand extends BaseCommand{
       if(image != null){
         Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
           image.path,
-          minHeight: 200,
-          minWidth: 200,
           quality: 50,
         );
         base64Image = base64Encode(compressedImage!);

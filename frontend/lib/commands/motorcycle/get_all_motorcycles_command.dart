@@ -45,7 +45,7 @@ class GetAllMotorcycles extends BaseCommand{
         return {
           "status": result['status'],
           "message": result['message'],
-          "data": (result['data'] as List).cast<Map<String, dynamic>>()
+          "data": (motorcycleModel.motorcycles)
         };
       }
     }
