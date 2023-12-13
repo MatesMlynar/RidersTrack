@@ -2,8 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open because of tracking motorcycle ride</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when running in the background because of tracking motorcycle ride.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to access photo library because user is capable of selection image from library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need to access camera because user is capable of taking photo</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need to access microphone because user is capable record audio from video</string>
 	<key>CFBundleDisplayName</key>
 	<string>Frontend</string>
 	<key>CFBundleExecutable</key>

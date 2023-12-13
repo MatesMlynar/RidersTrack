@@ -1,7 +1,5 @@
 buildscript {
     ext {
-
-
         agp_version4 = '8.0.0'
         agp_version6 = agp_version4
         agp_version5 = '8.1.2'

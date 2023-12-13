@@ -79,13 +79,21 @@ class _TrackingPageState extends State<TrackingPage>
       locationSettings = AndroidSettings(
           accuracy: LocationAccuracy.high,
           forceLocationManager: false,
-          intervalDuration: const Duration(seconds: 5),
           foregroundNotificationConfig: const ForegroundNotificationConfig(
               enableWakeLock: true,
               notificationTitle: "Running in background",
               notificationText:
               "RidersTrack app will continue to receive your location even when you aren't using it"));
-    } else {
+    } else if(defaultTargetPlatform == TargetPlatform.iOS){
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.high,
+        activityType: ActivityType.fitness,
+        distanceFilter: 10,
+        pauseLocationUpdatesAutomatically: true,
+        // Only set to true if our app will be started up in the background.
+        showBackgroundLocationIndicator: false,
+      );
+    } else{
       locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 5,
