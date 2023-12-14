@@ -42,4 +42,15 @@ export class MotorcycleService{
         }
     }
 
+    static async updateAvgConsumptionById(id : String, userId: string, avgConsumption : number) : Promise<Motorcycle | null>{
+        try{
+            const response = await MotorcycleModel.findOneAndUpdate({_id : id, user : userId}, {consumption : avgConsumption}, {new : true})
+            return response?.toObject() as Motorcycle;
+        }catch(err){
+            console.log(err);
+            return null;
+        }
+
+    }
+
 }

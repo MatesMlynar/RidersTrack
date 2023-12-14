@@ -22,7 +22,7 @@ class UpdateAvgConsumptionCommand extends BaseCommand{
     }
     else{
 
-      late List<Map<String, dynamic>>? fuelRecords = (fuelRecordModel.fuelRecords)?.where((element) => element['motorcycleId'] == motorcycleId).toList();
+      List<Map<String, dynamic>>? fuelRecords = (fuelRecordModel.fuelRecords)?.where((element) => element['motorcycleId'] == motorcycleId).toList();
       num avgConsumption = 0;
 
 

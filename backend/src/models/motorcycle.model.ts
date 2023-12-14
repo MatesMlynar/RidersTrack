@@ -17,6 +17,9 @@ const motorcycleSchema = new Schema({
         type: String,
         required: true,
     },
+    consumption: {
+        type: Number,
+    },
     image: {
         type: String,
     },
@@ -25,7 +28,8 @@ const motorcycleSchema = new Schema({
     },
     ccm: {
         type: Number,
-    }
+    },
+
 })
 
 

@@ -15,7 +15,6 @@ const app: Application = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-
 //MIDDLEWARE
 app.use('/api/user', userRoute)
 app.use('/api/motorcycle', motorcycleRoute)

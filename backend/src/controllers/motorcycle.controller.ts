@@ -129,5 +129,39 @@ export const addMotorcycle = async (req: authRequest, res: Response) => {
         console.log(err);
     }
 
+}
 
+export const updateAvgConsumptionById = async (req: authRequest, res: Response) => {
+        try{
+            //check if token is valid
+            const token : string = req.token;
+            jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+                if(err){
+                    return res.status(403).send({
+                        status: 403,
+                        message: "Invalid token"
+                    })
+                }
+                else{
+                    //token is valid, update motorcycle
+                    const decodedToken : TokenType = jwt.decode(token) as TokenType;
+                    const response : Motorcycle | null = await MotorcycleService.updateAvgConsumptionById(req.params.id, decodedToken.userData.id, req.body.consumption);
+                    if(!response){
+                        return res.status(500).send({
+                            status: 500,
+                            message: "Error updating motorcycle"
+                        })
+                    }
+                    else{
+                        return res.status(200).send({
+                            status: 200,
+                            message: "Motorcycle updated successfully",
+                            data: response
+                        })
+                    }
+                }
+            })
+        }catch(err){
+            console.log(err);
+        }
 }
