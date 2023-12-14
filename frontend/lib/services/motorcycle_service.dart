@@ -55,6 +55,31 @@ class MotorcycleService {
     on Error {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
-
   }
+
+  Future<Map<String, dynamic>> updateAvgConsumption(String token, num consumption, String motorcycleId) async {
+    try{
+      Map<String, dynamic> reqBody = {
+        "consumption": consumption
+      };
+
+      http.Response response = await http.put(Uri.parse((dotenv.env['updateAvgConsumptionURL']!) + motorcycleId),
+          headers: {
+            'Content-type': 'Application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode(reqBody)).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
+    }
+  }
+
+
 }

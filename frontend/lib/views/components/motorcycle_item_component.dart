@@ -113,8 +113,8 @@ class _MotorcycleItemComponentState extends State<MotorcycleItemComponent> {
                             ),
                           ),
                           Text(
-                            '4.5 l/100km',
-                            style: TextStyle(
+                            '${widget.data.consumption != null ? (widget.data.consumption)!.toStringAsFixed(2) : "0"} l/100km',
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                             ),

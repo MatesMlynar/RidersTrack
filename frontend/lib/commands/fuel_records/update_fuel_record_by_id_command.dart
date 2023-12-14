@@ -1,5 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
 
+import '../motorcycle/update_avg_consumption_command.dart';
 import 'update_total_fuel_used_command.dart';
 import 'update_total_money_spent_command.dart';
 
@@ -42,6 +43,15 @@ class UpdateFuelRecordByIdCommand extends BaseCommand{
           fuelRecordModel.fuelRecords![indexToUpdate]['distance'] = num.parse(distance == ""? "0" : distance);
           UpdateTotalMoneySpentCommand().run();
           UpdateTotalFuelUsedCommand().run();
+        }
+
+        Map<String, dynamic> avgConsumptionResult = await UpdateAvgConsumptionCommand().run(motorcycleId);
+
+        if(avgConsumptionResult['status'] != 200){
+          return {
+            "status": avgConsumptionResult['status'],
+            "message": 'Fuel record updated, but average consumption not updated. You can exit this page'
+          };
         }
 
         return {

@@ -36,26 +36,26 @@ class _SplashPageState extends State<SplashPage> {
 
   getConnectivity() => subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
 
-            isDeviceConnected = await InternetConnectionChecker().hasConnection;
-            if(context.mounted){
-              Provider.of<NetworkConnectionModel>(context, listen: false).isDeviceConnected = isDeviceConnected;
-            }
-            setState(() {
-              isModelInitialized = true;
-            });
-
-            if(!isDeviceConnected){
-              if (context.mounted) {
-                NetworkConnectionModel().isDeviceConnected = false;
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No internet connection. Please check your connection and try again.'), backgroundColor: Colors.red,));
-              }
-            }
-            else if(isDeviceConnected){
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Internet connection restored.'), backgroundColor: Colors.green,));
-              }}
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if(context.mounted){
+            Provider.of<NetworkConnectionModel>(context, listen: false).isDeviceConnected = isDeviceConnected;
           }
-      );
+          setState(() {
+            isModelInitialized = true;
+          });
+
+          if(!isDeviceConnected){
+            if (context.mounted) {
+              NetworkConnectionModel().isDeviceConnected = false;
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No internet connection. Please check your connection and try again.'), backgroundColor: Colors.red,));
+            }
+          }
+          else if(isDeviceConnected){
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Internet connection restored.'), backgroundColor: Colors.green,));
+            }}
+        }
+    );
 
 
   @override

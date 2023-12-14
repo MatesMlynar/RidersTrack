@@ -87,7 +87,7 @@ class _TrackingPageState extends State<TrackingPage>
     } else if(defaultTargetPlatform == TargetPlatform.iOS){
       locationSettings = AppleSettings(
         accuracy: LocationAccuracy.high,
-        activityType: ActivityType.fitness,
+        activityType: ActivityType.otherNavigation,
         distanceFilter: 10,
         pauseLocationUpdatesAutomatically: true,
         // Only set to true if our app will be started up in the background.

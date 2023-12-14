@@ -5,6 +5,7 @@ class Motorcycle{
   final String? image;
   final num? yearOfManufacture;
   final num? ccm;
+  num? consumption;
 
   Motorcycle({
     required this.id,
@@ -13,6 +14,7 @@ class Motorcycle{
     this.image,
     this.yearOfManufacture,
     this.ccm,
+    this.consumption,
   });
 
   factory Motorcycle.fromJson(Map<String, dynamic> json){
@@ -23,7 +25,7 @@ class Motorcycle{
       image: json['image'] as String?,
       yearOfManufacture: json['yearOfManufacture'] as num?,
       ccm: json['ccm'] as num?,
+      consumption: json['consumption'] as num?,
     );
   }
-
 }

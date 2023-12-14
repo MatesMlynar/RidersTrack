@@ -186,6 +186,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
               child: TextField(
                 keyboardType: TextInputType.number,
+                readOnly: true,
                 autocorrect: false,
                 controller: consumptionController,
                 style:

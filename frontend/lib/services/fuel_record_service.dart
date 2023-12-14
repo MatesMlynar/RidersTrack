@@ -44,6 +44,8 @@ class FuelRecordService{
         'Authorization': 'Bearer $token'
       }, body: jsonEncode(reqBody)).timeout(const Duration(seconds: 15));
 
+
+
       return json.decode(response.body);
     } on TimeoutException {
       return {'status': 408, 'message': 'Request timed out. Please try again.'};
