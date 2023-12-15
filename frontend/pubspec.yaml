@@ -49,8 +49,8 @@ dependencies:
   image_picker: ^1.0.4
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^5.0.2
-  syncfusion_flutter_charts: ^22.2.12
   flutter_image_compress: ^2.1.0
+  fl_chart: ^0.65.0
 
 dev_dependencies:
   flutter_test:

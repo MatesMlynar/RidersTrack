@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import '../../types/motorcycle_type.dart';
+import '../motorcycle/motorcycle_detail_page.dart';
 
 class MotorcycleItemComponent extends StatefulWidget {
   const MotorcycleItemComponent({super.key, required this.data});
@@ -39,8 +40,7 @@ class _MotorcycleItemComponentState extends State<MotorcycleItemComponent> {
 
     return GestureDetector(
       onTap: () {
-        //todo add page where user will be able to view motorcycle details
-        print('todo page where user will be able to view motorcycle details');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MotorcycleDetailPage(data: widget.data)));
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16,10, 16, 10),
