@@ -9,6 +9,7 @@ import 'package:frontend/services/ride_record_service.dart';
 import 'package:frontend/utils/secure_storage.dart';
 import 'package:provider/provider.dart';
 
+import '../models/graph_selected_coordinates_model.dart';
 import '../models/user_model.dart';
 import '../services/user_service.dart';
 
@@ -25,6 +26,7 @@ class BaseCommand{
   RideRecordModel rideRecordModel = _mainContext.read();
   MotorcycleModel motorcycleModel = _mainContext.read();
   NetworkConnectionModel networkConnectionModel = _mainContext.read();
+  SelectedCoordinatesProvider selectedConnectionModel = _mainContext.read();
 
   //Services
   UserService userService = _mainContext.read();

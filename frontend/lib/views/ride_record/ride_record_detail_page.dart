@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.dart';
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
+import 'package:frontend/models/graph_selected_coordinates_model.dart';
 import 'package:frontend/views/components/max_speed_chart_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/ride_record/pre-tracking_page.dart';
@@ -88,6 +89,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    context.read<SelectedCoordinatesProvider>().setMapController(controller);
     _addPolyline();
   }
 
@@ -137,10 +139,21 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
+  @override void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    context.read<SelectedCoordinatesProvider>().addListener(_updateMarker);
+  }
 
   @override initState() {
     super.initState();
     fetchData();
+  }
+
+  @override void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    context.read<SelectedCoordinatesProvider>().removeListener(_updateMarker);
   }
 
   void _onMapTypeButtonPressed() {
@@ -150,6 +163,27 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
           : MapType.normal;
     });
   }
+
+  void _updateMarker() {
+    var selectedCoordinates = context.read<SelectedCoordinatesProvider>().selectedCoordinates;
+    print(selectedCoordinates);
+    if (selectedCoordinates != null && context.mounted) {
+      setState(() {
+        _markers.removeWhere((marker) => marker.markerId.value == 'selected');
+        _markers.add(
+          Marker(
+            markerId: const MarkerId('selected'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+            position: LatLng(
+              selectedCoordinates.latitude,
+              selectedCoordinates.longitude,
+            ),
+          ),
+        );
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -193,20 +227,24 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
           children: [
                  Container(
                     height: MediaQuery.of(context).size.height * 0.7,
-                   child:  GoogleMap(
-                      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                        Factory<OneSequenceGestureRecognizer>(
-                              () => EagerGestureRecognizer(),
-                        ),
-                      },
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                        target:  _center,
-                        zoom: 14.0,
-                      ),
-                      markers: _markers,
-                      polylines: _polyline,
-                      mapType: _currentMapType,
+                   child:  Consumer<SelectedCoordinatesProvider>(
+                     builder: (context, selectedCoordinatesProvider, child) {
+                       return GoogleMap(
+                         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                           Factory<OneSequenceGestureRecognizer>(
+                                 () => EagerGestureRecognizer(),
+                           ),
+                         },
+                         onMapCreated: _onMapCreated,
+                         initialCameraPosition: CameraPosition(
+                           target:  _center,
+                           zoom: 14.0,
+                         ),
+                         markers: _markers,
+                         polylines: _polyline,
+                         mapType: _currentMapType,
+                       );
+                     },
                    ),
                  ),
             Padding(
@@ -251,6 +289,17 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                                   Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
                                   const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 ],
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Center(child: Text(
+                              "Graph visualization of speed",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold
+                              ),
                               ),
                             ),
                           ),

@@ -27,6 +27,7 @@ class GetAllRideRecordsCommand extends BaseCommand {
     else{
 
       if(rideRecordModel.rideRecords != null && rideRecordModel.rideRecords!.isNotEmpty){
+        print(rideRecordModel.rideRecords);
         return {
           "status": 200,
           "message": "Ride records already fetched",

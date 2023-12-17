@@ -50,7 +50,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^5.0.2
   flutter_image_compress: ^2.1.0
-  fl_chart: ^0.65.0
+  fl_chart: 0.60.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +77,7 @@ flutter:
   assets:
     - assets/images/logo/
     - assets/images/
+    - assets/icons/
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

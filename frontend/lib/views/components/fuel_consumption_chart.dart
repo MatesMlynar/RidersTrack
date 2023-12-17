@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/fuel_record/fuel_records_listing_page.dart';
 
 import '../../types/fuel_record_type.dart';
 
