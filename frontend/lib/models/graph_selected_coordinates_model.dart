@@ -8,7 +8,7 @@ class SelectedCoordinatesProvider extends ChangeNotifier {
 
   geo.Position? get selectedCoordinates => _selectedCoordinates;
 
-  void setMapController(GoogleMapController controller) {
+  void setMapController(GoogleMapController? controller) {
     _mapController = controller;
   }
 

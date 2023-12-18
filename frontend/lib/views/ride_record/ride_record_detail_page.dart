@@ -34,7 +34,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
   late LatLng _center;
   bool isDeviceConnected = false;
   MapType _currentMapType = MapType.normal;
-
+  SelectedCoordinatesProvider? _selectedCoordinatesProvider;
 
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
@@ -139,10 +139,11 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
+
   @override void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    context.read<SelectedCoordinatesProvider>().addListener(_updateMarker);
+    _selectedCoordinatesProvider = context.read<SelectedCoordinatesProvider>();
+    _selectedCoordinatesProvider!.addListener(_updateMarker);
   }
 
   @override initState() {
@@ -151,9 +152,9 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
   }
 
   @override void dispose() {
-    // TODO: implement dispose
+    _selectedCoordinatesProvider!.setMapController(null);
+    _selectedCoordinatesProvider!.removeListener(_updateMarker);
     super.dispose();
-    context.read<SelectedCoordinatesProvider>().removeListener(_updateMarker);
   }
 
   void _onMapTypeButtonPressed() {
@@ -166,7 +167,6 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
 
   void _updateMarker() {
     var selectedCoordinates = context.read<SelectedCoordinatesProvider>().selectedCoordinates;
-    print(selectedCoordinates);
     if (selectedCoordinates != null && context.mounted) {
       setState(() {
         _markers.removeWhere((marker) => marker.markerId.value == 'selected');

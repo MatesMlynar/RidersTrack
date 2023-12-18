@@ -72,7 +72,9 @@ class _MaxSpeedChartState extends State<MaxSpeedChart> {
           getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
             return touchedBarSpots.map((e) {
               SchedulerBinding.instance.addPostFrameCallback((_) {
-                context.read<SelectedCoordinatesProvider>().selectCoordinates(widget.rideRecordPoints[e.spotIndex]);
+                if(mounted){
+                  context.read<SelectedCoordinatesProvider>().selectCoordinates(widget.rideRecordPoints[e.spotIndex]);
+                }
               });
               return LineTooltipItem("Speed: ${(e.y).toStringAsFixed(2)} km/h",const TextStyle(color: Colors.white));
             }).toList();
