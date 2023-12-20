@@ -76,7 +76,7 @@ class _MotorcycleListState extends State<MotorcycleList> {
         child: const Icon(Icons.add),
       ) : null,
       body: isDeviceConnected ? isLoading
-          ? Center(child: CircularProgressIndicator(color: Colors.white,))
+          ? const Center(child: CircularProgressIndicator(color: Colors.white,))
           : SingleChildScrollView(
               child: motorcycleData != null && motorcycleData!.isNotEmpty
                   ? Column(

@@ -7,7 +7,7 @@ class FuelRecordType {
   final DateTime? date;
   final Double? distance;
   final Double litters;
-  final Double consumption;
+  final double consumption;
   final Double totalPrice;
 
   FuelRecordType({

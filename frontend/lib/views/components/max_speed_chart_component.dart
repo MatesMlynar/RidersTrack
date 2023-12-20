@@ -39,11 +39,11 @@ class _MaxSpeedChartState extends State<MaxSpeedChart> {
       child: Stack(
         children: <Widget>[
           AspectRatio(
-            aspectRatio: 1.70,
+            aspectRatio: 1.60,
             child: Padding(
               padding: const EdgeInsets.only(
-                right: 18,
-                left: 12,
+                right: 8,
+                left: 2,
                 top: 24,
                 bottom: 12,
               ),

@@ -79,6 +79,29 @@ class FuelRecordService{
 
   }
 
+  Future<Map<String, dynamic>> getFuelRecordsByMotoId(String token, String id) async {
+    try {
+      http.Response response = await http.get(
+          Uri.parse((dotenv.env['getFuelRecordsByMotoIdURL']!) + id), headers: {
+        "Accept": "Application/json",
+        "Authorization": 'Bearer $token'
+      }).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {
+        'status': 500,
+        'message': 'Internal server error. Please try again.'
+      };
+    }
+  }
+
   Future<Map<String, dynamic>> deleteFuelRecordById(String token, String id) async {
     try{
       http.Response response = await http.delete(Uri.parse((dotenv.env['deleteFuelRecordByIdURL']!) + id), headers: {

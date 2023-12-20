@@ -295,7 +295,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                             child: Center(child: Text(
-                              "Graph visualization of speed",
+                              "Speed visualization",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold

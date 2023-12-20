@@ -1,10 +1,8 @@
 import 'package:frontend/commands/base_command.dart';
-import 'package:frontend/types/fuel_record_type.dart';
 
-class GetFuelRecordByIdCommand extends BaseCommand {
+class GetFuelRecordsByMotoId extends BaseCommand{
 
-  Future<Map<String,dynamic>> run (String id) async {
-
+  Future<Map<String, dynamic>> run(String motoID) async {
     if(networkConnectionModel.isDeviceConnected == false){
       return {
         "status": 400,
@@ -14,28 +12,25 @@ class GetFuelRecordByIdCommand extends BaseCommand {
 
     String? token = await secureStorage.getToken();
 
-
-
     if(token == null)
-      {
-        return {
-          "status": 400,
-          "message": "Token not found"
-        };
-      }
+    {
+      return {
+        "status": 400,
+        "message": "Token not found"
+      };
+    }
     else{
 
       if(fuelRecordModel.fuelRecords != null && fuelRecordModel.fuelRecords!.isNotEmpty){
-        Map<String, dynamic> fuelRecord = fuelRecordModel.fuelRecords!.firstWhere((element) => element['_id']  == id);
+        List<Map<String,dynamic>> fuelRecords = fuelRecordModel.fuelRecords!.where((element) => element['motorcycleId'] == motoID).toList();
 
         return {
           "status": 200,
-          "data": fuelRecord
+          "data": fuelRecords
         };
       }
 
-
-      Map<String, dynamic> result = await fuelRecordService.getFuelRecordById(token, id);
+      Map<String, dynamic> result = await fuelRecordService.getFuelRecordsByMotoId(token, motoID);
 
       if(result['status'] != 200){
         return {
@@ -59,4 +54,5 @@ class GetFuelRecordByIdCommand extends BaseCommand {
       }
     }
   }
+
 }

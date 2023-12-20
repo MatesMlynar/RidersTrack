@@ -60,7 +60,12 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
 
           litersController.text = result['data']['liters'].toString();
           priceController.text = result['data']['totalPrice'].toString();
-          selectedDate = DateTime.parse(result['data']['date']);
+          if(result['data']['date'].runtimeType == String){
+            selectedDate = DateTime.parse(result['data']['date']);
+          }
+          else{
+            selectedDate = result['data']['date'];
+          }
           selectedMotorcycleId = result['data']['motorcycleId'].toString();
 
           //optional
