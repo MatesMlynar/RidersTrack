@@ -165,3 +165,38 @@ export const updateAvgConsumptionById = async (req: authRequest, res: Response) 
             console.log(err);
         }
 }
+
+export const deleteMotorcycleById = async (req: authRequest, res: Response) => {
+    try{
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+            if(err){
+                return res.status(403).send({
+                    status: 403,
+                    message: "Invalid token"
+                })
+            }
+            else{
+                //token is valid, delete motorcycle
+                const decodedToken : TokenType = jwt.decode(token) as TokenType;
+                const response : Boolean = await MotorcycleService.deleteMotorcycle(req.params.id, decodedToken.userData.id);
+                if(!response){
+                    return res.status(500).send({
+                        status: 500,
+                        message: "Error deleting motorcycle"
+                    })
+                }
+                else{
+                    return res.status(200).send({
+                        status: 200,
+                        message: "Motorcycle deleted successfully",
+                        data: response
+                    })
+                }
+            }
+        })
+    }catch(err){
+        console.log(err);
+    }
+}

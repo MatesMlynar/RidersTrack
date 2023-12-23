@@ -1,5 +1,7 @@
 import MotorcycleModel from "../models/motorcycle.model";
 import Motorcycle from "../types/models/motorcycle.type";
+import RideRecordModel from "../models/ride_record.model";
+import FuelRecordModel from "../models/fuel_record.model";
 
 export class MotorcycleService{
 
@@ -35,6 +37,8 @@ export class MotorcycleService{
     static async deleteMotorcycle(id : String, userId: string) : Promise<Boolean>{
         try{
             await MotorcycleModel.deleteOne({_id : id, user : userId})
+            let response = await RideRecordModel.deleteMany({motorcycleId : id, user : userId})
+            await FuelRecordModel.deleteMany({motorcycleId : id, user : userId})
             return true;
         }catch(err){
             console.log(err);
