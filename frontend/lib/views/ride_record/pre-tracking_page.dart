@@ -48,12 +48,13 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
       return;
     }
 
-    if (_isMounted) {
+    if (_isMounted && result['status'] == 200) {
       setState(() {
         isMotoFetching = false;
         if (result['data'] != null && result['data'].isNotEmpty) {
           motorcycleIdsList = result['data'];
-          selectedMotorcycleId = motorcycleIdsList[0].id;
+          MotorcycleModel motorcycleModel = Provider.of<MotorcycleModel>(context, listen: false);
+          selectedMotorcycleId = motorcycleModel.motorcycles![0].id;
         }
       });
     }
@@ -132,10 +133,6 @@ class _PreTrackingPageState extends State<PreTrackingPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
-    if(context.watch<MotorcycleModel>().motorcycles != null && context.watch<MotorcycleModel>().motorcycles!.isNotEmpty){
-      motorcycleIdsList = context.watch<MotorcycleModel>().motorcycles!;
-      selectedMotorcycleId = motorcycleIdsList[0].id;
-    }
 
     return Scaffold(
         backgroundColor: const Color(0xFF14151B),

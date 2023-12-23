@@ -3,13 +3,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/fuel_records/get_fuel_records_by_motoID_command.dart';
+import 'package:frontend/commands/motorcycle/delete_motorcycle_by_id_command.dart';
 import 'package:frontend/types/statistic_card_type.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/statistic_card_component.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/network_connection_model.dart';
-import '../../types/fuel_record_type.dart';
 import '../../types/motorcycle_type.dart';
 import '../components/fuel_consumption_chart.dart';
 
@@ -39,7 +39,6 @@ class _MotorcycleDetailPageState extends State<MotorcycleDetailPage> {
   }
 
   void fetchData(String id) async {
-    print('fetching data for motorcycle ${widget.data.model}');
 
     Map<String, dynamic> result = await GetFuelRecordsByMotoId().run(id);
 
@@ -69,6 +68,39 @@ class _MotorcycleDetailPageState extends State<MotorcycleDetailPage> {
     fetchData(widget.data.id);
   }
 
+  void deleteMotorcycle(String id){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        title: const Text('Delete motorcycle'),
+        content: const Text('Are you sure you want to delete this motorcycle? Fuel and ride records will be deleted as well.'),
+        actions: [
+          TextButton(onPressed: () async {
+            print(id);
+            Map<String, dynamic> result = await DeleteMotorcycleByIdCommand().run(id);
+            if(result['status'] == 200){
+              if(context.mounted){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.green,));                Navigator.pop(context);
+                Navigator.pop(context);
+              }
+            }
+            else{
+              if(context.mounted)
+                {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message']), backgroundColor: Colors.red));
+                }
+            }
+          }, child: const Text('Yes')),
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text('No'))
+        ],
+      );
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     isDeviceConnected = Provider.of<NetworkConnectionModel>(context).isDeviceConnected;
@@ -77,7 +109,9 @@ class _MotorcycleDetailPageState extends State<MotorcycleDetailPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF14151B),
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))],
+        actions: [IconButton(onPressed: () {
+          deleteMotorcycle(widget.data.id);
+        }, icon: const Icon(Icons.delete))],
         centerTitle: true,
         title: const Text('Motorcycle Detail'),
       ),
@@ -147,7 +181,7 @@ class _MotorcycleDetailPageState extends State<MotorcycleDetailPage> {
                                               "0")))
                             ],
                           ),
-                          !fuelRecords.isNotEmpty
+                          fuelRecords.length < 2
                               ? const SizedBox(
                                   width: 0,
                                 )

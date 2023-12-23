@@ -81,5 +81,23 @@ class MotorcycleService {
     }
   }
 
+  Future<Map<String, dynamic>> deleteMotorcycleById(String token, String id) async {
+    try{
+      http.Response response = await http.delete(Uri.parse((dotenv.env['deleteMotorcycleByIdURL']!) + id),
+          headers: {
+            'Authorization': 'Bearer $token'
+          }).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
+    }
+  }
+
 
 }
