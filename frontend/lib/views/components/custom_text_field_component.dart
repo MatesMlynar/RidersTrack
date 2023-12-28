@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../types/textField_type.dart';
@@ -44,9 +45,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         keyboardType: widget.props.keyboardType,
         autocorrect: widget.props.autocorrect,
         controller: inputController,
+        inputFormatters: widget.props.isNumberTextField ? <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // omezuje vstup na pouze čísla
+        ] : null,
         style:
         GoogleFonts.readexPro(color: Colors.white, fontSize: 16),
-
         decoration: InputDecoration(
           suffix: Text(widget.props.unit?? "", style: GoogleFonts.readexPro(color: Colors.grey, fontSize: 16),),
           prefixIcon: widget.props.prefixIcon,

@@ -10,7 +10,7 @@ class CustomTextFieldType {
   final String? unit;
   final String? initVal;
   final bool? enabled;
-
+  final bool isNumberTextField;
 
   CustomTextFieldType({
     required this.keyboardType,
@@ -20,6 +20,7 @@ class CustomTextFieldType {
     required this.labelText,
     this.unit,
     this.initVal,
-    this.enabled
+    this.enabled,
+    this.isNumberTextField = false
   });
 }

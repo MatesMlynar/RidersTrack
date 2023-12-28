@@ -192,6 +192,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
                 props: CustomTextFieldType(
                     keyboardType: TextInputType.number,
                     autocorrect: false,
+                    isNumberTextField: true,
                     onValueChanged: (val) {
                       yearOfManufacture.text = val;
                     },
@@ -201,6 +202,7 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
             CustomTextField(
                 props: CustomTextFieldType(
                     unit: 'ccm',
+                    isNumberTextField: true,
                     keyboardType: TextInputType.number,
                     autocorrect: false,
                     onValueChanged: (val) {

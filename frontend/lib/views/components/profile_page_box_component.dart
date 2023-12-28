@@ -25,6 +25,10 @@ class _ProfilePageBoxState extends State<ProfilePageBox> {
       return 'Please fill all the fields';
     }
 
+    if (newPass.length < 6) {
+      return "New password should be at least 6 characters long";
+    }
+
     setState(() {
       isPasswordChanging = true;
     });

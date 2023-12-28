@@ -82,7 +82,7 @@
     .main-header__content{
         height: auto;
         position: absolute;
-        top:50%;
+        top:30%;
         gap: 30px;
         padding: 20px;
         text-align: center;
@@ -120,6 +120,10 @@
 
 /* md */
 @media only screen and (min-width: 900px){
+
+    .main-header__content{
+        top: 50%
+    }
 
     .main-header__heading{
         margin-top: 20px;

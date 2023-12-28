@@ -286,6 +286,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                             enabled: enabled,
                             unit: "liters",
                             initVal: litersController.text,
+                            isNumberTextField: true,
                             keyboardType: TextInputType.number,
                             autocorrect: false,
                             onValueChanged: (val) {
@@ -299,6 +300,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                             enabled: enabled,
                             unit: "czk",
                             initVal: priceController.text,
+                            isNumberTextField: true,
                             keyboardType: TextInputType.number,
                             autocorrect: false,
                             onValueChanged: (val) {
@@ -311,6 +313,7 @@ class _FuelRecordDetailPageState extends State<FuelRecordDetailPage> {
                         props: CustomTextFieldType(
                             enabled: enabled,
                             unit: "Km",
+                            isNumberTextField: true,
                             initVal: distanceController.text,
                             keyboardType: TextInputType.number,
                             autocorrect: false,

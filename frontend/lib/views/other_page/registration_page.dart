@@ -33,6 +33,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
         isLoading = true;
       });
 
+      String emailPattern = r'^[^@]+@[^@]+\.[^@]+$';
+      RegExp regex = RegExp(emailPattern);
+      if (!regex.hasMatch(emailController.text)) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please enter a valid email"), backgroundColor: Colors.red,));
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      if (passwordController.text.length < 6) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password should be at least 6 characters long"), backgroundColor: Colors.red,));
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       var response = await RegisterCommand().run(emailController.text, usernameController.text, passwordController.text, confirmPasswordController.text);
 
       if(response['status'] == 200){

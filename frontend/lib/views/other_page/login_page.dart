@@ -147,6 +147,7 @@ class _LoginPage extends State<LoginPage> {
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                             child: TextField(
                               autocorrect: false,
+                              enableSuggestions: false,
                               controller: emailController,
                               style: GoogleFonts.readexPro(
                                   color: Colors.white, fontSize: 16),

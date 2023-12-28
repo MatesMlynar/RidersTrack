@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/commands/motorcycle/get_all_motorcycles_command.dart';
 import 'package:frontend/types/motorcycle_type.dart';
 import 'package:frontend/types/textField_type.dart';
@@ -155,6 +156,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   unit: "liters",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
+                  isNumberTextField: true,
                   onValueChanged: (val) {
                     litersController.text = val;
                   },
@@ -165,6 +167,7 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
               CustomTextField(props: CustomTextFieldType(
                   unit: "czk",
                   keyboardType: TextInputType.number,
+                  isNumberTextField: true,
                   autocorrect: false,
                   onValueChanged: (val) {
                     priceController.text = val;
@@ -176,10 +179,12 @@ class _AddNewFuelRecordPageState extends State<AddNewFuelRecordPage> {
                   unit: "Km",
                   keyboardType: TextInputType.number,
                   autocorrect: false,
+                  isNumberTextField: true,
                   onValueChanged: (val) {
                     distanceController.text = val;
                   },
                   prefixIcon: const Icon(Icons.landscape, color: Colors.white),
+
                   labelText: "Distance"
               )),
             Padding(

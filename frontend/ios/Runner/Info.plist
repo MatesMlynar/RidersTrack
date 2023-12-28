@@ -15,7 +15,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need to access microphone because user is capable record audio from video</string>
 	<key>CFBundleDisplayName</key>
-	<string>Frontend</string>
+	<string>Rider's Track</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
