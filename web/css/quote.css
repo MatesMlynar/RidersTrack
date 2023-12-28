@@ -1,0 +1,73 @@
+/* quote */
+
+.quote{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.quote__texts{
+    max-width: 550px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.quote__heading{
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.5rem;
+}
+
+.quote__perex{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+
+/* responsive part */
+
+/*
+  xs: 0,
+  sm: 650,
+  md: 900,
+  lg: 1200,
+  xl: 1600
+*/
+
+/* xs */
+@media only screen and (min-width: 0px){
+
+
+}
+
+/*sm*/
+@media only screen and (min-width: 650px){
+
+}
+
+/* md */
+@media only screen and (min-width: 900px){
+
+}
+
+/* lg */
+@media only screen and (min-width: 1200px){
+
+    .quote__heading{
+        font-size: 1.6rem;
+    }
+
+}
+
+/* xl */
+@media only screen and (min-width: 1600px){
+
+
+}

@@ -1,0 +1,45 @@
+/* header */
+header{
+    width: 100%;
+    background-color: white;
+}
+
+
+.header__logo{
+    width: 130px;
+    height: 75px;
+    margin-top: 10px;
+}
+
+
+/* responsive part */
+
+/*
+  xs: 0,
+  sm: 650,
+  md: 900,
+  lg: 1200,
+  xl: 1600
+*/
+
+/* xs */
+@media only screen and (min-width: 0px){
+
+    header{
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/*sm*/
+@media only screen and (min-width: 650px){
+
+    header{
+        display: block;
+    }
+
+    .header__link{
+        margin-left: 30px;
+    }
+
+}

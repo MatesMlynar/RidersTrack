@@ -1,0 +1,149 @@
+.benefits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.benefits__left-side-figure {
+    max-width: 250px;
+    width: 100%;
+    max-height: 670px;
+    height: 100%;
+}
+
+.benefits__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.benefits__title{
+    font-size: 1.6rem;
+    font-weight: 900;
+    font-family: Montserrat, sans-serif;
+    text-transform: uppercase;
+}
+
+.benefits__subheading{
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: right;
+    font-family: Montserrat, sans-serif;
+    font-style: italic;
+}
+
+
+.benefits__bottom-container{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.benefits__download-link{
+    max-width: 200px;
+    width: 100%;
+    height: 65px;
+    object-fit: cover;
+}
+
+.benefits__middle-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    max-width: 740px;
+}
+
+.benefits__item{
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid;
+    border-image: linear-gradient(to right, #f90000, black) 1;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+}
+
+.benefits__item-icon{
+    font-size: 2rem;
+    object-fit: cover;
+}
+
+.benefits__item-text{
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: Montserrat, sans-serif;
+
+}
+
+/*
+  xs: 0,
+  sm: 650,
+  md: 900,
+  lg: 1200,
+  xl: 1600
+*/
+
+/* xs */
+@media only screen and (min-width: 0px){
+
+    .benefits{
+        gap: 30px;
+        padding: 25px 0 100px 0;
+    }
+
+    .benefits__title, .benefits__subheading{
+        text-align: center;
+    }
+
+}
+
+/*sm*/
+@media only screen and (min-width: 650px){
+
+
+
+}
+
+/* md */
+@media only screen and (min-width: 900px){
+
+
+
+    .benefits__left-side-figure{
+        transform: rotate(-10deg);
+    }
+
+    .benefits__title{
+        text-align: center;
+    }
+
+    .benefits__subheading{
+        text-align: center;
+    }
+
+    .benefits__middle-container{
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+/* lg */
+@media only screen and (min-width: 1200px){
+
+    .benefits{
+        padding: 100px 0 100px 0;
+        gap: 0;
+    }
+
+}
+
+/* xl */
+@media only screen and (min-width: 1600px){
+
+
+}

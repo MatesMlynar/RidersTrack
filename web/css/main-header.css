@@ -1,34 +1,3 @@
-
-/* basic */
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    overflow-x: hidden;
-    height: 100%;
-    scroll-behavior: smooth;
-}
-
-/* header */
-header{
-    width: 100%;
-    position: fixed;
-    background-color: white;
-}
-
-
-.header__logo{
-    width: 130px;
-    height: 75px;
-    margin-top: 10px;
-}
-
 /* main header */
 .main-header{
     position: relative;
@@ -53,17 +22,13 @@ header{
 }
 
 .main-header__heading{
-    font-size: 22px;
+    font-size: 1.5rem;
     color: black;
-    font-family: "Roboto Black", sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-weight: 900;
 }
 
-.main-header__perex{
-    font-style: italic;
-    color: black;
-    font-size: 18px;
-    font-weight: 350;
-}
 
 .main-header__button {
     background-color: red;
@@ -79,7 +44,8 @@ header{
 }
 
 .main-header__button p{
-    font-family: "Roboto Black" , sans-serif;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
     font-size: 14px;
 }
 
@@ -87,30 +53,6 @@ header{
     background-color: darkred;
 }
 
-/* quote */
-
-.quote{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.quote__texts{
-    max-width: 500px;
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-}
-
-.quote__heading{
-    font-family: "Roboto Black" , sans-serif;
-}
-
-/* responsive part */
 
 /*
   xs: 0,
@@ -123,11 +65,6 @@ header{
 /* xs */
 @media only screen and (min-width: 0px){
 
-    header{
-        display: flex;
-        justify-content: center;
-    }
-
     .main-header{
         height: auto;
     }
@@ -135,7 +72,6 @@ header{
     .main-header__figure{
         position: relative;
         height: 100vh;
-        padding-top: 85px;
         margin-bottom: 30px;
     }
 
@@ -165,21 +101,12 @@ header{
 /*sm*/
 @media only screen and (min-width: 650px){
 
-    header{
-        display: block;
-    }
-
-    .header__link{
-        margin-left: 30px;
-    }
-
     .main-header{
         height: 100%;
     }
 
     .main-header__heading{
-        margin-top: 120px;
-        font-size: 28px;
+        margin-top: 20px;
         color: white;
     }
 
@@ -194,7 +121,9 @@ header{
 /* md */
 @media only screen and (min-width: 900px){
 
-
+    .main-header__heading{
+        margin-top: 20px;
+    }
 
 }
 
@@ -202,7 +131,7 @@ header{
 @media only screen and (min-width: 1200px){
 
     .main-header__heading{
-        font-size: 32px;
+        font-size: 2rem;
     }
 }
 
@@ -217,5 +146,3 @@ header{
         font-size: 22px;
     }
 }
-
-

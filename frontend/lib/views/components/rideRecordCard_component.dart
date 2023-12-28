@@ -94,6 +94,8 @@ class _RideRecordCardState extends State<RideRecordCard> {
       isLessThan100Meters = false;
     }
 
+    var height = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
         Expanded(
@@ -127,7 +129,7 @@ class _RideRecordCardState extends State<RideRecordCard> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                       child:  Column(
                         children: [
-                          Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),),
+                          Text('$calculatedDistance ${isLessThan100Meters ? ' m' : ' km'}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: height * 0.015),),
                           const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 12),),
                         ]
                       ),
@@ -139,7 +141,7 @@ class _RideRecordCardState extends State<RideRecordCard> {
                       ),
                       child: Column(
                           children: [
-                            Text('${formatTime(widget.duration)} min', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),),
+                            Text('${formatTime(widget.duration)} min', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: height * 0.015),),
                             const Text('Duration', style: TextStyle(color: Colors.grey, fontSize: 12),),
                           ]
                       ),
@@ -148,7 +150,7 @@ class _RideRecordCardState extends State<RideRecordCard> {
                       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                       child:  Column(
                           children: [
-                            Text('${(widget.maxSpeed).toStringAsFixed(2)} km/h', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),),
+                            Text('${(widget.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: height * 0.015),),
                             const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 12),),
                           ]
                       ),

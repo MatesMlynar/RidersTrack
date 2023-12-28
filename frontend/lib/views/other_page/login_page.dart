@@ -84,6 +84,8 @@ class _LoginPage extends State<LoginPage> {
 
     isDeviceConnected = context.watch<NetworkConnectionModel>().isDeviceConnected;
 
+    var height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: const Color(0xFF14151B),
       body: SingleChildScrollView(
@@ -221,7 +223,7 @@ class _LoginPage extends State<LoginPage> {
                                   child: Text(
                                     "Sign Up Here",
                                     style: GoogleFonts.readexPro(
-                                        fontSize: 14,
+                                        fontSize: height * 0.014,
                                         color: const Color.fromARGB(
                                             255, 221, 28, 7)),
                                   ))

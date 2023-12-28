@@ -254,7 +254,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Wrap(
-                        alignment: WrapAlignment.spaceBetween,
+                        alignment: WrapAlignment.center,
                         children: [
                           Card(
                             color: Colors.grey[900],
@@ -287,7 +287,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                               child: Column(
                                 children: [
                                   Text('${(rideRecord!.maxSpeed).toStringAsFixed(2)} km/h', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),),
-                                  const Text('Speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
+                                  const Text('Top speed', style: TextStyle(color: Colors.grey, fontSize: 16),), // Increase the font size
                                 ],
                               ),
                             ),

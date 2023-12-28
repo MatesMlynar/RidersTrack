@@ -98,7 +98,7 @@ class _MaxSpeedChartState extends State<MaxSpeedChart> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 80,
+            reservedSize: 100,
             getTitlesWidget: (value, meta) {
               return Text('${value.toStringAsFixed(1)} km/h',
                 textAlign: TextAlign.left, style: const TextStyle(color: Colors.grey),
