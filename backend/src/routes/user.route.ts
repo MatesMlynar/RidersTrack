@@ -6,8 +6,8 @@ import {
     findUsername, getProfileImage, updateProfileImage
 } from '../controllers/user.controller';
 import {checkToken} from '../middlewares/checkToken';
-import {Request, Response} from 'express';
-import jwt from 'jsonwebtoken';
+
+
 
 //ROUTES
 router.post('/register', RegisterUser);
