@@ -22,7 +22,7 @@ class CreateRideRecordCommand extends BaseCommand{
     }
     else{
 
-      Map<String, dynamic> result = await rideRecordService.createRideRecord(token, motorcycleId, date, totalDistance, duration, maxSpeed, positionPoints);
+      Map<String, dynamic> result = await rideRecordService.createRideRecord(token, motorcycleId, date, totalDistance, duration, maxSpeed, positionPoints, false);
 
       if(result['status'] != 200){
         return {
@@ -40,6 +40,7 @@ class CreateRideRecordCommand extends BaseCommand{
           duration: duration,
           maxSpeed: maxSpeed,
           positionPoints: positionPoints,
+          isPublic: false,
         );
 
         rideRecordModel.rideRecords!.add(newRideRecord);

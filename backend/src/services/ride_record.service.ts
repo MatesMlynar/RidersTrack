@@ -23,10 +23,11 @@ export class RideRecordService{
 
     static async createRideRecord(recordBody : RideRecord, userId: string) : Promise<RideRecord | null>{
         try{
-            const {motorcycleId, date, totalDistance, duration, maxSpeed, positionPoints} = recordBody;
+            console.log(recordBody)
+            const {motorcycleId, date, totalDistance, duration, maxSpeed, positionPoints, isPublic} = recordBody;
             const user = userId;
 
-            const ride_record = new ride_recordModel({motorcycleId, user, date, totalDistance, duration, maxSpeed, positionPoints});
+            const ride_record = new ride_recordModel({motorcycleId, user, date, totalDistance, duration, maxSpeed, positionPoints, isPublic});
             const response = await ride_record.save();
             return response.toObject() as RideRecord;
         }catch(err){
@@ -48,6 +49,34 @@ export class RideRecordService{
         }catch(err){
             console.log(err);
             return false;
+        }
+    }
+
+
+    static async getPublicRideRecords() : Promise<RideRecord[] | null>{
+        try{
+            return await ride_recordModel.find({isPublic: true})
+        }catch(err){
+            console.log(err);
+            return null;
+        }
+    }
+
+    static async updateRideRecordById(id : String, userId : string, recordBody : RideRecord) : Promise<RideRecord | null>{
+        try{
+            const record = await ride_recordModel.findOne({_id: id, user: userId});
+
+            if(!record){
+                return null;
+            }
+
+            const {isPublic} = recordBody;
+            record.isPublic = isPublic;
+            const response = await record.save();
+            return response.toObject() as RideRecord;
+        }catch(err){
+            console.log(err);
+            return null;
         }
     }
 

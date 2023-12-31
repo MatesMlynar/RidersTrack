@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../commands/ride_records/update_ride_record_command.dart';
 import '../../models/network_connection_model.dart';
 import '../../types/ride_record.dart';
 import '../../utils/snack_bar_service.dart';
@@ -39,6 +40,9 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
 
+  bool isPublic = false;
+  bool isMakingPublic = false;
+
   void fetchData() async {
 
     Map<String, dynamic> result = await GetRideRecordByIdCommand().run(widget.id);
@@ -48,6 +52,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
         rideRecord = RideRecord.fromJson(result['data']);
         _center = LatLng(rideRecord!.positionPoints[0].latitude, rideRecord!.positionPoints[0].longitude);
         _addPolyline();
+        isPublic = rideRecord!.isPublic;
         isFetchingData = false;
       });
     }
@@ -184,6 +189,26 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
     }
   }
 
+  void togglePublic() async {
+    isMakingPublic = true;
+    Map<String, dynamic> result = await UpdateRideRecordCommand().run(!isPublic, widget.id);
+
+    if(result['status'] == 200){
+      setState(() {
+        isPublic = !isPublic;
+        isMakingPublic = false;
+        SnackBarService.showSnackBar(
+            content: 'Ride record is now ${isPublic ? 'public' : 'private'}',
+            color: Colors.green);
+      });
+    }
+    else{
+      isMakingPublic = false;
+      SnackBarService.showSnackBar(
+          content: result['message'],
+          color: Colors.red);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +243,14 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
           IconButton(
             icon: const Icon(Icons.map),
             onPressed: _onMapTypeButtonPressed,
+          ),
+          isMakingPublic ? Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,10,0),
+            child: SizedBox(child: CircularProgressIndicator(color: Colors.white,), height: 15, width: 15,),
+          ) : IconButton(
+            icon: Icon(isPublic ? Icons.lock_open : Icons.lock), // Ikona se změní podle stavu isPublic
+            onPressed: togglePublic,
+            tooltip: isPublic ? 'Make private' : 'Make public',
           ),
         ],
       ),

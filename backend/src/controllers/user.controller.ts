@@ -45,7 +45,7 @@ export const login = async (req: Request, res: Response) => {
         const { email, password } = req.body;
 
         //search for user by his mail address
-        const user: User | null = await UserService.findUser(email);
+        const user: User | null = await UserService.findUserByEmail(email);
 
         if (!user) {
             return res.status(404).send({
@@ -64,7 +64,9 @@ export const login = async (req: Request, res: Response) => {
             let userData: Object = {
                 username: user!.username,
                 email: user!.email,
-                id: user!._id
+                id: user!._id,
+                profileImage: user!.profileImage,
+                coverImage: user!.coverImage
             }
             const token = await UserService.generateToken({ userData }, process.env.JWT_SECRET!, '24h');
     
@@ -130,6 +132,83 @@ export const changePassword = async (req: authRequest, res: Response) => {
             return res.status(200).send({
                 status: 200,
                 message: response.message
+            })
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const findUsername = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+
+            const { id } = req.params;
+            const userObj: User | null = await UserService.findUser(id);
+            console.log(userObj);
+            if (!userObj) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "User found",
+                username: userObj!.username
+            })
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getProfileImage = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+
+            const { id } = req.params;
+            const profileImage: String = await UserService.getProfileImageByUserId(id);
+            if (!profileImage) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "User found",
+                image: profileImage
+            })
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const updateProfileImage = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+
+            const { id } = req.params;
+            const { profileImage } = req.body;
+            const response: boolean = await UserService.updateProfileImageByUserId(id, profileImage);
+            if (!response) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "User found",
+                image: profileImage
             })
         })
     } catch (err) {

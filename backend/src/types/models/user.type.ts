@@ -3,5 +3,7 @@ export default interface User extends Document{
     email: string;
     username: string;
     password: string;
+    profileImage: string;
+    coverImage: string;
     comparePasswords(userPassword: string): Promise<boolean>;
 }

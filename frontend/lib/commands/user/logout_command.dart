@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/secure_storage.dart';
 import '../../views/other_page/login_page.dart';
 import '../base_command.dart';
@@ -15,6 +13,7 @@ class LogoutCommand extends BaseCommand{
     fuelRecordModel.reset();
     motorcycleModel.reset();
     rideRecordModel.reset();
+    publicRideRecordModel.reset();
     userModel.reset();
 
     if (context.mounted) {

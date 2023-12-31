@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class RideRecordService{
 
-  Future<Map<String, dynamic>> createRideRecord(String token, String motorcycleId, DateTime date,num totalDistance, num duration, num maxSpeed, List<Position> positionPoints ) async{
+  Future<Map<String, dynamic>> createRideRecord(String token, String motorcycleId, DateTime date,num totalDistance, num duration, num maxSpeed, List<Position> positionPoints, isPublic ) async{
 
     try{
       var reqBody = {
@@ -16,6 +16,7 @@ class RideRecordService{
         'totalDistance': totalDistance,
         'duration': duration,
         'maxSpeed': maxSpeed,
+        'isPublic': isPublic,
         'positionPoints': positionPoints
       };
 
@@ -57,8 +58,30 @@ class RideRecordService{
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
 
+  }
+
+  Future<Map<String, dynamic>> getAllPublicRideRecords(String token) async {
+
+    try{
+      http.Response response = await http.get(Uri.parse(dotenv.env['getPublicRideRecordsURL']!), headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      }).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
+    }
 
   }
+
 
   Future<Map<String, dynamic>> getRideRecordById(String token, String id) async{
 
@@ -98,6 +121,32 @@ class RideRecordService{
     on Error {
       return {'status': 500, 'message': 'Internal server error. Please try again.'};
     }
+  }
+
+  Future<Map<String, dynamic>> updateRideRecordById(String token, String rideRecordId, bool isPublic) async{
+
+    try{
+      var reqBody = {
+        'isPublic': isPublic
+      };
+
+      http.Response response = await http.put(Uri.parse((dotenv.env['updateRideRecordByIdURL']!) + rideRecordId), headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer $token"
+      },
+          body: json.encode(reqBody)
+      ).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'Internal server error. Please try again.'};
+    }
+
   }
 
 }

@@ -8,6 +8,7 @@ class RideRecord {
   final num totalDistance;
   final num duration;
   final num maxSpeed;
+  final bool isPublic;
   late final List<Position> positionPoints;
 
   RideRecord({
@@ -18,6 +19,7 @@ class RideRecord {
     required this.duration,
     required this.maxSpeed,
     required this.positionPoints,
+    required this.isPublic,
     this.user,
   });
 
@@ -45,6 +47,7 @@ class RideRecord {
       maxSpeed: json['maxSpeed'] as num,
       user: json['user'] as String?,
       positionPoints: positionPoints,
+      isPublic: json['isPublic'] as bool,
     );
   }
 
@@ -56,6 +59,7 @@ class RideRecord {
     'duration': duration,
     'maxSpeed': maxSpeed,
     'positionPoints': positionPoints,
+    'isPublic': isPublic,
   };
 
 }

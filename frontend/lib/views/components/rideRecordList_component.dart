@@ -3,12 +3,14 @@ import 'package:frontend/types/ride_record.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../../commands/user/get_username_command.dart';
 import '../ride_record/ride_record_detail_page.dart';
 
 class RideRecordListComponent extends StatefulWidget {
-  const RideRecordListComponent({super.key, required this.rideRecordData});
+  const RideRecordListComponent({super.key, required this.rideRecordData, this.isPublicRecord = false});
 
   final RideRecord rideRecordData;
+  final bool isPublicRecord;
 
   @override
   State<RideRecordListComponent> createState() => _RideRecordListComponentState();
@@ -23,7 +25,8 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyline = {};
   late LatLng _center;
-
+  late String username;
+  bool isLoading = true;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -68,10 +71,24 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
 
   }
 
+  void findUser() async {
+    if(widget.isPublicRecord){
+      Map<String, dynamic> result = await GetUsernameCommand().run(widget.rideRecordData.user!);
+      print(result);
+      if(result['status'] == 200){
+        setState(() {
+          username = result['data'];
+          isLoading = false;
+        });
+      }
+    }
+  }
+
 
   @override initState() {
     super.initState();
     _center = LatLng(widget.rideRecordData!.positionPoints[0].latitude, widget.rideRecordData!.positionPoints[0].longitude);
+    findUser();
   }
 
 
@@ -86,7 +103,6 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
       calculatedDistance = (widget.rideRecordData.totalDistance / 1000).toStringAsFixed(2);
       isLessThan100Meters = false;
     }
-
 
     return GestureDetector(
       onTap: (){
@@ -121,6 +137,15 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
                 ),
               ),
               const SizedBox(width: 10),
+              isLoading && widget.isPublicRecord
+                  ? Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,)),
+                      ],
+                    ),
+              ) :
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,15 +155,23 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              DateFormat('dd.MM.yyyy').format(widget.rideRecordData.date.toLocal()),
-                              style: const TextStyle(
+                            widget.isPublicRecord ? Text(
+                              username,
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
+                            ) : SizedBox(),
+                            Text(
+                              DateFormat('dd.MM.yyyy').format(widget.rideRecordData.date.toLocal()),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: widget.isPublicRecord ? 15 : 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            const SizedBox(height: 5),
+                            // const SizedBox(height: 5),
                             Row(
                               children: [
                                 const Icon(Icons.location_on, color: Colors.grey, size: 15,),

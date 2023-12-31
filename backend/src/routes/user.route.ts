@@ -1,5 +1,10 @@
 const router = require('express').Router();
-import {register as RegisterUser, login as LoginUser, changePassword} from '../controllers/user.controller';
+import {
+    register as RegisterUser,
+    login as LoginUser,
+    changePassword,
+    findUsername, getProfileImage, updateProfileImage
+} from '../controllers/user.controller';
 import {checkToken} from '../middlewares/checkToken';
 import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
@@ -8,5 +13,9 @@ import jwt from 'jsonwebtoken';
 router.post('/register', RegisterUser);
 router.post('/login', LoginUser)
 router.post('/changePassword', checkToken, changePassword)
+router.get('/getUsername/:id', checkToken, findUsername)
+router.get('/getProfilePictureById/:id', checkToken, getProfileImage)
+
+router.put('/updateProfilePicture/:id', checkToken, updateProfileImage)
 
 export default router;

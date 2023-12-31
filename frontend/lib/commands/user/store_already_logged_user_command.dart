@@ -13,7 +13,7 @@ class StoreAlreadyLoggedUserCommand extends BaseCommand{
 
     //store the jwt payload in usermodel/app model
 
-    User userData = User(username: payload['userData']['username'], email: payload['userData']['email'], id: payload['userData']['id']);
+    User userData = User(username: payload['userData']['username'], email: payload['userData']['email'], id: payload['userData']['id'], profileImage: payload['userData']['profileImage'], coverImage: payload['userData']['coverImage']);
 
 
     userModel.currentUser = userData;

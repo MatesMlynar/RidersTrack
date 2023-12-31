@@ -14,6 +14,10 @@ const rideRecordSchema = new Schema({
         ref: "motorcycle",
         required: true,
     },
+    isPublic: {
+        type: Boolean,
+        required: true,
+    },
     date: {
         type: Date,
         required: true,

@@ -20,6 +20,14 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    profileImage: {
+        type: String,
+        default: ""
+    },
+    coverImage: {
+        type: String,
+        default: ""
+    }
 })
 
 userSchema.pre('save', async function(){

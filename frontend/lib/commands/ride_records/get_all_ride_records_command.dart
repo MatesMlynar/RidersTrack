@@ -55,6 +55,7 @@ class GetAllRideRecordsCommand extends BaseCommand {
       }
       else{
 
+        print(result['data']);
         List<RideRecord> data = result['data'].map((data) => RideRecord.fromJson(data)).toList().cast<RideRecord>();
 
         rideRecordModel.rideRecords = data;

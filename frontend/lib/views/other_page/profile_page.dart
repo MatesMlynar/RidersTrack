@@ -1,15 +1,19 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:frontend/commands/user/logout_command.dart';
 import 'package:frontend/types/user_type.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle/motorcycle_list_page.dart';
-import 'package:frontend/views/ride_record/ride_record_list_page.dart';
+import 'package:frontend/views/ride_record/ride_records_layout_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../commands/user/get_user_command.dart';
+import '../../commands/user/update_profile_image_command.dart';
 import '../../models/network_connection_model.dart';
-import '../layout/layout_page.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -24,8 +28,12 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isDeviceConnected = false;
   User? user;
 
+  XFile? profileImage = null;
+  XFile? coverImage = null;
+
+
   void logout(BuildContext context) async {
-    Map<String, dynamic> result = await LogoutCommand().run(context);
+    await LogoutCommand().run(context);
   }
 
   void getUser() async {
@@ -40,11 +48,31 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void getImages() async {
+    if(user != null){
+      if(user!.profileImage.isNotEmpty){
+        profileImage = XFile(user!.profileImage);
+      }
+      if(user!.coverImage.isNotEmpty){
+        coverImage = XFile(user!.coverImage);
+      }
+    }
+  }
+
+  void updateProfileImage() async{
+    if(profileImage != null){
+      Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(profileImage!.path, quality: 50);
+      Map<String, dynamic> response = await UpdateProfileImageCommand().run(base64Encode(compressedImage!), );
+
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
     getUser();
+    getImages();
   }
 
 
@@ -138,9 +166,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
+                const ProfilePageBox(icon: Icons.list_alt_outlined, label: "Ride records", routeWidget: RideRecordsLayoutPage()),
+                const ProfilePageBox(icon: Icons.motorcycle, label: "Garage", routeWidget: MotorcycleList()),
                 const ProfilePageBox(icon: Icons.security, label: "Change password", isChangePasswordItem: true),
-                const ProfilePageBox(icon: Icons.motorcycle, label: "My motorcycles", routeWidget: MotorcycleList()),
-                const ProfilePageBox(icon: Icons.list_alt_outlined, label: "My rides", routeWidget: RideRecordListPage()),
                 Align(
                   alignment: const AlignmentDirectional(0.00, 0.00),
                   child: GestureDetector(
