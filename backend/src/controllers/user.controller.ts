@@ -65,8 +65,6 @@ export const login = async (req: Request, res: Response) => {
                 username: user!.username,
                 email: user!.email,
                 id: user!._id,
-                profileImage: user!.profileImage,
-                coverImage: user!.coverImage
             }
             const token = await UserService.generateToken({ userData }, process.env.JWT_SECRET!, '24h');
     
@@ -104,7 +102,7 @@ export const changePassword = async (req: authRequest, res: Response) => {
 
             const decodedToken : TokenType = jwt.decode(token) as TokenType;
             const userId : string = decodedToken.userData.id;
-            const user: User | null = await UserService.findUser(email);
+            const user: User | null = await UserService.findUserByEmail(email);
 
             if (!user) {
                 return res.status(404).send({
@@ -172,7 +170,10 @@ export const getProfileImage = async (req: authRequest, res: Response) => {
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
 
             const { id } = req.params;
+            console.log(id);
+            console.log(req.params);
             const profileImage: String = await UserService.getProfileImageByUserId(id);
+            console.log(profileImage);
             if (!profileImage) {
                 return res.status(404).send({
                     status: 404,

@@ -10,9 +10,7 @@ import '../../models/network_connection_model.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key, required this.isTokenValid});
-
-  final bool isTokenValid;
+  const SplashPage({super.key});
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -60,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isModelInitialized ? (widget.isTokenValid ? const LayoutPage() : const LoginPage()) : const Scaffold(
+    return isModelInitialized ? const LoginPage() : const Scaffold(
       backgroundColor: Color.fromARGB(255, 20, 24, 27),
       body: Center(
         child: CircularProgressIndicator(

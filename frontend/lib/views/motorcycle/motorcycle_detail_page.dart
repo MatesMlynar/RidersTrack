@@ -76,7 +76,6 @@ class _MotorcycleDetailPageState extends State<MotorcycleDetailPage> {
         content: const Text('Are you sure you want to delete this motorcycle? Fuel and ride records will be deleted as well.'),
         actions: [
           TextButton(onPressed: () async {
-            print(id);
             Map<String, dynamic> result = await DeleteMotorcycleByIdCommand().run(id);
             if(result['status'] == 200){
               if(context.mounted){

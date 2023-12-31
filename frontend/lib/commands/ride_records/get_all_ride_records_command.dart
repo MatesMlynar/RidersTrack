@@ -6,7 +6,6 @@ class GetAllRideRecordsCommand extends BaseCommand {
 
   Future<Map<String, dynamic>> run () async {
 
-    print(networkConnectionModel.isDeviceConnected);
 
     if(networkConnectionModel.isDeviceConnected == false){
       return {
@@ -27,7 +26,6 @@ class GetAllRideRecordsCommand extends BaseCommand {
     else{
 
       if(rideRecordModel.rideRecords != null && rideRecordModel.rideRecords!.isNotEmpty){
-        print(rideRecordModel.rideRecords);
         return {
           "status": 200,
           "message": "Ride records already fetched",
@@ -55,7 +53,6 @@ class GetAllRideRecordsCommand extends BaseCommand {
       }
       else{
 
-        print(result['data']);
         List<RideRecord> data = result['data'].map((data) => RideRecord.fromJson(data)).toList().cast<RideRecord>();
 
         rideRecordModel.rideRecords = data;

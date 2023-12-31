@@ -3,7 +3,6 @@ import 'package:frontend/commands/base_command.dart';
 class ChangePasswordCommand extends BaseCommand{
 
   Future<Map<String, dynamic>> run(String oldPassword, String newPassword, String verifyingNewPassword) async {
-
     try{
 
       if(networkConnectionModel.isDeviceConnected == false){

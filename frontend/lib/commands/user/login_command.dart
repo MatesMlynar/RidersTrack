@@ -2,6 +2,8 @@ import 'package:frontend/commands/base_command.dart';
 import 'package:frontend/types/user_type.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
+import 'get_profile_image_command.dart';
+
 
 class LoginCommand extends BaseCommand{
   Future<Map<String, dynamic>> run(String email, String password) async {
@@ -32,8 +34,14 @@ class LoginCommand extends BaseCommand{
       //Decode JWT payload
       Map<String, dynamic> payload = Jwt.parseJwt(result['token']);
 
+      String profileImage = '';
+      Map<String, dynamic> profileImageData = await GetProfileImageCommand().run(payload['userData']['id']);
+      if(profileImageData['status'] == 200 && profileImageData['image'] != null){
+        profileImage = profileImageData['image'];
+      }
+
       //store the jwt payload in usermodel/app model
-      User userData = User(username: payload['userData']['username'], email: payload['userData']['email'], id: payload['userData']['id']);
+      User userData = User(username: payload['userData']['username'], email: payload['userData']['email'], id: payload['userData']['id'], profileImage: profileImage, coverImage: '');
 
       userModel.currentUser = userData;
       return result;

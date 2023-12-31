@@ -31,23 +31,16 @@ Future main() async {
   SecureStorage secureStorage = SecureStorage();
   String? token = await secureStorage.getToken();
 
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove('timer');
 
-  bool isTokenValid = false;
-
-  if(token != null){
-    isTokenValid = Jwt.isExpired(token) == false;
-  }
 
   await dotenv.load(fileName: ".env");
-  runApp(MyApp(isTokenValid: isTokenValid));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final bool isTokenValid;
-  const MyApp({super.key, required this.isTokenValid});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -75,10 +68,6 @@ class _MyAppState extends State<MyApp> {
     ],
     child: Sizer(builder: (context, orientation, deviceType) {
       init(context);
-      if(widget.isTokenValid)
-      {
-        StoreAlreadyLoggedUserCommand().run();
-      }
       return MaterialApp(
           scaffoldMessengerKey: SnackBarService.scaffoldKey,
           title: 'Rider\'s Track',
@@ -96,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashPage(isTokenValid: widget.isTokenValid));
+          home: SplashPage());
     }));
   }
 }

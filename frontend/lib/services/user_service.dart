@@ -111,10 +111,33 @@ class UserService {
     }
   }
 
+  Future<Map<String, dynamic>> getProfilePictureById(String token, String id) async {
+    print('I tried to call');
+    try {
+      http.Response response = await http.get(
+        Uri.parse((dotenv.env['getProfilePictureByIdURL']!) + id),
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer $token"
+        },).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'something went wrong'};
+    }
+  }
+
+
   Future<Map<String, dynamic>> updateProfilePictureById(String token, String id, String profilePicture) async {
     try {
       var reqBody = {
-        "profilePicture": profilePicture
+        "profileImage": profilePicture
       };
 
       http.Response response = await http.put(

@@ -28,7 +28,6 @@ class _MyRidesListPageState extends State<MyRidesListPage> {
     });
     Map<String, dynamic> result = await GetAllRideRecordsCommand().run();
 
-    print(result);
     if (result['status'] == 200) {
       setState(() {
         isLoadingRecords = false;
