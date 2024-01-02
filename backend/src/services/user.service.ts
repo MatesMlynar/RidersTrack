@@ -101,15 +101,15 @@ export class UserService{
         }
     }
 
-    static async getCoverImageByUserId(userId : string) : Promise<string | null>{
+    static async getCoverImageByUserId(userId : string) : Promise<string>{
         try{
             const user = await UserModel.findOne({_id: userId});
             if(!user){
-                return null;
+                return "";
             }
             return user.coverImage;
         }catch (err){
-            return null;
+            return "";
         }
     }
 
