@@ -3,7 +3,7 @@ import {
     register as RegisterUser,
     login as LoginUser,
     changePassword,
-    findUsername, getProfileImage, updateProfileImage, getCoverImage, updateCoverImage
+    getProfileImage, updateProfileImage, getCoverImage, updateCoverImage, findUsernameAndPhoto
 } from '../controllers/user.controller';
 import {checkToken} from '../middlewares/checkToken';
 
@@ -13,7 +13,7 @@ import {checkToken} from '../middlewares/checkToken';
 router.post('/register', RegisterUser);
 router.post('/login', LoginUser)
 router.post('/changePassword', checkToken, changePassword)
-router.get('/getUsername/:id', checkToken, findUsername)
+router.get('/getUsernameAndPhoto/:id', checkToken, findUsernameAndPhoto)
 router.get('/getProfilePictureById/:id', checkToken, getProfileImage)
 router.get('/getCoverImageById/:id', checkToken, getCoverImage)
 

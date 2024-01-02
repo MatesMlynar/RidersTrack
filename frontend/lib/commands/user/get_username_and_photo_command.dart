@@ -1,6 +1,6 @@
 import 'package:frontend/commands/base_command.dart';
 
-class GetUsernameCommand extends BaseCommand{
+class GetUsernameAndPhotoCommand extends BaseCommand{
 
     Future<Map<String, dynamic>> run(String userId) async {
 
@@ -22,7 +22,7 @@ class GetUsernameCommand extends BaseCommand{
       }
       else{
 
-        Map<String, dynamic> result = await userService.getUsername(token, userId);
+        Map<String, dynamic> result = await userService.getUsernameAndPhoto(token, userId);
         if(result['status'] != 200){
           return {
             "status": result['status'],
@@ -30,7 +30,8 @@ class GetUsernameCommand extends BaseCommand{
           };
         }
 
-        if(result['username'] == null){
+
+        if(result['data']['username'] == null){
 
           return {
             "status": 200,
@@ -42,7 +43,7 @@ class GetUsernameCommand extends BaseCommand{
           return {
             "status": 200,
             "message": "Success",
-            "data": result['username']
+            "data": result['data']
           };
         }
       }

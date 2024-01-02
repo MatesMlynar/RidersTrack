@@ -89,11 +89,11 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> getUsername(String token, String id) async {
+  Future<Map<String, dynamic>> getUsernameAndPhoto(String token, String id) async {
     try {
 
       http.Response response = await http.get(
-        Uri.parse((dotenv.env['getUsernameURL']!) + id),
+        Uri.parse((dotenv.env['getUsernameAndPhotoURL']!) + id),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"

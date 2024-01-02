@@ -12,9 +12,9 @@ export class RideRecordService{
         }
     }
 
-    static async getRideRecordById(id: string, userId : string) : Promise<RideRecord | null>{
+    static async getRideRecordById(id: string) : Promise<RideRecord | null>{
         try{
-           return await ride_recordModel.findOne({_id: id, user: userId})
+           return await ride_recordModel.findOne({_id: id})
         }catch(err){
             console.log(err);
             return null;

@@ -35,7 +35,7 @@ class _MaxSpeedChartState extends State<MaxSpeedChart> {
     return  Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       width: MediaQuery.of(context).size.width,
-      height: 300,
+      height: 250,
       child: Stack(
         children: <Widget>[
           AspectRatio(
@@ -45,7 +45,7 @@ class _MaxSpeedChartState extends State<MaxSpeedChart> {
                 right: 8,
                 left: 2,
                 top: 24,
-                bottom: 12,
+                bottom: 0,
               ),
               child: LineChart(
                 mainData(),

@@ -137,7 +137,7 @@ export const changePassword = async (req: authRequest, res: Response) => {
     }
 }
 
-export const findUsername = async (req: authRequest, res: Response) => {
+export const findUsernameAndPhoto = async (req: authRequest, res: Response) => {
     try {
         //check if token is valid
         const token : string = req.token;
@@ -145,7 +145,6 @@ export const findUsername = async (req: authRequest, res: Response) => {
 
             const { id } = req.params;
             const userObj: User | null = await UserService.findUser(id);
-            console.log(userObj);
             if (!userObj) {
                 return res.status(404).send({
                     status: 404,
@@ -155,7 +154,7 @@ export const findUsername = async (req: authRequest, res: Response) => {
             return res.status(200).send({
                 status: 200,
                 message: "User found",
-                username: userObj!.username
+                data: userObj
             })
         })
     } catch (err) {

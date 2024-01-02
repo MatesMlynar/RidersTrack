@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/commands/ride_records/delete_ride_record_by_id_command.dart';
 import 'package:frontend/commands/ride_records/get_ride_record_by_id_command.dart';
 import 'package:frontend/models/graph_selected_coordinates_model.dart';
+import 'package:frontend/types/user_type.dart';
 import 'package:frontend/views/components/max_speed_chart_component.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/ride_record/pre-tracking_page.dart';
@@ -12,14 +15,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../commands/ride_records/update_ride_record_command.dart';
+import '../../commands/user/get_username_and_photo_command.dart';
 import '../../models/network_connection_model.dart';
+import '../../models/user_model.dart';
 import '../../types/ride_record.dart';
 import '../../utils/snack_bar_service.dart';
 
 class RideRecordDetailPage extends StatefulWidget {
-  const RideRecordDetailPage({super.key, required this.id});
+  const RideRecordDetailPage({super.key, required this.id, this.isPublicRecord = false});
 
   final String id;
+  final bool isPublicRecord;
 
   @override
   State<RideRecordDetailPage> createState() => _RideRecordDetailPageState();
@@ -43,6 +49,12 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
   bool isPublic = false;
   bool isMakingPublic = false;
 
+  bool isOwner = false;
+  String userId = "";
+  String username = "";
+  Uint8List? profileImage = null;
+
+
   void fetchData() async {
 
     Map<String, dynamic> result = await GetRideRecordByIdCommand().run(widget.id);
@@ -53,8 +65,35 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
         _center = LatLng(rideRecord!.positionPoints[0].latitude, rideRecord!.positionPoints[0].longitude);
         _addPolyline();
         isPublic = rideRecord!.isPublic;
-        isFetchingData = false;
+
+        if(!isPublic){
+          isFetchingData = false;
+        }
+
+        if(Provider.of<UserModel>(context, listen: false).currentUser!.id == rideRecord!.user){
+          setState(() {
+            isOwner = true;
+          });
+        }
+
       });
+
+      if(isPublic){
+        Map<String, dynamic> result = await GetUsernameAndPhotoCommand().run(rideRecord!.user!);
+        if(result['status'] == 200){
+          setState(() {
+            username = result['data']['username'];
+            if(result['data']['profileImage'] == ""){
+              isFetchingData = false;
+              return;
+            }
+            // Decode image from base64
+            List<int> decodedBase = base64Decode(result['data']['profileImage']);
+            profileImage = Uint8List.fromList(decodedBase);
+            isFetchingData = false;
+          });
+        }
+      }
     }
     else{
       setState(() {
@@ -65,7 +104,6 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
           content: result['message'],
           color: Colors.red);
     }
-
   }
 
   void deleteRecord() async {
@@ -234,24 +272,24 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
         centerTitle: true,
         title: rideRecord?.date == null ? null : Text(DateFormat('dd.MM.yyyy').format(rideRecord!.date.toLocal())),
         actions: [
-          IconButton(
+          isOwner ? IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
               deleteRecord();
             },
-          ),
+          ) : Container(),
           IconButton(
             icon: const Icon(Icons.map),
             onPressed: _onMapTypeButtonPressed,
           ),
-          isMakingPublic ? Padding(
+          isOwner ? isMakingPublic ? Padding(
             padding: const EdgeInsets.fromLTRB(0,0,10,0),
             child: SizedBox(child: CircularProgressIndicator(color: Colors.white,), height: 15, width: 15,),
           ) : IconButton(
             icon: Icon(isPublic ? Icons.lock_open : Icons.lock), // Ikona se změní podle stavu isPublic
             onPressed: togglePublic,
             tooltip: isPublic ? 'Make private' : 'Make public',
-          ),
+          ) : Container(),
         ],
       ),
       body: isDeviceConnected ? isFetchingData ? const Center(child: CircularProgressIndicator(color: Colors.white)) : rideRecord == null ? 
@@ -281,7 +319,7 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                    ),
                  ),
             Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 30, 15,0),
+                  padding: const EdgeInsets.fromLTRB(15, 30, 15,30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -337,7 +375,47 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                             ),
                           ),
                           MaxSpeedChart(rideRecordPoints: rideRecord!.positionPoints, totalDistance: rideRecord!.totalDistance,),
-                        ],
+                          isPublic ? isFetchingData ? CircularProgressIndicator() : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              profileImage == null ? Container() : CircleAvatar(radius: (40),
+                                  child: ClipRRect(
+                                    borderRadius:BorderRadius.circular(50),
+                                    child: Image.memory(
+                                      profileImage!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
+                                  )
+                              ),
+                              SizedBox(height: 10), // Add some spacing between the picture and the text
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      profileImage == null ? Row(children: [Icon(Icons.account_circle, size: 20, color: Colors.white,), SizedBox(width: 5,)]) : Container(),
+                                      Text(
+                                        username, // Replace with the actual username
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ), textAlign: TextAlign.left,
+                                      ),
+                                    ],
+                                  ),
+                                  Text("shared this post", style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                  ), textAlign: TextAlign.left,),
+                                ],
+                              ),
+                            ],
+                          ): Container()] ,
                       )
                     ],
                   ),

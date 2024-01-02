@@ -56,10 +56,8 @@ export const getRideRecordById = async (req: authRequest, res: Response) => {
                 })
             } else {
 
-                const decodedToken: TokenType = jwt.decode(token) as TokenType;
 
-                const response: RideRecord | null = await RideRecordService.getRideRecordById(req.params.id, decodedToken.userData.id);
-
+                const response: RideRecord | null = await RideRecordService.getRideRecordById(req.params.id);
                 if (response == null) {
                     return res.status(500).send({
                         status: 500,

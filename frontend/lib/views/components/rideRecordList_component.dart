@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/types/ride_record.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import '../../commands/user/get_username_command.dart';
+import '../../commands/user/get_username_and_photo_command.dart';
+import '../../models/user_model.dart';
 import '../ride_record/ride_record_detail_page.dart';
 
 class RideRecordListComponent extends StatefulWidget {
@@ -73,11 +75,10 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
 
   void findUser() async {
     if(widget.isPublicRecord){
-      Map<String, dynamic> result = await GetUsernameCommand().run(widget.rideRecordData.user!);
-      print(result);
+      Map<String, dynamic> result = await GetUsernameAndPhotoCommand().run(widget.rideRecordData.user!);
       if(result['status'] == 200){
         setState(() {
-          username = result['data'];
+          username = result['data']['username'];
           isLoading = false;
         });
       }
@@ -155,14 +156,18 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            widget.isPublicRecord ? Text(
-                              username,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ) : SizedBox(),
+                            Row(
+                              children: [
+                                widget.isPublicRecord ? Text(
+                                  username,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ) : SizedBox(),
+                              ],
+                            ),
                             Text(
                               DateFormat('dd.MM.yyyy').format(widget.rideRecordData.date.toLocal()),
                               style: TextStyle(
@@ -207,7 +212,7 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RideRecordDetailPage(id: widget.rideRecordData.id,)));
+                              builder: (context) => RideRecordDetailPage(id: widget.rideRecordData.id, isPublicRecord: widget.isPublicRecord,)));
                     }, icon: const Icon(Icons.arrow_forward, size: 30,), color: Colors.white,)
                   ],
                 ),
