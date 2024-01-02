@@ -170,10 +170,7 @@ export const getProfileImage = async (req: authRequest, res: Response) => {
         jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
 
             const { id } = req.params;
-            console.log(id);
-            console.log(req.params);
             const profileImage: String = await UserService.getProfileImageByUserId(id);
-            console.log(profileImage);
             if (!profileImage) {
                 return res.status(404).send({
                     status: 404,
@@ -210,6 +207,57 @@ export const updateProfileImage = async (req: authRequest, res: Response) => {
                 status: 200,
                 message: "User found",
                 image: profileImage
+            })
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getCoverImage = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+
+            const { id } = req.params;
+            const coverImage: String = await UserService.getCoverImageByUserId(id);
+            if (!coverImage) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "User found",
+                image: coverImage
+            })
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const updateCoverImage = async (req: authRequest, res: Response) => {
+    try {
+        //check if token is valid
+        const token : string = req.token;
+        jwt.verify(token, process.env.JWT_SECRET!, async (err : any, authData : any) => {
+
+            const { id } = req.params;
+            const { coverImage } = req.body;
+            const response: boolean = await UserService.updateCoverImageByUserId(id, coverImage);
+            if (!response) {
+                return res.status(404).send({
+                    status: 404,
+                    message: "User not found"
+                })
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "User found",
+                image: coverImage
             })
         })
     } catch (err) {

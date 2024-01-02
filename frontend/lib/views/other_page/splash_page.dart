@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/commands/user/store_already_logged_user_command.dart';
 import 'package:frontend/views/layout/layout_page.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/network_connection_model.dart';
+import '../../utils/secure_storage.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -21,16 +25,29 @@ class _SplashPageState extends State<SplashPage> {
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isModelInitialized = false;
+  bool isTokenValid = false;
 
   @override void initState() {
     super.initState();
     getConnectivity();
+    getToken();
   }
 
   @override void dispose() {
     subscription.cancel();
     super.dispose();
   }
+
+  void getToken() async{
+    SecureStorage secureStorage = SecureStorage();
+    String? token = await secureStorage.getToken();
+
+    if(token != null){
+      isTokenValid = Jwt.isExpired(token) == false;
+      StoreAlreadyLoggedUserCommand().run();
+    }
+  }
+
 
   getConnectivity() => subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
 
@@ -58,7 +75,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isModelInitialized ? const LoginPage() : const Scaffold(
+    return isModelInitialized ? isTokenValid ? const LayoutPage() : const LoginPage() : const Scaffold(
       backgroundColor: Color.fromARGB(255, 20, 24, 27),
       body: Center(
         child: CircularProgressIndicator(

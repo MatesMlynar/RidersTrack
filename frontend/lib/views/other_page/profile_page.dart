@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:frontend/commands/user/logout_command.dart';
+import 'package:frontend/commands/user/update_cover_image_command.dart';
 import 'package:frontend/types/user_type.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
@@ -37,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (response['success'] == true) {
       setState(() {
         user = response['user'];
-        print(user!.profileImage);
         if (user!.profileImage.isNotEmpty) {
           List<int> decodedBase = base64Decode(user!.profileImage);
           profileImageBytes = Uint8List.fromList(decodedBase);
@@ -66,7 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
           return;
         }
-        print(response);
         if (response['data'] != null) {
           List<int> decodedBase = base64Decode(response['data']);
           setState(() {
@@ -82,8 +81,30 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future updateCoverImage(ImageSource source) async {
-    if (coverImageBytes != null) {
-      print("update cover image");
+    final ImagePicker _picker = ImagePicker();
+    try {
+      XFile? image = await _picker.pickImage(source: source);
+
+      if (image == null) {
+        return null;
+      }
+
+      Map<String, dynamic> response = await UpdateCoverImageCommand().run(image);
+      if(response['status'] != 200){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
+        return;
+      }
+      if (response['data'] != null) {
+        List<int> decodedBase = base64Decode(response['data']);
+        setState(() {
+          coverImageBytes = Uint8List.fromList(decodedBase);
+        });
+      }
+
+      return coverImageBytes;
+    } catch (e) {
+      print('Chyba při získávání fotografie: $e');
+      return null;
     }
   }
 
@@ -151,19 +172,29 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: height * 0.25,
                         child: Stack(
                           children: [
-                            Container(
-                              width: double.infinity,
-                              height: height * 0.18,
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 20, 24, 27),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  //TODO: change image to custom one
-                                  image: Image.network(
-                                    'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                                  ).image,
+                            GestureDetector(
+                              onTap: () {
+                                _showImagePickerBottomSheet(context, false);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: height * 0.18,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  image: coverImageBytes != null
+                                      ? DecorationImage(
+                                    image: Image.memory(coverImageBytes!).image,
+                                    fit: BoxFit.cover,
+                                  )
+                                      : null,
                                 ),
-                              ),
+                              child: coverImageBytes == null
+                                  ? const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 50,
+                              )
+                                  : null),
                             ),
                             Align(
                               alignment:

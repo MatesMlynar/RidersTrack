@@ -112,7 +112,6 @@ class UserService {
   }
 
   Future<Map<String, dynamic>> getProfilePictureById(String token, String id) async {
-    print('I tried to call');
     try {
       http.Response response = await http.get(
         Uri.parse((dotenv.env['getProfilePictureByIdURL']!) + id),
@@ -142,6 +141,55 @@ class UserService {
 
       http.Response response = await http.put(
         Uri.parse((dotenv.env['updateProfilePictureByIdURL']!) + id),
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+        body: jsonEncode(reqBody),).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'something went wrong'};
+    }
+  }
+
+
+  Future<Map<String, dynamic>> getCoverImageById(String token, String id) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse((dotenv.env['getCoverImageByIdURL']!) + id),
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer $token"
+        },).timeout(const Duration(seconds: 15));
+
+      return json.decode(response.body);
+    }
+    on TimeoutException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    } on SocketException {
+      return {'status': 408, 'message': 'Request timed out. Please try again.'};
+    }
+    on Error {
+      return {'status': 500, 'message': 'something went wrong'};
+    }
+  }
+
+
+  Future<Map<String, dynamic>> updateCoverImageById(String token, String id, String coverImage) async {
+    try {
+      var reqBody = {
+        "coverImage": coverImage
+      };
+
+      http.Response response = await http.put(
+        Uri.parse((dotenv.env['updateCoverImageByIdURL']!) + id),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"
