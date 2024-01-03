@@ -3,6 +3,7 @@ import 'package:frontend/commands/base_command.dart';
 class GetCoverImageCommand extends BaseCommand{
 
   Future<Map<String, dynamic>> run(String userId) async {
+
     if(networkConnectionModel.isDeviceConnected == false){
       return {
         "status": 400,

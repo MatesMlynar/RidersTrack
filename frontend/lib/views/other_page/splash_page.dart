@@ -44,10 +44,11 @@ class _SplashPageState extends State<SplashPage> {
 
     if(token != null){
       isTokenValid = Jwt.isExpired(token) == false;
-      StoreAlreadyLoggedUserCommand().run();
+      if(isTokenValid){
+        await StoreAlreadyLoggedUserCommand().run();
+      }
     }
   }
-
 
   getConnectivity() => subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
 
@@ -75,6 +76,9 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    getToken();
+
     return isModelInitialized ? isTokenValid ? const LayoutPage() : const LoginPage() : const Scaffold(
       backgroundColor: Color.fromARGB(255, 20, 24, 27),
       body: Center(

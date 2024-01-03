@@ -76,6 +76,7 @@ export class UserService{
     }
 
     static async getProfileImageByUserId(userId : string) : Promise<string>{
+
         try{
             const user = await UserModel.findOne({_id: userId});
             if(!user){

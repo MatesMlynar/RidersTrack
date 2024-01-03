@@ -1,5 +1,3 @@
-import "dart:ui";
-
 import "package:jwt_decode/jwt_decode.dart";
 
 import "../../types/user_type.dart";

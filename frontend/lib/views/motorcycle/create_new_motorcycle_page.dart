@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +77,15 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
     }
 
 
+    Future<XFile?> cropImage (XFile imageFile) async {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(sourcePath: imageFile.path);
+      if(croppedFile == null){
+        return null;
+      }
+      print(croppedFile.path);
+      return XFile(croppedFile.path);
+    }
+
     Future<XFile?> _getImage(ImageSource source) async {
       final ImagePicker _picker = ImagePicker();
       try {
@@ -84,6 +94,8 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
         if (selectedImage == null) {
           return null;
         }
+
+        selectedImage = await cropImage(selectedImage!);
 
         setState(() {
           selectedImage = selectedImage;

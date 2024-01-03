@@ -42,7 +42,7 @@ class UpdateCoverImageCommand extends BaseCommand{
           "message": result['message']
         };
       }
-      userModel.currentUser!.profileImage = result['image'];
+      userModel.currentUser!.coverImage = result['image'];
       return {
         "status": 200,
         "message": "Success",

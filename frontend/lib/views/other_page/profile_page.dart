@@ -9,6 +9,7 @@ import 'package:frontend/views/components/no_connection_component.dart';
 import 'package:frontend/views/components/profile_page_box_component.dart';
 import 'package:frontend/views/motorcycle/motorcycle_list_page.dart';
 import 'package:frontend/views/ride_record/ride_records_layout_page.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../commands/user/get_user_command.dart';
@@ -38,6 +39,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (response['success'] == true) {
       setState(() {
         user = response['user'];
+        print(user!.profileImage);
+        print(user!.coverImage);
         if (user!.profileImage.isNotEmpty) {
           List<int> decodedBase = base64Decode(user!.profileImage);
           profileImageBytes = Uint8List.fromList(decodedBase);
@@ -58,6 +61,11 @@ class _ProfilePageState extends State<ProfilePage> {
         XFile? image = await _picker.pickImage(source: source);
 
         if (image == null) {
+          return null;
+        }
+
+        image = await cropImage(image);
+        if(image == null){
           return null;
         }
 
@@ -89,6 +97,11 @@ class _ProfilePageState extends State<ProfilePage> {
         return null;
       }
 
+      image = await cropImage(image);
+      if(image == null){
+        return null;
+      }
+
       Map<String, dynamic> response = await UpdateCoverImageCommand().run(image);
       if(response['status'] != 200){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red,));
@@ -106,6 +119,15 @@ class _ProfilePageState extends State<ProfilePage> {
       print('Chyba při získávání fotografie: $e');
       return null;
     }
+  }
+
+  Future<XFile?> cropImage (XFile imageFile) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if(croppedFile == null){
+      return null;
+    }
+    print(croppedFile.path);
+    return XFile(croppedFile.path);
   }
 
   @override

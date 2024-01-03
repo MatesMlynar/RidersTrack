@@ -398,13 +398,17 @@ class _RideRecordDetailPageState extends State<RideRecordDetailPage>{
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       profileImage == null ? Row(children: [Icon(Icons.account_circle, size: 20, color: Colors.white,), SizedBox(width: 5,)]) : Container(),
-                                      Text(
-                                        username, // Replace with the actual username
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ), textAlign: TextAlign.left,
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.45,
+                                        child: Text(
+                                          username,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ), textAlign: TextAlign.center,
+                                        ),
                                       ),
                                     ],
                                   ),

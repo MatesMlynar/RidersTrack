@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/types/ride_record.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -156,18 +157,19 @@ class _RideRecordListComponentState extends State<RideRecordListComponent> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                widget.isPublicRecord ? Text(
-                                  username,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                widget.isPublicRecord ? SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.45,
+                                  child: Text(
+                                    username,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ) : SizedBox(),
-                              ],
-                            ),
                             Text(
                               DateFormat('dd.MM.yyyy').format(widget.rideRecordData.date.toLocal()),
                               style: TextStyle(
