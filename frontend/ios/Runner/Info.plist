@@ -6,6 +6,8 @@
     <string>This app needs access to location when open because of tracking motorcycle ride</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs access to location when running in the background because of tracking motorcycle ride.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open or in the background because of tracking motorcycle ride.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSPhotoLibraryUsageDescription</key>

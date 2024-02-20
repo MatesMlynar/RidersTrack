@@ -41,11 +41,43 @@
     flex-wrap: wrap;
 }
 
-.benefits__download-link{
+.benefits__image-wrapper{
     max-width: 200px;
     width: 100%;
     height: 65px;
+}
+
+.benefits__download-link{
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+}
+
+.tooltip-trigger {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: ease 0.5s;
+}
+
+.tooltip-trigger::before {
+    content: "iOS version will be available soon.";
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    background-color: black;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tooltip-trigger:hover::before {
+    display: block;
+    width: 150px;
 }
 
 .benefits__middle-container{
