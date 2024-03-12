@@ -57,10 +57,10 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
-    transition: ease 0.5s;
 }
 
 .tooltip-trigger::before {
+    width: 150px;
     content: "iOS version will be available soon.";
     font-family: 'Montserrat', sans-serif;
     position: absolute;
@@ -68,16 +68,18 @@
     color: #fff;
     padding: 8px;
     border-radius: 5px;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
     z-index: 1;
-    bottom: 125%;
+    top: 125%;
     left: 50%;
     transform: translateX(-50%);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .tooltip-trigger:hover::before {
-    display: block;
-    width: 150px;
+    opacity: 1;
+    visibility: visible;
 }
 
 .benefits__middle-container{
@@ -137,7 +139,10 @@
 /*sm*/
 @media only screen and (min-width: 650px){
 
-
+    .tooltip-trigger::before {
+        top: auto;
+        bottom: 125%;
+    }
 
 }
 

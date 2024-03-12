@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/commands/checkAppVersion_command.dart';
 import 'package:frontend/views/other_page/home_page.dart';
 import 'package:frontend/views/ride_record/pre-tracking_page.dart';
 import 'package:frontend/views/other_page/profile_page.dart';
@@ -14,11 +15,56 @@ class _LayoutPageState extends State<LayoutPage> {
   int currentPage = 0;
 
   bool isOffline = false;
+  bool isAppVersionTheLatest = false;
+  bool versionChecked = false;
+
+  checkIfAppVersionIsTheLatest() async {
+    Map<String, dynamic> result = await CheckAppVersionCommand().run();
+
+    if(result['status'] == 200){
+      setState(() {
+        isAppVersionTheLatest = true;
+      });
+    }
+    setState(() {
+      versionChecked = true;
+    });
+
+    if (!isAppVersionTheLatest) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('New version available'),
+            content: Text('Please update the app to the latest version.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
+  }
 
   List<Widget> pages = const [
     HomePage(),
     ProfilePage()
   ];
+
+  @override void initState() {
+    super.initState();
+    if(!versionChecked){
+      checkIfAppVersionIsTheLatest();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

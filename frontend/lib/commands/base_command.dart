@@ -4,6 +4,7 @@ import 'package:frontend/models/motorcycle_model.dart';
 import 'package:frontend/models/network_connection_model.dart';
 import 'package:frontend/models/public_ride_records_model.dart';
 import 'package:frontend/models/ride_record_model.dart';
+import 'package:frontend/services/checkAppVersion_service.dart';
 import 'package:frontend/services/fuel_record_service.dart';
 import 'package:frontend/services/motorcycle_service.dart';
 import 'package:frontend/services/ride_record_service.dart';
@@ -35,4 +36,5 @@ class BaseCommand{
   FuelRecordService fuelRecordService = _mainContext.read();
   MotorcycleService motorcycleService = _mainContext.read();
   RideRecordService rideRecordService = _mainContext.read();
+  CheckAppVersionService checkAppVersionService = _mainContext.read();
 }

@@ -6,6 +6,7 @@ import userRoute from './routes/user.route';
 import motorcycleRoute from './routes/motorcycle.route';
 import fuel_recordRoute from "./routes/fuel_record.route";
 import ride_recordRoute from "./routes/ride_record.route";
+import appVersionRoute from "./routes/app_version.route";
 
 require('dotenv').config();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //MIDDLEWARE
+app.use('/api/general', appVersionRoute);
 app.use('/api/user', userRoute)
 app.use('/api/motorcycle', motorcycleRoute)
 app.use('/api/fuelRecord', fuel_recordRoute)

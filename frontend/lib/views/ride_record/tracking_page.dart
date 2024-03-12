@@ -100,9 +100,7 @@ class _TrackingPageState extends State<TrackingPage>
       );
     }
 
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
+    positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position? position) {
 
           if (position != null) {
             Position newPoint = Position(

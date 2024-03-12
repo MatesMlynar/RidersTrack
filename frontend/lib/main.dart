@@ -10,6 +10,7 @@ import 'package:frontend/models/motorcycle_model.dart';
 import 'package:frontend/models/public_ride_records_model.dart';
 import 'package:frontend/models/ride_record_model.dart';
 import 'package:frontend/models/user_model.dart';
+import 'package:frontend/services/checkAppVersion_service.dart';
 import 'package:frontend/services/fuel_record_service.dart';
 import 'package:frontend/services/motorcycle_service.dart';
 import 'package:frontend/services/ride_record_service.dart';
@@ -64,7 +65,8 @@ class _MyAppState extends State<MyApp> {
       Provider(create: (c) => UserService()),
       Provider(create: (c) => FuelRecordService()),
       Provider(create: (c) => MotorcycleService()),
-      Provider(create: (c) => RideRecordService())
+      Provider(create: (c) => RideRecordService()),
+      Provider(create: (c) => CheckAppVersionService())
     ],
     child: Sizer(builder: (context, orientation, deviceType) {
       init(context);
