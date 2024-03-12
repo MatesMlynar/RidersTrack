@@ -39,8 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (response['success'] == true) {
       setState(() {
         user = response['user'];
-        print(user!.profileImage);
-        print(user!.coverImage);
         if (user!.profileImage.isNotEmpty) {
           List<int> decodedBase = base64Decode(user!.profileImage);
           profileImageBytes = Uint8List.fromList(decodedBase);
@@ -126,7 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if(croppedFile == null){
       return null;
     }
-    print(croppedFile.path);
     return XFile(croppedFile.path);
   }
 

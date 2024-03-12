@@ -82,7 +82,6 @@ class _CreateNewMotorcycleState extends State<CreateNewMotorcycle> {
       if(croppedFile == null){
         return null;
       }
-      print(croppedFile.path);
       return XFile(croppedFile.path);
     }
 
